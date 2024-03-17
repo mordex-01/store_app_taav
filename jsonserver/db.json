@@ -1,20 +1,125 @@
 {
-    "seller": [
-        {
-            "id": "0",
-            "firstName": "",
-            "lastName": "",
-            "userName": "",
-            "password": ""
-        }
-    ],
-    "customer": [
-        {
-            "id": "0",
-            "firstName": "",
-            "lastName": "",
-            "userName": "",
-            "password": ""
-        }
-    ]
+  "seller": [
+    {
+      "id": "0",
+      "firstName": "",
+      "lastName": "",
+      "userName": "",
+      "password": ""
+    },
+    {
+      "id": "fd61",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "3cab",
+      "firstName": "asd",
+      "lastName": "asd",
+      "userName": "asd",
+      "password": "asd"
+    },
+    {
+      "id": "652d",
+      "firstName": "asd",
+      "lastName": "asd",
+      "userName": "asd",
+      "password": "asd"
+    },
+    {
+      "id": "081f",
+      "firstName": "asd",
+      "lastName": "asd",
+      "userName": "asd",
+      "password": "asd"
+    },
+    {
+      "id": "aa89",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "4303",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "345e",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "788a",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "828b",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "dad9",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "2492",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "19a8",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "84d8",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    },
+    {
+      "id": "2b30",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa"
+    }
+  ],
+  "customer": [
+    {
+      "id": "0",
+      "firstName": "",
+      "lastName": "",
+      "userName": "",
+      "password": ""
+    },
+    {
+      "id": "bd79",
+      "firstName": "asd",
+      "lastName": "asd",
+      "userName": "asd",
+      "password": "asd"
+    }
+  ]
 }

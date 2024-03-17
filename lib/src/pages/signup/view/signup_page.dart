@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/signup/controller/signup_controller.dart';
@@ -18,43 +20,151 @@ class SignUpPage extends GetView<SignUpController> {
           icon: WidgetUtils.arrowBackButton,
         ),
       ),
-      body: Column(
-        children: [
-          _textFormField(
-            hintText: "Enter your first name",
-            topText: "First Name",
-            obscureText: false,
-            validator: (p0) {},
-          ),
-          _textFormField(
-            hintText: "Enter your last name",
-            topText: "Last Name",
-            obscureText: false,
-            validator: (p0) {},
-          ),
-          _textFormField(
-            hintText: "Enter your user name",
-            topText: "User Name",
-            obscureText: false,
-            validator: (p0) {},
-          ),
-          _textFormField(
-            hintText: "Enter your password",
-            topText: "Password",
-            obscureText: false,
-            validator: (p0) {},
-          ),
-          _textFormField(
-            hintText: "Confirm password",
-            topText: "Confirm Password",
-            obscureText: false,
-            validator: (p0) {},
-          ),
-        ],
+      body: Form(
+        key: controller.formKey,
+        child: Column(
+          children: [
+            const Expanded(child: SizedBox()),
+            Row(
+              children: [
+                Expanded(
+                  child: _textFormField(
+                    controller: controller.firstNameController,
+                    hintText: "Enter your first name",
+                    topText: "First Name",
+                    obscureText: false,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please fill this field";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: _textFormField(
+                    controller: controller.lastNameController,
+                    hintText: "Enter your last name",
+                    topText: "Last Name",
+                    obscureText: false,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please fill this field";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const Expanded(child: SizedBox()),
+            _textFormField(
+              controller: controller.userNameController,
+              hintText: "Enter your user name",
+              topText: "User Name",
+              obscureText: false,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Please fill this field";
+                }
+                return null;
+              },
+            ),
+            const Expanded(child: SizedBox()),
+            Row(
+              children: [
+                Expanded(
+                  child: _textFormField(
+                    controller: controller.passwordController,
+                    hintText: "Enter your password",
+                    topText: "Password",
+                    obscureText: false,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please fill this field";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: _textFormField(
+                    hintText: "Confirm password",
+                    topText: "Confirm Password",
+                    obscureText: false,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please fill this field";
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const Expanded(child: SizedBox()),
+            Obx(
+              () => Row(
+                children: [
+                  Expanded(
+                    child: _radioListTile(
+                      title: controller.radioOptions[0],
+                      value: controller.radioOptions[0],
+                      currentValue: controller.radioCurrentOption.value,
+                      onChanged: (value) {
+                        controller.radioCurrentOption.value = value.toString();
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: _radioListTile(
+                      title: controller.radioOptions[1],
+                      value: controller.radioOptions[1],
+                      currentValue: controller.radioCurrentOption.value,
+                      onChanged: (value) {
+                        controller.radioCurrentOption.value = value.toString();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Expanded(child: SizedBox()),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
+              child: _button(
+                context: context,
+                text: "Sign Up",
+                onTap: () {
+                  controller.onSignUpTapped();
+                },
+              ),
+            ),
+            const Expanded(child: SizedBox()),
+          ],
+        ),
       ),
     );
   }
 
+  Widget _radioListTile({
+    required String title,
+    required String value,
+    required String currentValue,
+    required void Function(String?)? onChanged,
+  }) =>
+      ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 20),
+        ),
+        leading: Radio(
+          activeColor: WidgetUtils.darkBlue,
+          value: value,
+          groupValue: currentValue,
+          onChanged: onChanged,
+        ),
+      );
   Widget _appBarTitle() => const Row(
         children: [
           Padding(
@@ -77,7 +187,8 @@ class SignUpPage extends GetView<SignUpController> {
           {required String hintText,
           required String topText,
           required bool obscureText,
-          required String? Function(String?)? validator}) =>
+          required String? Function(String?)? validator,
+          TextEditingController? controller}) =>
       Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -88,12 +199,13 @@ class SignUpPage extends GetView<SignUpController> {
               child: Text(
                 topText,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
             TextFormField(
+              controller: controller,
               maxLength: 20,
               validator: validator,
               obscureText: obscureText,
@@ -115,6 +227,26 @@ class SignUpPage extends GetView<SignUpController> {
               ),
             ),
           ],
+        ),
+      );
+  Widget _button(
+          {required BuildContext context,
+          required String text,
+          required void Function() onTap}) =>
+      InkWell(
+        onTap: onTap,
+        child: Container(
+          width: MediaQuery.sizeOf(context).width,
+          height: 35,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: WidgetUtils.blueAcentColor),
+          child: Center(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 24),
+            ),
+          ),
         ),
       );
 }

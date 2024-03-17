@@ -208,7 +208,7 @@ class LoginPage extends GetView<LoginController> {
         onTap: onTap,
         child: Container(
           width: MediaQuery.sizeOf(context).width,
-          height: 54,
+          height: 40,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: WidgetUtils.blueAcentColor),
