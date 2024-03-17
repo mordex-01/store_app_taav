@@ -12,6 +12,7 @@ class LoginPage extends GetView<LoginController> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
+          key: controller.formKey,
           child: Column(
             children: [
               const Expanded(
@@ -29,18 +30,31 @@ class LoginPage extends GetView<LoginController> {
                 child: SizedBox(),
               ),
               _textFormField(
-                  obscureText: false,
-                  topText: "User Name",
-                  hintText: "Enter Your User Name",
-                  suffixIcon: const Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(
-                      Icons.person,
-                      size: 35,
-                    ),
-                  )),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please fill this field";
+                  }
+                  return null;
+                },
+                obscureText: false,
+                topText: "User Name",
+                hintText: "Enter Your User Name",
+                suffixIcon: const Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: Icon(
+                    Icons.person,
+                    size: 35,
+                  ),
+                ),
+              ),
               Obx(
                 () => _textFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please fill this field";
+                    }
+                    return null;
+                  },
                   obscureText: !controller.isObscure.value,
                   topText: "Password",
                   hintText: "Enter Your Password",
@@ -74,7 +88,9 @@ class LoginPage extends GetView<LoginController> {
                 child: _button(
                   context: context,
                   text: "Login",
-                  onTap: () {},
+                  onTap: () {
+                    controller.onLoginTapped();
+                  },
                 ),
               ),
               Padding(
@@ -90,7 +106,9 @@ class LoginPage extends GetView<LoginController> {
                 child: _button(
                   context: context,
                   text: "Sign Up",
-                  onTap: () {},
+                  onTap: () {
+                    controller.onSignUpTapped();
+                  },
                 ),
               ),
               const Expanded(
@@ -113,12 +131,12 @@ class LoginPage extends GetView<LoginController> {
         "Sign In to continue",
         style: TextStyle(fontSize: 24),
       );
-  Widget _textFormField({
-    required String hintText,
-    required Widget suffixIcon,
-    required String topText,
-    required bool obscureText,
-  }) =>
+  Widget _textFormField(
+          {required String hintText,
+          required Widget suffixIcon,
+          required String topText,
+          required bool obscureText,
+          required String? Function(String?)? validator}) =>
       Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -135,8 +153,11 @@ class LoginPage extends GetView<LoginController> {
               ),
             ),
             TextFormField(
+              maxLength: 20,
+              validator: validator,
               obscureText: obscureText,
               decoration: InputDecoration(
+                counterText: "",
                 hintText: hintText,
                 suffixIcon: suffixIcon,
                 suffixIconColor: WidgetUtils.blueAcentColor,
