@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/src/infrastructure/utils/repository_utils.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/signup/model/signup_model_dto.dart';
 import 'package:store_app_taav/src/pages/signup/repository/signup_repository.dart';
+import 'package:store_app_taav/src/shared/repository_getusers.dart';
 
 class SignUpController extends GetxController {
   @override
@@ -26,6 +28,7 @@ class SignUpController extends GetxController {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final SignUpRepository _repository = SignUpRepository();
+  final RepositoryGetUsers _getUsersRepository = RepositoryGetUsers();
   Future<void> signUp() async {
     final dto = SignUpModelDto(
         firstName: firstNameController.text,
@@ -55,9 +58,27 @@ class SignUpController extends GetxController {
   }
 
   Future<void> getUsers() async {
-    final resultOrExeption = await _repository.getUsers(
-        routeUrl: "/${radioCurrentOption.value.toLowerCase()}");
-    resultOrExeption.fold(
+    final resultGetSellers = await _getUsersRepository.getUsers(
+        routeUrl: RepositoryUtils.getSellers);
+
+    final resultGetCustomers = await _getUsersRepository.getUsers(
+        routeUrl: RepositoryUtils.getCustomers);
+    resultGetSellers.fold(
+      (left) => Get.showSnackbar(
+        WidgetUtils.myCustomSnackBar(
+            messageText: left, backgroundColor: Colors.redAccent),
+      ),
+      (right) => {
+        for (int x = 0; x < right.length; x++)
+          {
+            if (userNameController.text == right.elementAt(x).userName)
+              {
+                isUserNameWrong = true,
+              }
+          }
+      },
+    );
+    resultGetCustomers.fold(
       (left) => Get.showSnackbar(
         WidgetUtils.myCustomSnackBar(
             messageText: left, backgroundColor: Colors.redAccent),
@@ -73,6 +94,25 @@ class SignUpController extends GetxController {
       },
     );
   }
+  // Future<void> getUsers() async {
+  //   final resultOrExeption = await _getUsersRepository.getUsers(
+  //       routeUrl: "/${radioCurrentOption.value.toLowerCase()}");
+  //   resultOrExeption.fold(
+  //     (left) => Get.showSnackbar(
+  //       WidgetUtils.myCustomSnackBar(
+  //           messageText: left, backgroundColor: Colors.redAccent),
+  //     ),
+  //     (right) => {
+  //       for (int x = 0; x < right.length; x++)
+  //         {
+  //           if (userNameController.text == right.elementAt(x).userName)
+  //             {
+  //               isUserNameWrong = true,
+  //             }
+  //         }
+  //     },
+  //   );
+  // }
 
   onSignUpTapped() async {
     await getUsers();

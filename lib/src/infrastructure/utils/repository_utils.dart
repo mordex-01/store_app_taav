@@ -5,4 +5,6 @@ class RepositoryUtils {
   };
   static const String signUpCustomer = "/customer";
   static const String signUpSeller = "/seller";
+  static const String getCustomers = "/customer";
+  static const String getSellers = "/seller";
 }

@@ -30,6 +30,7 @@ class LoginPage extends GetView<LoginController> {
                 child: SizedBox(),
               ),
               _textFormField(
+                controller: controller.userNameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Please fill this field";
@@ -49,6 +50,7 @@ class LoginPage extends GetView<LoginController> {
               ),
               Obx(
                 () => _textFormField(
+                  controller: controller.passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please fill this field";
@@ -131,12 +133,14 @@ class LoginPage extends GetView<LoginController> {
         "Sign In to continue",
         style: TextStyle(fontSize: 24),
       );
-  Widget _textFormField(
-          {required String hintText,
-          required Widget suffixIcon,
-          required String topText,
-          required bool obscureText,
-          required String? Function(String?)? validator}) =>
+  Widget _textFormField({
+    required String hintText,
+    required Widget suffixIcon,
+    required String topText,
+    required bool obscureText,
+    required String? Function(String?)? validator,
+    required TextEditingController? controller,
+  }) =>
       Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
@@ -153,6 +157,7 @@ class LoginPage extends GetView<LoginController> {
               ),
             ),
             TextFormField(
+              controller: controller,
               maxLength: 20,
               validator: validator,
               obscureText: obscureText,

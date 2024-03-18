@@ -1,82 +1,19 @@
 {
   "seller": [
     {
-      "id": "0",
-      "firstName": "",
-      "lastName": "",
-      "userName": "",
-      "password": ""
-    },
-    {
-      "id": "e6a5",
+      "id": "aa6a",
       "firstName": "asd",
       "lastName": "asd",
       "userName": "asd",
-      "password": "asd"
-    },
-    {
-      "id": "6c50",
-      "firstName": "asd",
-      "lastName": "asd",
-      "userName": "dsa",
-      "password": "asd"
-    },
-    {
-      "id": "f46b",
-      "firstName": "dsa",
-      "lastName": "dsa",
-      "userName": "dsaa",
-      "password": "dsa"
-    },
-    {
-      "id": "0591",
-      "firstName": "bbb",
-      "lastName": "bbb",
-      "userName": "bbb",
-      "password": "bbb"
-    },
-    {
-      "id": "9a76",
-      "firstName": "bbb",
-      "lastName": "bbb",
-      "userName": "bbbb",
-      "password": "bbb"
-    },
-    {
-      "id": "29c0",
-      "firstName": "bbb",
-      "lastName": "bbb",
-      "userName": "dsaaa",
-      "password": "bbb"
-    },
-    {
-      "id": "4477",
-      "firstName": "asd",
-      "lastName": "asd",
-      "userName": "aaaaa",
       "password": "asd"
     }
   ],
   "customer": [
     {
-      "id": "0",
-      "firstName": "",
-      "lastName": "",
-      "userName": "",
-      "password": ""
-    },
-    {
-      "id": "c5a8",
+      "id": "712f",
       "firstName": "asd",
       "lastName": "asd",
-      "userName": "aaaaad",
-      "password": "asd"
-    },
-    {
-      "id": "572b",
-      "firstName": "asd",
-      "lastName": "asd",
-      "userName": "aaaaadd",
+      "userName": "asdd",
       "password": "asd"
     }
   ]
