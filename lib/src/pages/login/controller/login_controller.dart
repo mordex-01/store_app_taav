@@ -10,9 +10,7 @@ class LoginController extends GetxController {
   toggleIsRememberMe() => isRememberMeCheck.value = !isRememberMeCheck.value;
 
   onLoginTapped() {
-    if (formKey.currentState!.validate()) {
-      print("tapped");
-    }
+    if (formKey.currentState!.validate()) {}
   }
 
   onSignUpTapped() {

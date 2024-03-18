@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/signup/model/signup_model_dto.dart';
 import 'package:store_app_taav/src/pages/signup/repository/signup_repository.dart';
 
 class SignUpController extends GetxController {
+  @override
+  void onClose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    userNameController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.onClose();
+  }
+
   final formKey = GlobalKey<FormState>();
   final RxList<String> radioOptions = <String>['Seller', 'Customer'].obs;
   RxString radioCurrentOption = RxString('Seller');
+  late bool isUserNameWrong = false;
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final SignUpRepository _repository = SignUpRepository();
   Future<void> signUp() async {
     final dto = SignUpModelDto(
@@ -40,9 +54,53 @@ class SignUpController extends GetxController {
     );
   }
 
-  onSignUpTapped() {
+  Future<void> getUsers() async {
+    final resultOrExeption = await _repository.getUsers(
+        routeUrl: "/${radioCurrentOption.value.toLowerCase()}");
+    resultOrExeption.fold(
+      (left) => Get.showSnackbar(
+        WidgetUtils.myCustomSnackBar(
+            messageText: left, backgroundColor: Colors.redAccent),
+      ),
+      (right) => {
+        for (int x = 0; x < right.length; x++)
+          {
+            if (userNameController.text == right.elementAt(x).userName)
+              {
+                isUserNameWrong = true,
+              }
+          }
+      },
+    );
+  }
+
+  onSignUpTapped() async {
+    await getUsers();
+    if (isUserNameWrong == true) {
+      Get.showSnackbar(
+        WidgetUtils.myCustomSnackBar(
+            messageText: "This User Name Already Created",
+            backgroundColor: Colors.redAccent),
+      );
+      isUserNameWrong = false;
+      return;
+    }
+    if (passwordController.text != confirmPasswordController.text) {
+      Get.showSnackbar(
+        WidgetUtils.myCustomSnackBar(
+            messageText: "Password and Confirm Password Are Not Same",
+            backgroundColor: Colors.redAccent),
+      );
+      return;
+    }
+
     if (formKey.currentState!.validate()) {
       signUp();
+      firstNameController.clear();
+      lastNameController.clear();
+      userNameController.clear();
+      passwordController.clear();
+      confirmPasswordController.clear();
       return Get.back();
     }
   }

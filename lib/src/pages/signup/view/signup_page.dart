@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/signup/controller/signup_controller.dart';
@@ -89,6 +87,7 @@ class SignUpPage extends GetView<SignUpController> {
                 ),
                 Expanded(
                   child: _textFormField(
+                    controller: controller.confirmPasswordController,
                     hintText: "Confirm password",
                     topText: "Confirm Password",
                     obscureText: false,
