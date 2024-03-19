@@ -40,17 +40,19 @@ class LoginController extends GetxController {
   Future<void> getStorgeData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isRemember = prefs.getBool("rememberMe");
-    bool? isSeller = prefs.getBool("isSeller");
-    bool? isCustomer = prefs.getBool("isCustomer");
+    bool? isSellerr = prefs.getBool("isSeller");
+    bool? isCustomerr = prefs.getBool("isCustomer");
     if (isRemember != null) {
-      if (isSeller != null) {
-        if (isCustomer != null) {
+      if (isSellerr != null) {
+        if (isCustomerr != null) {
           if (isRemember) {
-            if (isSeller) {
+            if (isSellerr) {
               Get.offAllNamed(RouteNames.sellerPageRoute);
+              isSeller.value = false;
             }
-            if (isCustomer) {
+            if (isCustomerr) {
               Get.offAllNamed(RouteNames.customerPageRoute);
+              isCustomer.value = false;
             }
           }
         }
@@ -80,7 +82,10 @@ class LoginController extends GetxController {
               {
                 isSeller.value = true,
                 if (formKey.currentState!.validate())
-                  {Get.offAllNamed(RouteNames.sellerPageRoute)},
+                  {
+                    //mybe DeadCode
+                    Get.offAllNamed(RouteNames.sellerPageRoute),
+                  },
               }
           }
       },
@@ -97,7 +102,10 @@ class LoginController extends GetxController {
                 {
                   isCustomer.value = true,
                   if (formKey.currentState!.validate())
-                    {Get.offAllNamed(RouteNames.customerPageRoute)},
+                    {
+                      //mybe DeadCode
+                      Get.offAllNamed(RouteNames.customerPageRoute),
+                    },
                 }
             }
         },
