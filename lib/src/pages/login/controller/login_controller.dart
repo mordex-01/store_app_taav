@@ -78,8 +78,10 @@ class LoginController extends GetxController {
   Future<void> getRememberMeUser() async {
     final resultGetSellers =
         _repositoryGetUsers.getUsers(routeUrl: RepositoryUtils.getSellers);
+
     final resultGetCustomers =
         _repositoryGetUsers.getUsers(routeUrl: RepositoryUtils.getCustomers);
+
     resultGetSellers.fold(
       (left) => null,
       (right) => {
@@ -100,7 +102,7 @@ class LoginController extends GetxController {
           {
             if (right[x].isRememberMe == true)
               {
-                Get.offAllNamed(RouteNames.sellerPageRoute,
+                Get.offAllNamed(RouteNames.customerPageRoute,
                     arguments: right[x].id),
               }
           }

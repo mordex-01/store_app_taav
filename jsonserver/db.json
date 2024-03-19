@@ -1,38 +1,22 @@
 {
   "seller": [
     {
-      "id": "aa6a",
+      "id": "b5d6",
       "firstName": "asd",
       "lastName": "asd",
       "userName": "asd",
       "password": "asd",
       "isRememberMe": false
-    },
-    {
-      "id": "1ce5",
-      "firstName": "ddd",
-      "lastName": "ddd",
-      "userName": "ddd",
-      "password": "ddd",
-      "isRememberMe": false
     }
   ],
   "customer": [
     {
-      "id": "712f",
-      "firstName": "asd",
-      "lastName": "asd",
-      "userName": "asdd",
-      "password": "asd",
-      "isRememberMe": false
-    },
-    {
-      "id": "c7b1",
-      "firstName": "ddd",
-      "lastName": "ddd",
-      "userName": "dddd",
-      "password": "ddd",
-      "isRememberMe": false
+      "id": "079a",
+      "firstName": "dsa",
+      "lastName": "dsa",
+      "userName": "dsa",
+      "password": "dsa",
+      "isRememberMe": true
     }
   ]
 }
