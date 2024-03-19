@@ -1,12 +1,28 @@
-import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/infrastructure/utils/repository_utils.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/shared/repository_getusers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
+  //
+  @override
+  void onInit() {
+    getStorgeData();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    userNameController.clear();
+    passwordController.clear();
+    userNameController.dispose();
+    passwordController.dispose();
+  }
+
   final formKey = GlobalKey<FormState>();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -14,8 +30,37 @@ class LoginController extends GetxController {
   Rx<bool> isRememberMeCheck = false.obs;
   Rx<bool> isSeller = false.obs;
   Rx<bool> isCustomer = false.obs;
+  //
+  Future<void> storgeData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("rememberMe", isRememberMeCheck.value);
+  }
+
+//
+  Future<void> getStorgeData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isRemember = prefs.getBool("rememberMe");
+    bool? isSeller = prefs.getBool("isSeller");
+    bool? isCustomer = prefs.getBool("isCustomer");
+    if (isRemember != null) {
+      if (isSeller != null) {
+        if (isCustomer != null) {
+          if (isRemember) {
+            if (isSeller) {
+              Get.offAllNamed(RouteNames.sellerPageRoute);
+            }
+            if (isCustomer) {
+              Get.offAllNamed(RouteNames.customerPageRoute);
+            }
+          }
+        }
+      }
+    }
+  }
+
   toggleObscure() => isObscure.value = !isObscure.value;
   toggleIsRememberMe() => isRememberMeCheck.value = !isRememberMeCheck.value;
+
   final RepositoryGetUsers _repositoryGetUsers = RepositoryGetUsers();
   Future<void> getUsers() async {
     final resultGetSellers = await _repositoryGetUsers.getUsers(
@@ -62,14 +107,25 @@ class LoginController extends GetxController {
             messageText: "User Name Or Password are Invalid",
             backgroundColor: Colors.redAccent));
       }
-      isCustomer.value = false;
-      isSeller.value = false;
+      //
+      // if (!isRememberMeCheck.value) {
+      //   isCustomer.value = false;
+      //   isSeller.value = false;
+      // }
     }
+    //
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("isSeller", isSeller.value);
+    prefs.setBool("isCustomer", isCustomer.value);
   }
 
   onLoginTapped() {
     if (formKey.currentState!.validate()) {
       getUsers();
+      //
+      storgeData();
+      // isCustomer.value = false;
+      // isSeller.value = false;
       // if (isSeller.value == true) {
       //   Get.offAllNamed(RouteNames.sellerPageRoute);
       //   isSeller.value = false;
