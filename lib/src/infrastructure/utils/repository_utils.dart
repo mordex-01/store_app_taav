@@ -7,4 +7,6 @@ class RepositoryUtils {
   static const String signUpSeller = "/seller";
   static const String getCustomers = "/customer";
   static const String getSellers = "/seller";
+  static String patchRememberMe({required String route, required String id}) =>
+      "$route/$id";
 }

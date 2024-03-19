@@ -1,8 +1,11 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/infrastructure/utils/repository_utils.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
+import 'package:store_app_taav/src/pages/login/model/remember_me_dto.dart';
+import 'package:store_app_taav/src/shared/remember_me_repository.dart';
 import 'package:store_app_taav/src/shared/repository_getusers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,12 +27,16 @@ class LoginController extends GetxController {
   }
 
   final formKey = GlobalKey<FormState>();
+  final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   Rx<bool> isObscure = false.obs;
   Rx<bool> isRememberMeCheck = false.obs;
+  RxString userId = RxString("");
+  RxString route = RxString("");
   Rx<bool> isSeller = false.obs;
   Rx<bool> isCustomer = false.obs;
+
   //
   Future<void> storgeData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -42,16 +49,18 @@ class LoginController extends GetxController {
     bool? isRemember = prefs.getBool("rememberMe");
     bool? isSellerr = prefs.getBool("isSeller");
     bool? isCustomerr = prefs.getBool("isCustomer");
+
     if (isRemember != null) {
       if (isSellerr != null) {
         if (isCustomerr != null) {
           if (isRemember) {
+            isRememberMeCheck.value = isRemember;
             if (isSellerr) {
-              Get.offAllNamed(RouteNames.sellerPageRoute);
+              // Get.offAllNamed(RouteNames.sellerPageRoute);
               isSeller.value = false;
             }
             if (isCustomerr) {
-              Get.offAllNamed(RouteNames.customerPageRoute);
+              // Get.offAllNamed(RouteNames.customerPageRoute);
               isCustomer.value = false;
             }
           }
@@ -80,11 +89,13 @@ class LoginController extends GetxController {
             if (right[x].userName == userNameController.text &&
                 right[x].password == passwordController.text)
               {
+                route.value = "/seller",
+                userId.value = right[x].id,
                 isSeller.value = true,
                 if (formKey.currentState!.validate())
                   {
-                    //mybe DeadCode
-                    Get.offAllNamed(RouteNames.sellerPageRoute),
+                    Get.offAllNamed(RouteNames.sellerPageRoute,
+                        arguments: userId.value),
                   },
               }
           }
@@ -100,11 +111,13 @@ class LoginController extends GetxController {
               if (right[x].userName == userNameController.text &&
                   right[x].password == passwordController.text)
                 {
+                  route.value = "/customer",
+                  userId.value = right[x].id,
                   isCustomer.value = true,
                   if (formKey.currentState!.validate())
                     {
-                      //mybe DeadCode
-                      Get.offAllNamed(RouteNames.customerPageRoute),
+                      Get.offAllNamed(RouteNames.customerPageRoute,
+                          arguments: userId.value),
                     },
                 }
             }
@@ -121,10 +134,24 @@ class LoginController extends GetxController {
       //   isSeller.value = false;
       // }
     }
+    // if (isRememberMeCheck.value) {
+
+    // }
+
     //
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("isSeller", isSeller.value);
     prefs.setBool("isCustomer", isCustomer.value);
+    if (isRememberMeCheck.value == true) {
+      final dto = RememberMeDto(isRememberMeCheck.value);
+      final resultOrExeption = _rememberMeRepository.patchRememberMe(
+          route: route.value, id: userId.value, dto: dto);
+      resultOrExeption.fold(
+          (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+              messageText: left, backgroundColor: Colors.redAccent)),
+          (right) => null);
+    }
+    isRememberMeCheck.value = false;
   }
 
   onLoginTapped() {

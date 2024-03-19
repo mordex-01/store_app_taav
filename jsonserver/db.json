@@ -5,14 +5,16 @@
       "firstName": "asd",
       "lastName": "asd",
       "userName": "asd",
-      "password": "asd"
+      "password": "asd",
+      "isRememberMe": false
     },
     {
       "id": "1ce5",
       "firstName": "ddd",
       "lastName": "ddd",
       "userName": "ddd",
-      "password": "ddd"
+      "password": "ddd",
+      "isRememberMe": false
     }
   ],
   "customer": [
@@ -21,7 +23,16 @@
       "firstName": "asd",
       "lastName": "asd",
       "userName": "asdd",
-      "password": "asd"
+      "password": "asd",
+      "isRememberMe": false
+    },
+    {
+      "id": "c7b1",
+      "firstName": "ddd",
+      "lastName": "ddd",
+      "userName": "dddd",
+      "password": "ddd",
+      "isRememberMe": false
     }
   ]
 }
