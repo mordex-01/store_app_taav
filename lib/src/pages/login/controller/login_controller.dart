@@ -13,6 +13,7 @@ class LoginController extends GetxController {
   //
   @override
   void onInit() {
+    getRememberMeUser();
     getStorgeData();
     super.onInit();
   }
@@ -49,6 +50,7 @@ class LoginController extends GetxController {
     bool? isRemember = prefs.getBool("rememberMe");
     bool? isSellerr = prefs.getBool("isSeller");
     bool? isCustomerr = prefs.getBool("isCustomer");
+    String? userIdd = prefs.getString("userIdd");
 
     if (isRemember != null) {
       if (isSellerr != null) {
@@ -56,11 +58,11 @@ class LoginController extends GetxController {
           if (isRemember) {
             isRememberMeCheck.value = isRemember;
             if (isSellerr) {
-              // Get.offAllNamed(RouteNames.sellerPageRoute);
+              Get.offAllNamed(RouteNames.sellerPageRoute, arguments: userIdd);
               isSeller.value = false;
             }
             if (isCustomerr) {
-              // Get.offAllNamed(RouteNames.customerPageRoute);
+              Get.offAllNamed(RouteNames.customerPageRoute, arguments: userIdd);
               isCustomer.value = false;
             }
           }
@@ -73,6 +75,39 @@ class LoginController extends GetxController {
   toggleIsRememberMe() => isRememberMeCheck.value = !isRememberMeCheck.value;
 
   final RepositoryGetUsers _repositoryGetUsers = RepositoryGetUsers();
+  Future<void> getRememberMeUser() async {
+    final resultGetSellers =
+        _repositoryGetUsers.getUsers(routeUrl: RepositoryUtils.getSellers);
+    final resultGetCustomers =
+        _repositoryGetUsers.getUsers(routeUrl: RepositoryUtils.getCustomers);
+    resultGetSellers.fold(
+      (left) => null,
+      (right) => {
+        for (int x = 0; x < right.length; x++)
+          {
+            if (right[x].isRememberMe == true)
+              {
+                Get.offAllNamed(RouteNames.sellerPageRoute,
+                    arguments: right[x].id),
+              }
+          }
+      },
+    );
+    resultGetCustomers.fold(
+      (left) => null,
+      (right) => {
+        for (int x = 0; x < right.length; x++)
+          {
+            if (right[x].isRememberMe == true)
+              {
+                Get.offAllNamed(RouteNames.sellerPageRoute,
+                    arguments: right[x].id),
+              }
+          }
+      },
+    );
+  }
+
   Future<void> getUsers() async {
     final resultGetSellers = await _repositoryGetUsers.getUsers(
         routeUrl: RepositoryUtils.getSellers);
@@ -128,20 +163,12 @@ class LoginController extends GetxController {
             messageText: "User Name Or Password are Invalid",
             backgroundColor: Colors.redAccent));
       }
-      //
-      // if (!isRememberMeCheck.value) {
-      //   isCustomer.value = false;
-      //   isSeller.value = false;
-      // }
     }
-    // if (isRememberMeCheck.value) {
 
-    // }
-
-    //
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("isSeller", isSeller.value);
     prefs.setBool("isCustomer", isCustomer.value);
+    prefs.setString("userIdd", userId.value);
     if (isRememberMeCheck.value == true) {
       final dto = RememberMeDto(isRememberMeCheck.value);
       final resultOrExeption = _rememberMeRepository.patchRememberMe(
@@ -157,19 +184,7 @@ class LoginController extends GetxController {
   onLoginTapped() {
     if (formKey.currentState!.validate()) {
       getUsers();
-      //
       storgeData();
-      // isCustomer.value = false;
-      // isSeller.value = false;
-      // if (isSeller.value == true) {
-      //   Get.offAllNamed(RouteNames.sellerPageRoute);
-      //   isSeller.value = false;
-      // }
-      // if (isCustomer.value == true) {
-      //   Get.offAllNamed(RouteNames.customerPageRoute);
-      //   isCustomer.value = false;
-      // }
-      // if (!isSeller.value && !isCustomer.value) {}
     }
   }
 
