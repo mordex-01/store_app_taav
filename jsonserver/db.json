@@ -6,7 +6,7 @@
       "lastName": "asd",
       "userName": "asd",
       "password": "asd",
-      "isRememberMe": false
+      "isRememberMe": true
     }
   ],
   "customer": [
@@ -16,7 +16,16 @@
       "lastName": "dsa",
       "userName": "dsa",
       "password": "dsa",
-      "isRememberMe": true
+      "isRememberMe": false
+    }
+  ],
+  "product": [
+    {
+      "id": "0",
+      "title": "thats my title",
+      "description": "thats my description",
+      "price": "600",
+      "isActive": true
     }
   ]
 }

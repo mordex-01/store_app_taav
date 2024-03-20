@@ -94,25 +94,6 @@ class SignUpController extends GetxController {
       },
     );
   }
-  // Future<void> getUsers() async {
-  //   final resultOrExeption = await _getUsersRepository.getUsers(
-  //       routeUrl: "/${radioCurrentOption.value.toLowerCase()}");
-  //   resultOrExeption.fold(
-  //     (left) => Get.showSnackbar(
-  //       WidgetUtils.myCustomSnackBar(
-  //           messageText: left, backgroundColor: Colors.redAccent),
-  //     ),
-  //     (right) => {
-  //       for (int x = 0; x < right.length; x++)
-  //         {
-  //           if (userNameController.text == right.elementAt(x).userName)
-  //             {
-  //               isUserNameWrong = true,
-  //             }
-  //         }
-  //     },
-  //   );
-  // }
 
   onSignUpTapped() async {
     await getUsers();
