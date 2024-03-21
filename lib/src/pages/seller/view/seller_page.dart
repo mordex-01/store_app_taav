@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dart';
+import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
 
 class SellerPage extends GetView<SellerController> {
   const SellerPage({super.key});
@@ -9,53 +10,68 @@ class SellerPage extends GetView<SellerController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: InkWell(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          onTap: () {},
-          child: Container(
-            decoration:
-                const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-            width: 65,
-            height: 65,
-            child: const Center(
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 50,
-              ),
+      floatingActionButton: InkWell(
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        onTap: () {
+          controller.onAddButtonTapped();
+        },
+        child: Container(
+          decoration:
+              const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+          width: 65,
+          height: 65,
+          child: const Center(
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 50,
             ),
           ),
         ),
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () async {
-              await controller.onBackTapped();
-            },
-            icon: WidgetUtils.arrowBackButton,
-          ),
+      ),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () async {
+            await controller.onBackTapped();
+          },
+          icon: WidgetUtils.arrowBackButton,
         ),
-        body: Obx(
-          () => ListView.builder(
+      ),
+      body: Obx(
+        () => RefreshIndicator(
+          onRefresh: () => controller.getProducts(),
+          child: ListView.builder(
             itemCount: controller.productsList.length,
-            itemBuilder: (context, index) => _productBox(
-              context: context,
-              title: controller.productsList[index].title,
-              description: controller.productsList[index].description,
-              price: controller.productsList[index].price,
-              onEditTap: () {},
-              boxSwichButton: Obx(
-                () => _isSwichButton(
-                  value: controller.productsList[index].isActive,
-                  onChanged: (p0) {
-                    controller.toggleIsActive(
-                      controller.productsList[index].id,
-                    );
-                  },
-                ),
+            itemBuilder: (context, index) => Obx(
+              () => MyProductBox(
+                index: index,
+                id: controller.productsList[index].id,
+                product: controller.productsList[index],
+                onEditTap: () {},
               ),
+
+              // _productBox(
+              //   context: context,
+              //   title: controller.productsList[index].title,
+              //   description: controller.productsList[index].description,
+              //   price: controller.productsList[index].price,
+              //   onEditTap: () {},
+              //   boxSwichButton: Obx(
+              //     () => _isSwichButton(
+              //       value: controller.productsList[index].isActive,
+              //       onChanged: (p0) {
+              //         controller.toggleIsActive(
+              //           controller.productsList[index].id,
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _productBox(

@@ -11,7 +11,7 @@ class ProductViewModel {
   final String title;
   final String description;
   final String price;
-  final bool isActive;
+  late bool isActive;
 
   factory ProductViewModel.fromJson(Map<String, dynamic> json) =>
       ProductViewModel(

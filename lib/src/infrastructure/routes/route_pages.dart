@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
+import 'package:store_app_taav/src/pages/addproduct/common/add_product_binding.dart';
+import 'package:store_app_taav/src/pages/addproduct/view/add_product_page.dart';
 import 'package:store_app_taav/src/pages/customer/common/customer_binding.dart';
 import 'package:store_app_taav/src/pages/customer/view/customer_page.dart';
 import 'package:store_app_taav/src/pages/login/common/login_binding.dart';
@@ -32,6 +34,13 @@ class RoutePages {
       name: RouteNames.sellerPageRoute,
       page: () => const SellerPage(),
       binding: SellerBinding(),
+      children: [
+        GetPage(
+          name: RouteNames.addProductRoute,
+          page: () => const AddProductPage(),
+          binding: AddProductBinding(),
+        )
+      ],
     ),
   ];
 }

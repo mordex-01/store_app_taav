@@ -7,6 +7,7 @@ import 'package:store_app_taav/src/pages/login/model/remember_me_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/pages/seller/repository/seller_repository.dart';
+import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
 import 'package:store_app_taav/src/shared/remember_me_repository.dart';
 
 class SellerController extends GetxController {
@@ -19,14 +20,27 @@ class SellerController extends GetxController {
     super.onInit();
   }
 
+  RxList<MyProductBox> productBoxList = <MyProductBox>[].obs;
+
+  RxBool isOnAddMode = RxBool(false);
   RxList<ProductViewModel> productsList = <ProductViewModel>[].obs;
+
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final dto = RememberMeDto(false);
   final args = Get.arguments;
   final SellerRepository _sellerRepository = SellerRepository();
+//on add button Tapped
+  onAddButtonTapped() async {
+    final result = await Get.toNamed(
+        RouteNames.sellerPageRoute + RouteNames.addProductRoute);
+    if (result != null) {
+      //fill it
+    }
+  }
 
 //
   Rx<bool> mybool = false.obs;
+  Rx<bool> isPageLoading = false.obs;
 
   Rx<bool> isLoading = false.obs;
 
@@ -42,7 +56,8 @@ class SellerController extends GetxController {
     // isLoading.value = false;
   }
 
-  Future<void> toggleIsActive(String id) async {
+  Future<void> toggleIsActive(String id, int index) async {
+    isPageLoading.value = true;
     // isLoading.value = true;
     // await getIsActive(id: id);
     // if (mybool.value == false) {
@@ -72,13 +87,14 @@ class SellerController extends GetxController {
             messageText: left, backgroundColor: Colors.redAccent)),
         (right) => {
               // isSwiched.value = right.isActive,
+              productsList[index].isActive = !productsList[index].isActive,
               Get.showSnackbar(WidgetUtils.myCustomSnackBar(
                   messageText: "${right.title} Changed Active Mode",
                   backgroundColor: Colors.greenAccent))
             });
     await getIsActive(id: id);
-
     isLoading.value = false;
+    isPageLoading.value = false;
   }
 //
 
