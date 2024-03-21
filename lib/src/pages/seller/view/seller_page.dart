@@ -9,49 +9,59 @@ class SellerPage extends GetView<SellerController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: InkWell(
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        onTap: () {},
-        child: Container(
-          decoration:
-              const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-          width: 65,
-          height: 65,
-          child: const Center(
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-              size: 50,
+        floatingActionButton: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          onTap: () {},
+          child: Container(
+            decoration:
+                const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+            width: 65,
+            height: 65,
+            child: const Center(
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 50,
+              ),
             ),
           ),
         ),
-      ),
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () async {
-            await controller.onBackTapped();
-          },
-          icon: WidgetUtils.arrowBackButton,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () async {
+              await controller.onBackTapped();
+            },
+            icon: WidgetUtils.arrowBackButton,
+          ),
         ),
-      ),
-      body: Center(
-        child: _productBox(
-          onTap: () {},
-          title: "thats title",
-          description: "thats description",
-          price: "500",
-        ),
-      ),
-    );
+        body: Obx(
+          () => ListView.builder(
+            itemCount: controller.productsList.length,
+            itemBuilder: (context, index) => _productBox(
+              onChanged: (value) {
+                controller.toggleIsActive(controller.productsList[index].id);
+              },
+              isActive: controller.productsList[index].isActive,
+              context: context,
+              title: controller.productsList[index].title,
+              description: controller.productsList[index].description,
+              price: controller.productsList[index].price,
+              onEditTap: () {},
+            ),
+          ),
+        ));
   }
 
   Widget _productBox(
-          {required String title,
+          {required BuildContext context,
+          required String title,
           required String description,
           required String price,
-          required void Function()? onTap}) =>
+          required bool isActive,
+          required void Function(bool)? onChanged,
+          required void Function()? onEditTap}) =>
       Container(
-        width: 313,
+        margin: const EdgeInsets.all(40),
         height: 415,
         decoration: const BoxDecoration(
           border: Border(
@@ -64,7 +74,7 @@ class SellerPage extends GetView<SellerController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 313,
+              width: MediaQuery.sizeOf(context).width,
               height: 150,
               color: Colors.black,
             ),
@@ -116,28 +126,17 @@ class SellerPage extends GetView<SellerController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(
-                  () => Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        Switch(
-                          activeColor: Colors.blue,
-                          inactiveThumbColor: Colors.red,
-                          value: controller.isSwiched.value,
-                          onChanged: (value) {
-                            controller.isSwiched.value = value;
-                          },
-                        ),
-                        controller.isSwiched.value
-                            ? const Text("active")
-                            : const Text("disable")
-                      ],
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Switch(
+                    activeColor: Colors.blue,
+                    inactiveThumbColor: Colors.red,
+                    value: isActive,
+                    onChanged: onChanged,
                   ),
                 ),
                 InkWell(
-                  onTap: onTap,
+                  onTap: onEditTap,
                   child: Container(
                     margin: const EdgeInsets.all(8),
                     width: 84,
