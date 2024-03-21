@@ -22,6 +22,18 @@ class SellerRepository {
     }
   }
 
+  Future<Either<String, ProductViewModel>> getIsActive(
+      {required String id}) async {
+    var url = Uri.http(
+        RepositoryUtils.baseUrl, RepositoryUtils.getProductById(id: id));
+    final response = await http.get(url);
+    if (response.statusCode >= 200 && response.statusCode < 400) {
+      return Right(ProductViewModel.fromJson(jsonDecode(response.body)));
+    } else {
+      return Left("${response.statusCode}");
+    }
+  }
+
   Future<Either<String, ProductViewModel>> toggleIsActive(
       {required String id, required ProductDto dto}) async {
     var url = Uri.http(

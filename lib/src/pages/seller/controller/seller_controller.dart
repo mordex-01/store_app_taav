@@ -1,4 +1,3 @@
-import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,24 +20,67 @@ class SellerController extends GetxController {
   }
 
   RxList<ProductViewModel> productsList = <ProductViewModel>[].obs;
-  RxBool isSwiched = RxBool(false);
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final dto = RememberMeDto(false);
   final args = Get.arguments;
   final SellerRepository _sellerRepository = SellerRepository();
-  Future<void> toggleIsActive(String id) async {
-    isSwiched.value = !isSwiched.value;
-    final isActiveDto = ProductDto(isActive: isSwiched.value);
 
-    final resultOrExeption =
-        _sellerRepository.toggleIsActive(id: id, dto: isActiveDto);
+//
+  Rx<bool> mybool = false.obs;
+
+  Rx<bool> isLoading = false.obs;
+
+  Future<void> getIsActive({required String id}) async {
+    final resultOrExeption = await _sellerRepository.getIsActive(id: id);
     resultOrExeption.fold(
         (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
             messageText: left, backgroundColor: Colors.redAccent)),
-        (right) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
-            messageText: "${right.id} toggled",
-            backgroundColor: Colors.greenAccent)));
+        (right) => {
+              // isSwiched.value = right.isActive
+              mybool.value = right.isActive,
+            });
+    // isLoading.value = false;
   }
+
+  Future<void> toggleIsActive(String id) async {
+    // isLoading.value = true;
+    // await getIsActive(id: id);
+    // if (mybool.value == false) {
+    //   mybool.value = true;
+    // }
+    // if (mybool.value == true) {
+    //   mybool.value = false;
+    // }
+    isLoading.value = true;
+
+    await getIsActive(id: id);
+
+    if (mybool.value) {
+      mybool.value = false;
+    } else {
+      mybool.value = true;
+    }
+
+    final isActiveDto = ProductDto(isActive: mybool.value);
+
+    final resultOrExeption =
+        await _sellerRepository.toggleIsActive(id: id, dto: isActiveDto);
+    // isLoading.value = false;
+
+    resultOrExeption.fold(
+        (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+            messageText: left, backgroundColor: Colors.redAccent)),
+        (right) => {
+              // isSwiched.value = right.isActive,
+              Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+                  messageText: "${right.title} Changed Active Mode",
+                  backgroundColor: Colors.greenAccent))
+            });
+    await getIsActive(id: id);
+
+    isLoading.value = false;
+  }
+//
 
   Future<void> getProducts() async {
     final resultOrExeption = await _sellerRepository.getProducts();

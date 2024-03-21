@@ -10,5 +10,6 @@ class RepositoryUtils {
   static String patchRememberMe({required String route, required String id}) =>
       "$route/$id";
   static String patchIsActive({required String id}) => "/product/$id";
+  static String getProductById({required String id}) => "/product/$id";
   static const String getProducts = "/product";
 }

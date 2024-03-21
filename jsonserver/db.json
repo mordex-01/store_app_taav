@@ -25,7 +25,7 @@
       "title": "thats my title",
       "description": "thats my description",
       "price": "600",
-      "isActive": true
+      "isActive": false
     },
     {
       "id": "1",
@@ -53,7 +53,7 @@
       "title": "thats my title",
       "description": "thats my description",
       "price": "600",
-      "isActive": true
+      "isActive": false
     }
   ]
 }

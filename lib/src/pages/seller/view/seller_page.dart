@@ -38,15 +38,21 @@ class SellerPage extends GetView<SellerController> {
           () => ListView.builder(
             itemCount: controller.productsList.length,
             itemBuilder: (context, index) => _productBox(
-              onChanged: (value) {
-                controller.toggleIsActive(controller.productsList[index].id);
-              },
-              isActive: controller.productsList[index].isActive,
               context: context,
               title: controller.productsList[index].title,
               description: controller.productsList[index].description,
               price: controller.productsList[index].price,
               onEditTap: () {},
+              boxSwichButton: Obx(
+                () => _isSwichButton(
+                  value: controller.productsList[index].isActive,
+                  onChanged: (p0) {
+                    controller.toggleIsActive(
+                      controller.productsList[index].id,
+                    );
+                  },
+                ),
+              ),
             ),
           ),
         ));
@@ -57,8 +63,7 @@ class SellerPage extends GetView<SellerController> {
           required String title,
           required String description,
           required String price,
-          required bool isActive,
-          required void Function(bool)? onChanged,
+          required Widget boxSwichButton,
           required void Function()? onEditTap}) =>
       Container(
         margin: const EdgeInsets.all(40),
@@ -126,15 +131,10 @@ class SellerPage extends GetView<SellerController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Switch(
-                    activeColor: Colors.blue,
-                    inactiveThumbColor: Colors.red,
-                    value: isActive,
-                    onChanged: onChanged,
-                  ),
-                ),
+                // controller.isLoading.value
+                //     ? const CircularProgressIndicator()
+                //     :
+                boxSwichButton,
                 InkWell(
                   onTap: onEditTap,
                   child: Container(
@@ -153,6 +153,17 @@ class SellerPage extends GetView<SellerController> {
               ],
             ),
           ],
+        ),
+      );
+  Widget _isSwichButton(
+          {required bool value, required void Function(bool)? onChanged}) =>
+      Padding(
+        padding: const EdgeInsets.all(8),
+        child: Switch(
+          activeColor: Colors.blue,
+          inactiveThumbColor: Colors.red,
+          value: value,
+          onChanged: onChanged,
         ),
       );
 }
