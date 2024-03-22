@@ -7,7 +7,7 @@ import 'package:store_app_taav/src/pages/login/model/remember_me_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/pages/seller/repository/seller_repository.dart';
-import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
+// import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
 import 'package:store_app_taav/src/shared/remember_me_repository.dart';
 
 class SellerController extends GetxController {
@@ -20,15 +20,42 @@ class SellerController extends GetxController {
     super.onInit();
   }
 
-  RxList<MyProductBox> productBoxList = <MyProductBox>[].obs;
-
+  // RxList<MyProductBox> productBoxList = <MyProductBox>[].obs;
   RxBool isOnAddMode = RxBool(false);
   RxList<ProductViewModel> productsList = <ProductViewModel>[].obs;
+
+  RxList<ProductViewModel> displayProductList = <ProductViewModel>[].obs;
+
+  RxBool isSearchLoading = RxBool(false);
 
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final dto = RememberMeDto(false);
   final args = Get.arguments;
   final SellerRepository _sellerRepository = SellerRepository();
+//
+  onSearchTextChanged(String text) {
+    if (text.isEmpty) {
+      productsList.clear();
+      getProducts();
+    }
+
+    isSearchLoading.value = true;
+    productsList.removeWhere(
+      (element) =>
+          !element.title.contains(text) &&
+          !element.price.contains(text) &&
+          !element.description.contains(text),
+    );
+    // for (var a in productsList) {
+    //   if (!a.title.contains(text)) {
+    //     productsList.remove(a);
+    //   }
+    // }
+    // if (element.title.contains(text) || element.description.contains(text)) {
+    //   displayProductList.add(element);
+    // }
+  }
+
 //on add button Tapped
   onAddButtonTapped() async {
     final result = await Get.toNamed(
@@ -40,7 +67,7 @@ class SellerController extends GetxController {
   }
 
 //
-  Rx<bool> mybool = false.obs;
+  Rx<bool> isSwiched = false.obs;
   Rx<bool> isPageLoading = false.obs;
 
   Rx<bool> isLoading = false.obs;
@@ -52,7 +79,7 @@ class SellerController extends GetxController {
             messageText: left, backgroundColor: Colors.redAccent)),
         (right) => {
               // isSwiched.value = right.isActive
-              mybool.value = right.isActive,
+              isSwiched.value = right.isActive,
             });
     // isLoading.value = false;
   }
@@ -71,13 +98,13 @@ class SellerController extends GetxController {
 
     await getIsActive(id: id);
 
-    if (mybool.value) {
-      mybool.value = false;
+    if (isSwiched.value) {
+      isSwiched.value = false;
     } else {
-      mybool.value = true;
+      isSwiched.value = true;
     }
 
-    final isActiveDto = ProductDto(isActive: mybool.value);
+    final isActiveDto = ProductDto(isActive: isSwiched.value);
 
     final resultOrExeption =
         await _sellerRepository.toggleIsActive(id: id, dto: isActiveDto);
@@ -88,6 +115,7 @@ class SellerController extends GetxController {
             messageText: left, backgroundColor: Colors.redAccent)),
         (right) => {
               // isSwiched.value = right.isActive,
+
               productsList[index].isActive = !productsList[index].isActive,
               Get.showSnackbar(WidgetUtils.myCustomSnackBar(
                   messageText: "${right.title} Changed Active Mode",
@@ -104,7 +132,8 @@ class SellerController extends GetxController {
     resultOrExeption.fold(
         (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
             messageText: left, backgroundColor: Colors.redAccent)),
-        (right) => {productsList.addAll(right)});
+        (right) =>
+            {productsList.addAll(right), displayProductList.addAll(right)});
   }
 
   Future<void> saveArgs() async {

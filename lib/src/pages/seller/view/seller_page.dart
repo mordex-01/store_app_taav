@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dart';
 import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
 
@@ -30,11 +29,54 @@ class SellerPage extends GetView<SellerController> {
         ),
       ),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () async {
-            await controller.onBackTapped();
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: PopupMenuButton(
+              icon: const Icon(Icons.menu),
+              onSelected: (value) {
+                //fill that later
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: "item1",
+                  child: Row(
+                    children: [
+                      Icon(Icons.language),
+                      Text("  Change Language"),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: "item2",
+                  child: Row(
+                    children: [
+                      Icon(Icons.filter_list_rounded),
+                      Text("  Filter"),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: "item2",
+                  child: const Row(
+                    children: [
+                      Icon(Icons.logout),
+                      Text("  LogOut"),
+                    ],
+                  ),
+                  onTap: () {
+                    controller.onBackTapped();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+        title: TextField(
+          onChanged: (value) {
+            controller.onSearchTextChanged(value);
           },
-          icon: WidgetUtils.arrowBackButton,
+          decoration: const InputDecoration(prefixIcon: Icon(Icons.search)),
         ),
       ),
       body: Obx(
@@ -43,30 +85,9 @@ class SellerPage extends GetView<SellerController> {
           child: ListView.builder(
             itemCount: controller.productsList.length,
             itemBuilder: (context, index) => Obx(
-              () => MyProductBox(
-                index: index,
-                id: controller.productsList[index].id,
-                product: controller.productsList[index],
-                onEditTap: () {},
-              ),
-
-              // _productBox(
-              //   context: context,
-              //   title: controller.productsList[index].title,
-              //   description: controller.productsList[index].description,
-              //   price: controller.productsList[index].price,
-              //   onEditTap: () {},
-              //   boxSwichButton: Obx(
-              //     () => _isSwichButton(
-              //       value: controller.productsList[index].isActive,
-              //       onChanged: (p0) {
-              //         controller.toggleIsActive(
-              //           controller.productsList[index].id,
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // ),
+              () {
+                return _productBox(index: index);
+              },
             ),
           ),
         ),
@@ -74,112 +95,125 @@ class SellerPage extends GetView<SellerController> {
     );
   }
 
-  Widget _productBox(
-          {required BuildContext context,
-          required String title,
-          required String description,
-          required String price,
-          required Widget boxSwichButton,
-          required void Function()? onEditTap}) =>
-      Container(
-        margin: const EdgeInsets.all(40),
-        height: 415,
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(width: 2, color: Colors.blue),
-            left: BorderSide(width: 2, color: Colors.blue),
-            right: BorderSide(width: 2, color: Colors.blue),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: MediaQuery.sizeOf(context).width,
-              height: 150,
-              color: Colors.black,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                title,
-                style: const TextStyle(fontSize: 20),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 0, bottom: 8, left: 8),
-              child: Text(description),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    width: 22,
-                    height: 22,
-                    color: Colors.red,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    width: 22,
-                    height: 22,
-                    color: Colors.blue,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(8),
-                    width: 22,
-                    height: 22,
-                    color: Colors.green,
-                  ),
-                  const Expanded(child: SizedBox()),
-                  Text("Price $price"),
-                ],
-              ),
-            ),
-            const Divider(
-              color: Colors.blue,
-            ),
-            const Expanded(child: SizedBox()),
-            const Divider(
-              color: Colors.blue,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // controller.isLoading.value
-                //     ? const CircularProgressIndicator()
-                //     :
-                boxSwichButton,
-                InkWell(
-                  onTap: onEditTap,
-                  child: Container(
-                    margin: const EdgeInsets.all(8),
-                    width: 84,
-                    height: 32,
-                    color: const Color.fromRGBO(0, 80, 219, 1),
-                    child: const Center(
-                      child: Text(
-                        "Edit",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+  Widget _productBox({required int index}) => MyProductBox(
+        index: index,
+        id: controller.productsList[index].id,
+        product: controller.productsList[index],
+        onEditTap: () {},
       );
-  Widget _isSwichButton(
-          {required bool value, required void Function(bool)? onChanged}) =>
-      Padding(
-        padding: const EdgeInsets.all(8),
-        child: Switch(
-          activeColor: Colors.blue,
-          inactiveThumbColor: Colors.red,
-          value: value,
-          onChanged: onChanged,
-        ),
+  Widget _searchProductBox({required int index}) => MyProductBox(
+        index: index,
+        id: controller.displayProductList[index].id,
+        product: controller.displayProductList[index],
+        onEditTap: () {},
       );
+//i commend what i dont use
+  // Widget _productBox(
+  //         {required BuildContext context,
+  //         required String title,
+  //         required String description,
+  //         required String price,
+  //         required Widget boxSwichButton,
+  //         required void Function()? onEditTap}) =>
+  //     Container(
+  //       margin: const EdgeInsets.all(40),
+  //       height: 415,
+  //       decoration: const BoxDecoration(
+  //         border: Border(
+  //           bottom: BorderSide(width: 2, color: Colors.blue),
+  //           left: BorderSide(width: 2, color: Colors.blue),
+  //           right: BorderSide(width: 2, color: Colors.blue),
+  //         ),
+  //       ),
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Container(
+  //             width: MediaQuery.sizeOf(context).width,
+  //             height: 150,
+  //             color: Colors.black,
+  //           ),
+  //           Padding(
+  //             padding: const EdgeInsets.all(8.0),
+  //             child: Text(
+  //               title,
+  //               style: const TextStyle(fontSize: 20),
+  //             ),
+  //           ),
+  //           Padding(
+  //             padding: const EdgeInsets.only(top: 0, bottom: 8, left: 8),
+  //             child: Text(description),
+  //           ),
+  //           Padding(
+  //             padding: const EdgeInsets.all(8),
+  //             child: Row(
+  //               children: [
+  //                 Container(
+  //                   margin: const EdgeInsets.all(8),
+  //                   width: 22,
+  //                   height: 22,
+  //                   color: Colors.red,
+  //                 ),
+  //                 Container(
+  //                   margin: const EdgeInsets.all(8),
+  //                   width: 22,
+  //                   height: 22,
+  //                   color: Colors.blue,
+  //                 ),
+  //                 Container(
+  //                   margin: const EdgeInsets.all(8),
+  //                   width: 22,
+  //                   height: 22,
+  //                   color: Colors.green,
+  //                 ),
+  //                 const Expanded(child: SizedBox()),
+  //                 Text("Price $price"),
+  //               ],
+  //             ),
+  //           ),
+  //           const Divider(
+  //             color: Colors.blue,
+  //           ),
+  //           const Expanded(child: SizedBox()),
+  //           const Divider(
+  //             color: Colors.blue,
+  //           ),
+  //           Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               // controller.isLoading.value
+  //               //     ? const CircularProgressIndicator()
+  //               //     :
+  //               boxSwichButton,
+  //               InkWell(
+  //                 onTap: onEditTap,
+  //                 child: Container(
+  //                   margin: const EdgeInsets.all(8),
+  //                   width: 84,
+  //                   height: 32,
+  //                   color: const Color.fromRGBO(0, 80, 219, 1),
+  //                   child: const Center(
+  //                     child: Text(
+  //                       "Edit",
+  //                       style: TextStyle(color: Colors.white),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  // Widget _isSwichButton(
+  //         {required bool value, required void Function(bool)? onChanged}) =>
+  //     Padding(
+  //       padding: const EdgeInsets.all(8),
+  //       child: Switch(
+  //         activeColor: Colors.blue,
+  //         inactiveThumbColor: Colors.red,
+  //         value: value,
+  //         onChanged: onChanged,
+  //       ),
+  //     );
 }
