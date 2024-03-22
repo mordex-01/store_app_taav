@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dart';
@@ -99,6 +102,14 @@ class SellerPage extends GetView<SellerController> {
         index: index,
         id: controller.productsList[index].id,
         product: controller.productsList[index],
+        image: controller.productsList[index].image != null &&
+                controller.productsList[index].image!.isNotEmpty
+            ? Image.memory(
+                Uint8List.fromList(
+                    base64Decode(controller.productsList[index].image!)),
+                fit: BoxFit.cover,
+              )
+            : null,
         onEditTap: () {},
       );
 

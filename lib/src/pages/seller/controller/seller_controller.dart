@@ -132,8 +132,9 @@ class SellerController extends GetxController {
     resultOrExeption.fold(
         (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
             messageText: left, backgroundColor: Colors.redAccent)),
-        (right) =>
-            {productsList.addAll(right), displayProductList.addAll(right)});
+        (right) => {
+              productsList.addAll(right),
+            });
   }
 
   Future<void> saveArgs() async {

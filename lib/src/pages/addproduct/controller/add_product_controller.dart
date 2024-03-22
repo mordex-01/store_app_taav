@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -41,10 +42,12 @@ class AddProductController extends GetxController {
 
   Future<void> addProduct() async {
     final dto = AddProductDto(
-        title: titleController.text,
-        description: descriptionController.text,
-        price: priceController.text,
-        isActive: true);
+      title: titleController.text,
+      description: descriptionController.text,
+      price: priceController.text,
+      isActive: true,
+      image: base64Encode(bytes.value),
+    );
     final resultOrExeption = await _addProductRepository.addProduct(dto: dto);
     resultOrExeption.fold(
       (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(

@@ -8,7 +8,7 @@ class ProductViewModel {
     required this.description,
     required this.price,
     required this.isActive,
-    // this.image,
+    this.image,
   });
 
   final String id;
@@ -16,7 +16,7 @@ class ProductViewModel {
   final String description;
   final String price;
   late bool isActive;
-  // final Uint8List? image;
+  final String? image;
 
   factory ProductViewModel.fromJson(Map<String, dynamic> json) =>
       ProductViewModel(
@@ -25,7 +25,7 @@ class ProductViewModel {
         description: json['description'],
         price: json['price'],
         isActive: json['isActive'],
-        // image: Uint8List.fromList(base64Decode(json['image'])),
+        image: json['image'],
       );
 }
 

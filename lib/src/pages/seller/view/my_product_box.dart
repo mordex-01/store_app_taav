@@ -6,6 +6,7 @@ import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 class MyProductBox extends GetView<SellerController> {
   const MyProductBox(
       {super.key,
+      this.image,
       required this.product,
       required this.onEditTap,
       required this.id,
@@ -13,6 +14,7 @@ class MyProductBox extends GetView<SellerController> {
   final void Function()? onEditTap;
   final ProductViewModel product;
   final String id;
+  final Widget? image;
   final int index;
 
   @override
@@ -34,6 +36,7 @@ class MyProductBox extends GetView<SellerController> {
             width: MediaQuery.sizeOf(context).width,
             height: 150,
             color: Colors.black,
+            child: image,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
