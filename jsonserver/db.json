@@ -21,38 +21,10 @@
   ],
   "product": [
     {
-      "id": "0",
-      "title": "thats my title",
-      "description": "thats my description",
-      "price": "600",
-      "isActive": false
-    },
-    {
-      "id": "d992",
+      "id": "52bc",
       "title": "asd",
       "description": "asd",
       "price": "asd",
-      "isActive": true
-    },
-    {
-      "id": "a757",
-      "title": "aa",
-      "description": "aa",
-      "price": "aaa",
-      "isActive": false
-    },
-    {
-      "id": "62d1",
-      "title": "d",
-      "description": "d",
-      "price": "d",
-      "isActive": true
-    },
-    {
-      "id": "1e99",
-      "title": "n",
-      "description": "mm",
-      "price": "n",
       "isActive": true
     }
   ]

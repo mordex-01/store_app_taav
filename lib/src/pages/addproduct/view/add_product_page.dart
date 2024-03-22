@@ -17,11 +17,26 @@ class AddProductPage extends GetView<AddProductController> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Form(
           key: controller.formKey,
           child: Column(
             children: [
+              Obx(() {
+                return controller.bytes.value.isNotEmpty
+                    ? Container(
+                        width: MediaQuery.sizeOf(context).width - 50,
+                        height: MediaQuery.sizeOf(context).height / 8,
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.blue[900]!, width: 2)),
+                        child: Image.memory(
+                          controller.bytes.value,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : const Text("Please Select an Image First");
+              }),
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: _textFormField(
@@ -57,6 +72,14 @@ class AddProductPage extends GetView<AddProductController> {
                     controller.onAddButtonTapped();
                   },
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _pickImageButton(
+                    context: context,
+                    onTap: () {
+                      controller.getImage();
+                    }),
               )
             ],
           ),
@@ -99,6 +122,25 @@ class AddProductPage extends GetView<AddProductController> {
           child: const Center(
             child: Text(
               "Add",
+              style: TextStyle(fontSize: 25, color: Colors.white),
+            ),
+          ),
+        ),
+      );
+  Widget _pickImageButton(
+          {required BuildContext context, required void Function()? onTap}) =>
+      InkWell(
+        onTap: onTap,
+        child: Container(
+          width: MediaQuery.sizeOf(context).width,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.blue[900],
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: const Center(
+            child: Text(
+              "PickImage",
               style: TextStyle(fontSize: 25, color: Colors.white),
             ),
           ),

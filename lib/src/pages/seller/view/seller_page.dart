@@ -101,12 +101,7 @@ class SellerPage extends GetView<SellerController> {
         product: controller.productsList[index],
         onEditTap: () {},
       );
-  Widget _searchProductBox({required int index}) => MyProductBox(
-        index: index,
-        id: controller.displayProductList[index].id,
-        product: controller.displayProductList[index],
-        onEditTap: () {},
-      );
+
 //i commend what i dont use
   // Widget _productBox(
   //         {required BuildContext context,
