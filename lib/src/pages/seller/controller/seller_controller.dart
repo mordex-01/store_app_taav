@@ -35,6 +35,7 @@ class SellerController extends GetxController {
         RouteNames.sellerPageRoute + RouteNames.addProductRoute);
     if (result != null) {
       //fill it
+      productsList.add(result);
     }
   }
 

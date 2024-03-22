@@ -12,4 +12,5 @@ class RepositoryUtils {
   static String patchIsActive({required String id}) => "/product/$id";
   static String getProductById({required String id}) => "/product/$id";
   static const String getProducts = "/product";
+  static const String addProduct = "/product";
 }

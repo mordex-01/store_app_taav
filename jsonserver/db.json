@@ -6,7 +6,7 @@
       "lastName": "asd",
       "userName": "asd",
       "password": "asd",
-      "isRememberMe": true
+      "isRememberMe": false
     }
   ],
   "customer": [
@@ -28,32 +28,18 @@
       "isActive": false
     },
     {
-      "id": "1",
-      "title": "thats my title",
-      "description": "thats my description",
-      "price": "600",
-      "isActive": false
-    },
-    {
-      "id": "2",
-      "title": "thats my title",
-      "description": "thats my description",
-      "price": "600",
+      "id": "d992",
+      "title": "asd",
+      "description": "asd",
+      "price": "asd",
       "isActive": true
     },
     {
-      "id": "3",
-      "title": "thats my title",
-      "description": "thats my description",
-      "price": "600",
-      "isActive": false
-    },
-    {
-      "id": "4",
-      "title": "thats my title",
-      "description": "thats my description",
-      "price": "600",
-      "isActive": false
+      "id": "a757",
+      "title": "aa",
+      "description": "aa",
+      "price": "aaa",
+      "isActive": true
     }
   ]
 }
