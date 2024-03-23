@@ -32,10 +32,9 @@ class MyProductBox extends GetView<SellerController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          SizedBox(
             width: MediaQuery.sizeOf(context).width,
             height: 150,
-            color: Colors.black,
             child: image,
           ),
           Padding(

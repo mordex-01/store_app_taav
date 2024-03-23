@@ -40,6 +40,12 @@ class AddProductPage extends GetView<AddProductController> {
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: _textFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "title cant be null";
+                        }
+                        return null;
+                      },
                       controller: controller.titleController,
                       hintText: "Title",
                       isOutline: false,
@@ -47,6 +53,12 @@ class AddProductPage extends GetView<AddProductController> {
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: _textFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "description cant be null";
+                        }
+                        return null;
+                      },
                       controller: controller.descriptionController,
                       hintText: "Description",
                       isOutline: true,
@@ -92,8 +104,10 @@ class AddProductPage extends GetView<AddProductController> {
           {required String hintText,
           required bool isOutline,
           required int maxLines,
+          String? Function(String?)? validator,
           TextEditingController? controller}) =>
       TextFormField(
+        validator: validator,
         controller: controller,
         maxLines: maxLines,
         decoration: InputDecoration(

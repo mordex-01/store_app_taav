@@ -109,7 +109,7 @@ class SellerPage extends GetView<SellerController> {
                     base64Decode(controller.productsList[index].image!)),
                 fit: BoxFit.cover,
               )
-            : null,
+            : Image.asset("assets/no-image-icon.png"),
         onEditTap: () {},
       );
 

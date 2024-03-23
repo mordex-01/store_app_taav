@@ -64,6 +64,8 @@ class AddProductController extends GetxController {
   }
 
   onAddButtonTapped() async {
-    await addProduct();
+    if (formKey.currentState!.validate()) {
+      await addProduct();
+    }
   }
 }

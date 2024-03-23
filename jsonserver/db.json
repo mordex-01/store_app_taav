@@ -6,7 +6,7 @@
       "lastName": "asd",
       "userName": "asd",
       "password": "asd",
-      "isRememberMe": true
+      "isRememberMe": false
     }
   ],
   "customer": [
