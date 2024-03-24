@@ -24,6 +24,7 @@ class MyProductBox extends GetView<SellerController> {
       height: 415,
       decoration: const BoxDecoration(
         border: Border(
+          top: BorderSide(width: 2, color: Colors.blue),
           bottom: BorderSide(width: 2, color: Colors.blue),
           left: BorderSide(width: 2, color: Colors.blue),
           right: BorderSide(width: 2, color: Colors.blue),
@@ -52,24 +53,11 @@ class MyProductBox extends GetView<SellerController> {
             padding: const EdgeInsets.all(8),
             child: Row(
               children: [
-                Container(
-                  margin: const EdgeInsets.all(8),
-                  width: 22,
-                  height: 22,
-                  color: Colors.red,
-                ),
-                Container(
-                  margin: const EdgeInsets.all(8),
-                  width: 22,
-                  height: 22,
-                  color: Colors.blue,
-                ),
-                Container(
-                  margin: const EdgeInsets.all(8),
-                  width: 22,
-                  height: 22,
-                  color: Colors.green,
-                ),
+                selectedColors(color: Color(int.parse(product.color[0]))),
+                selectedColors(color: Color(int.parse(product.color[1]))),
+                selectedColors(color: Color(int.parse(product.color[2]))),
+                selectedColors(color: Color(int.parse(product.color[3]))),
+                selectedColors(color: Color(int.parse(product.color[4]))),
                 const Expanded(child: SizedBox()),
                 Text("Price ${product.price}"),
               ],
@@ -125,6 +113,16 @@ class MyProductBox extends GetView<SellerController> {
       ),
     );
   }
+
+  Widget selectedColors({
+    required Color? color,
+  }) =>
+      Container(
+        margin: const EdgeInsets.only(top: 20.0, right: 20),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+        width: 25,
+        height: 25,
+      );
 }
 
 // Widget _productBox(

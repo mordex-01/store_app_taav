@@ -10,6 +10,18 @@ import 'package:store_app_taav/src/pages/addproduct/model/add_product_dto.dart';
 import 'package:store_app_taav/src/pages/addproduct/repository/add_product_repository.dart';
 
 class AddProductController extends GetxController {
+  Rx<Color> color1 = Rx(Colors.white);
+  Rx<Color> color2 = Rx(Colors.white);
+  Rx<Color> color3 = Rx(Colors.white);
+  Rx<Color> color4 = Rx(Colors.white);
+  Rx<Color> color5 = Rx(Colors.white);
+
+  RxBool isColorSelected1 = RxBool(false);
+  RxBool isColorSelected2 = RxBool(false);
+  RxBool isColorSelected3 = RxBool(false);
+  RxBool isColorSelected4 = RxBool(false);
+  RxBool isColorSelected5 = RxBool(false);
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
@@ -17,6 +29,30 @@ class AddProductController extends GetxController {
   final formKey = GlobalKey<FormState>();
 
   var bytes = Uint8List(0).obs;
+
+  void pickColor(
+          {required BuildContext context,
+          required Widget buildColorPicker,
+          required void Function()? onSelectPressed}) =>
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Pick Your Color"),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildColorPicker,
+              TextButton(
+                onPressed: onSelectPressed,
+                child: const Text(
+                  "Select",
+                  style: TextStyle(fontSize: 24),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
 
   Future<Uint8List?> galleryImagePicker() async {
     ImagePicker picker = ImagePicker();
@@ -42,6 +78,13 @@ class AddProductController extends GetxController {
 
   Future<void> addProduct() async {
     final dto = AddProductDto(
+      color: [
+        color1.value.value.toString(),
+        color2.value.value.toString(),
+        color3.value.value.toString(),
+        color4.value.value.toString(),
+        color5.value.value.toString()
+      ],
       title: titleController.text,
       description: descriptionController.text,
       price: priceController.text,

@@ -58,7 +58,7 @@ class SellerController extends GetxController {
 
 //on add button Tapped
   onAddButtonTapped() async {
-    final result = await Get.toNamed(
+    var result = await Get.toNamed(
         RouteNames.sellerPageRoute + RouteNames.addProductRoute);
     if (result != null) {
       //fill it

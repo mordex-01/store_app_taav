@@ -1,6 +1,8 @@
 // import 'dart:convert';
 // import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
+
 class ProductViewModel {
   ProductViewModel({
     required this.id,
@@ -9,14 +11,15 @@ class ProductViewModel {
     required this.price,
     required this.isActive,
     this.image,
+    required this.color,
   });
-
   final String id;
   final String title;
   final String description;
   final String price;
   late bool isActive;
   final String? image;
+  final List<dynamic> color;
 
   factory ProductViewModel.fromJson(Map<String, dynamic> json) =>
       ProductViewModel(
@@ -26,6 +29,7 @@ class ProductViewModel {
         price: json['price'],
         isActive: json['isActive'],
         image: json['image'],
+        color: json['colors'],
       );
 }
 
