@@ -21,63 +21,63 @@
   ],
   "product": [
     {
-      "id": "ddcc",
+      "id": "caa2",
       "title": "asd",
       "description": "asd",
-      "price": "asd",
+      "price": "123",
       "isActive": true,
       "image": "",
       "colors": [
         "4288423856",
-        "4282339765",
-        "4280391411",
+        "4294967295",
+        "4294967295",
         "4294967295",
         "4294967295"
+      ],
+      "tags": [
+        "asd"
       ]
     },
     {
-      "id": "0224",
-      "title": "hhjj",
-      "description": "hhjj",
-      "price": "hhjj",
+      "id": "d01f",
+      "title": "asdd",
+      "description": "asdd",
+      "price": "1233",
       "isActive": true,
       "image": "",
       "colors": [
-        "4283215696",
-        "4294951175",
-        "4278430196",
-        "4282339765",
-        "4286141768"
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": [
+        "aaa",
+        "aaabbb",
+        "aaabbbccc"
       ]
     },
     {
-      "id": "e952",
-      "title": "vv",
-      "description": "vv",
-      "price": "vv",
+      "id": "b3e3",
+      "title": "dsa",
+      "description": "dsa",
+      "price": "321",
       "isActive": true,
       "image": "",
       "colors": [
-        "4291681337",
-        "4278430196",
-        "4284955319",
-        "4293467747",
-        "4278238420"
-      ]
-    },
-    {
-      "id": "bf30",
-      "title": "kk",
-      "description": "kk",
-      "price": "kk",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4288585374",
-        "4288585374",
-        "4288585374",
-        "4288585374",
-        "4288585374"
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": [
+        "aaaaaaaaaaa",
+        "aaaaaaaaaaaaaaaaaa",
+        "aaaaaaaaaaaaaaaaaaa",
+        "aaaaaaaaaaaaaaaaaaaa",
+        "aaaaaaaaaaaaaaaaaaaaa"
       ]
     }
   ]

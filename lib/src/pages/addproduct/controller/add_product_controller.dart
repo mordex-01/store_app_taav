@@ -10,6 +10,8 @@ import 'package:store_app_taav/src/pages/addproduct/model/add_product_dto.dart';
 import 'package:store_app_taav/src/pages/addproduct/repository/add_product_repository.dart';
 
 class AddProductController extends GetxController {
+  RxList<String> tags = <String>[].obs;
+
   Rx<Color> color1 = Rx(Colors.white);
   Rx<Color> color2 = Rx(Colors.white);
   Rx<Color> color3 = Rx(Colors.white);
@@ -25,9 +27,9 @@ class AddProductController extends GetxController {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  final TextEditingController tagTextFieldController = TextEditingController();
   final AddProductRepository _addProductRepository = AddProductRepository();
   final formKey = GlobalKey<FormState>();
-
   var bytes = Uint8List(0).obs;
 
   void pickColor(
@@ -78,6 +80,7 @@ class AddProductController extends GetxController {
 
   Future<void> addProduct() async {
     final dto = AddProductDto(
+      tag: tags,
       color: [
         color1.value.value.toString(),
         color2.value.value.toString(),

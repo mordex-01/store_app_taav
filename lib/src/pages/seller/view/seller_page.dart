@@ -99,6 +99,7 @@ class SellerPage extends GetView<SellerController> {
   }
 
   Widget _productBox({required int index}) => MyProductBox(
+        tagItemCount: controller.productsList[index].tag.length,
         index: index,
         id: controller.productsList[index].id,
         product: controller.productsList[index],

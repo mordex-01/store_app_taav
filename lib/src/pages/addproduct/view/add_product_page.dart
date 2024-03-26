@@ -1,6 +1,6 @@
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/pages/addproduct/controller/add_product_controller.dart';
 
@@ -14,221 +14,290 @@ class AddProductPage extends GetView<AddProductController> {
         leading: IconButton(
           onPressed: () {
             Get.back();
+            controller.tags.clear();
+            controller.tagTextFieldController.clear();
           },
           icon: const Icon(Icons.arrow_back_ios_outlined),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: controller.formKey,
-          child: Column(
-            children: [
-              Obx(() {
-                return controller.bytes.value.isNotEmpty
-                    ? Container(
-                        width: MediaQuery.sizeOf(context).width - 50,
-                        height: MediaQuery.sizeOf(context).height / 8,
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.blue[900]!, width: 2)),
-                        child: Image.memory(
-                          controller.bytes.value,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const Text(
-                              "You Can Select Image For Your Product ==>"),
-                          IconButton(
-                            onPressed: () {
-                              controller.getImage();
-                            },
-                            icon: const Icon(
-                              Icons.add_a_photo_outlined,
-                              size: 40,
-                            ),
-                          )
+        child: SingleChildScrollView(
+          child: Form(
+            key: controller.formKey,
+            child: Column(
+              children: [
+                Obx(() {
+                  return controller.bytes.value.isNotEmpty
+                      ? Container(
+                          width: MediaQuery.sizeOf(context).width - 50,
+                          height: MediaQuery.sizeOf(context).height / 8,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.blue[900]!, width: 2)),
+                          child: Image.memory(
+                            controller.bytes.value,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const Text(
+                                "You Can Select Image For Your Product ==>"),
+                            IconButton(
+                              onPressed: () {
+                                controller.getImage();
+                              },
+                              icon: const Icon(
+                                Icons.add_a_photo_outlined,
+                                size: 40,
+                              ),
+                            )
+                          ],
+                        );
+                }),
+                Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: _textFormField(
+                        maxLength: 20,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "title cant be null";
+                          }
+                          return null;
+                        },
+                        controller: controller.titleController,
+                        hintText: "Title",
+                        isOutline: false,
+                        maxLines: 1)),
+                Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: _textFormField(
+                        maxLength: 100,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "description cant be null";
+                          }
+                          return null;
+                        },
+                        controller: controller.descriptionController,
+                        hintText: "Description",
+                        isOutline: true,
+                        maxLines: 3)),
+                Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: _textFormField(
+                        maxLength: 6,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
                         ],
-                      );
-              }),
-              Padding(
-                  padding: const EdgeInsets.all(8),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Price Cant Be Empty";
+                          }
+                          return null;
+                        },
+                        controller: controller.priceController,
+                        hintText: "Price",
+                        isOutline: false,
+                        maxLines: 1)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: _textFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "title cant be null";
-                        }
-                        return null;
-                      },
-                      controller: controller.titleController,
-                      hintText: "Title",
+                      maxLength: 10,
+                      hintText: "count",
                       isOutline: false,
-                      maxLines: 1)),
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: _textFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "description cant be null";
-                        }
-                        return null;
-                      },
-                      controller: controller.descriptionController,
-                      hintText: "Description",
-                      isOutline: true,
-                      maxLines: 3)),
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: _textFormField(
-                      controller: controller.priceController,
-                      hintText: "Price",
-                      isOutline: false,
-                      maxLines: 1)),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: _textFormField(
-                    hintText: "count", isOutline: false, maxLines: 1),
-              ),
-              const Divider(),
-              const Text("Add Your Colors To Your Product"),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      selectedColors(
-                          color: controller.color1.value,
-                          isEnabled: controller.isColorSelected1.value,
-                          onRemovePressed: () {
-                            controller.isColorSelected1.value =
-                                !controller.isColorSelected1.value;
-                            controller.color1.value = Colors.white;
-                          }),
-                      selectedColors(
-                          color: controller.color2.value,
-                          isEnabled: controller.isColorSelected2.value,
-                          onRemovePressed: () {
-                            controller.isColorSelected2.value =
-                                !controller.isColorSelected2.value;
-                            controller.color2.value = Colors.white;
-                          }),
-                      selectedColors(
-                          color: controller.color3.value,
-                          isEnabled: controller.isColorSelected3.value,
-                          onRemovePressed: () {
-                            controller.isColorSelected3.value =
-                                !controller.isColorSelected3.value;
-                            controller.color3.value = Colors.white;
-                          }),
-                      selectedColors(
-                          color: controller.color4.value,
-                          isEnabled: controller.isColorSelected4.value,
-                          onRemovePressed: () {
-                            controller.isColorSelected4.value =
-                                !controller.isColorSelected4.value;
-                            controller.color4.value = Colors.white;
-                          }),
-                      selectedColors(
-                          color: controller.color5.value,
-                          isEnabled: controller.isColorSelected5.value,
-                          onRemovePressed: () {
-                            controller.isColorSelected5.value =
-                                !controller.isColorSelected5.value;
-                            controller.color5.value = Colors.white;
-                          }),
-                      IconButton(
-                        onPressed: () {
-                          controller.pickColor(
-                            context: context,
-                            buildColorPicker: _buildColorPicker(
-                              onColorChangeEnd: (value) {
+                      maxLines: 1),
+                ),
+                const Divider(),
+                const Text("Add Your Colors To Your Product"),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Obx(
+                    () => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        selectedColors(
+                            color: controller.color1.value,
+                            isEnabled: controller.isColorSelected1.value,
+                            onRemovePressed: () {
+                              controller.isColorSelected1.value =
+                                  !controller.isColorSelected1.value;
+                              controller.color1.value = Colors.white;
+                            }),
+                        selectedColors(
+                            color: controller.color2.value,
+                            isEnabled: controller.isColorSelected2.value,
+                            onRemovePressed: () {
+                              controller.isColorSelected2.value =
+                                  !controller.isColorSelected2.value;
+                              controller.color2.value = Colors.white;
+                            }),
+                        selectedColors(
+                            color: controller.color3.value,
+                            isEnabled: controller.isColorSelected3.value,
+                            onRemovePressed: () {
+                              controller.isColorSelected3.value =
+                                  !controller.isColorSelected3.value;
+                              controller.color3.value = Colors.white;
+                            }),
+                        selectedColors(
+                            color: controller.color4.value,
+                            isEnabled: controller.isColorSelected4.value,
+                            onRemovePressed: () {
+                              controller.isColorSelected4.value =
+                                  !controller.isColorSelected4.value;
+                              controller.color4.value = Colors.white;
+                            }),
+                        selectedColors(
+                            color: controller.color5.value,
+                            isEnabled: controller.isColorSelected5.value,
+                            onRemovePressed: () {
+                              controller.isColorSelected5.value =
+                                  !controller.isColorSelected5.value;
+                              controller.color5.value = Colors.white;
+                            }),
+                        IconButton(
+                          onPressed: () {
+                            controller.pickColor(
+                              context: context,
+                              buildColorPicker: _buildColorPicker(
+                                onColorChangeEnd: (value) {
+                                  if (!controller.isColorSelected5.value &&
+                                      controller.isColorSelected1.value &&
+                                      controller.isColorSelected2.value &&
+                                      controller.isColorSelected3.value &&
+                                      controller.isColorSelected4.value) {
+                                    controller.color5.value = value;
+                                  }
+                                  if (!controller.isColorSelected4.value &&
+                                      controller.isColorSelected1.value &&
+                                      controller.isColorSelected2.value &&
+                                      controller.isColorSelected3.value) {
+                                    controller.color4.value = value;
+                                  }
+                                  if (!controller.isColorSelected3.value &&
+                                      controller.isColorSelected1.value &&
+                                      controller.isColorSelected2.value) {
+                                    controller.color3.value = value;
+                                  }
+                                  if (!controller.isColorSelected2.value &&
+                                      controller.isColorSelected1.value) {
+                                    controller.color2.value = value;
+                                  }
+                                  if (!controller.isColorSelected1.value) {
+                                    controller.color1.value = value;
+                                  }
+                                },
+                              ),
+                              onSelectPressed: () {
                                 if (!controller.isColorSelected5.value &&
                                     controller.isColorSelected1.value &&
                                     controller.isColorSelected2.value &&
                                     controller.isColorSelected3.value &&
                                     controller.isColorSelected4.value) {
-                                  controller.color5.value = value;
+                                  controller.isColorSelected5.value = true;
                                 }
                                 if (!controller.isColorSelected4.value &&
                                     controller.isColorSelected1.value &&
                                     controller.isColorSelected2.value &&
                                     controller.isColorSelected3.value) {
-                                  controller.color4.value = value;
+                                  controller.isColorSelected4.value = true;
                                 }
                                 if (!controller.isColorSelected3.value &&
                                     controller.isColorSelected1.value &&
                                     controller.isColorSelected2.value) {
-                                  controller.color3.value = value;
+                                  controller.isColorSelected3.value = true;
                                 }
                                 if (!controller.isColorSelected2.value &&
                                     controller.isColorSelected1.value) {
-                                  controller.color2.value = value;
+                                  controller.isColorSelected2.value = true;
                                 }
                                 if (!controller.isColorSelected1.value) {
-                                  controller.color1.value = value;
+                                  controller.isColorSelected1.value = true;
                                 }
+                                Navigator.of(context).pop();
                               },
-                            ),
-                            onSelectPressed: () {
-                              if (!controller.isColorSelected5.value &&
-                                  controller.isColorSelected1.value &&
-                                  controller.isColorSelected2.value &&
-                                  controller.isColorSelected3.value &&
-                                  controller.isColorSelected4.value) {
-                                controller.isColorSelected5.value = true;
-                              }
-                              if (!controller.isColorSelected4.value &&
-                                  controller.isColorSelected1.value &&
-                                  controller.isColorSelected2.value &&
-                                  controller.isColorSelected3.value) {
-                                controller.isColorSelected4.value = true;
-                              }
-                              if (!controller.isColorSelected3.value &&
-                                  controller.isColorSelected1.value &&
-                                  controller.isColorSelected2.value) {
-                                controller.isColorSelected3.value = true;
-                              }
-                              if (!controller.isColorSelected2.value &&
-                                  controller.isColorSelected1.value) {
-                                controller.isColorSelected2.value = true;
-                              }
-                              if (!controller.isColorSelected1.value) {
-                                controller.isColorSelected1.value = true;
-                              }
-                              Navigator.of(context).pop();
-                            },
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.add_box_outlined,
-                          size: 40,
-                        ),
-                      )
-                    ],
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.add_box_outlined,
+                            size: 40,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const Divider(),
-              const Expanded(child: SizedBox()),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: _addButton(
-                  context: context,
-                  onTap: () {
-                    controller.onAddButtonTapped();
-                  },
+                const Divider(),
+                const Text("Add Tags To Your Product"),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      child: SizedBox(
+                        width: MediaQuery.sizeOf(context).width / 1.2,
+                        child: TextField(
+                          controller: controller.tagTextFieldController,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        for (var a in controller.tags) {
+                          if (controller.tagTextFieldController.text == a) {
+                            return;
+                          }
+                        }
+                        controller.tags
+                            .add(controller.tagTextFieldController.text);
+                      },
+                      icon: const Icon(
+                        Icons.add_box_outlined,
+                        size: 35,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: 80,
+                  child: Obx(
+                    () => ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: controller.tags.length,
+                      itemBuilder: (context, index) => tagChip(
+                        text: controller.tags[index],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: _addButton(
+                    context: context,
+                    onTap: () {
+                      controller.onAddButtonTapped();
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  Widget tagChip({required String text}) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Chip(label: Text(text)),
+      );
 
   Widget selectedColors(
           {required Color? color,
@@ -271,9 +340,15 @@ class AddProductPage extends GetView<AddProductController> {
           {required String hintText,
           required bool isOutline,
           required int maxLines,
+          required int maxLength,
+          TextInputType? keyboardType,
+          List<TextInputFormatter>? inputFormatters,
           String? Function(String?)? validator,
           TextEditingController? controller}) =>
       TextFormField(
+        maxLength: maxLength,
+        keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
         validator: validator,
         controller: controller,
         maxLines: maxLines,

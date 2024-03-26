@@ -1,27 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 
 class MyProductBox extends GetView<SellerController> {
-  const MyProductBox(
-      {super.key,
-      this.image,
-      required this.product,
-      required this.onEditTap,
-      required this.id,
-      required this.index});
+  const MyProductBox({
+    super.key,
+    this.image,
+    required this.product,
+    required this.onEditTap,
+    required this.id,
+    required this.index,
+    required this.tagItemCount,
+  });
   final void Function()? onEditTap;
   final ProductViewModel product;
   final String id;
   final Widget? image;
   final int index;
+  final int tagItemCount;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(40),
-      height: 415,
+      height: 450,
       decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(width: 2, color: Colors.blue),
@@ -66,10 +71,22 @@ class MyProductBox extends GetView<SellerController> {
           const Divider(
             color: Colors.blue,
           ),
-          const Expanded(child: SizedBox()),
+          SizedBox(
+            width: MediaQuery.sizeOf(context).width,
+            height: 40,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: tagItemCount,
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.only(left: 5, right: 5),
+                child: Chip(label: Text(product.tag[index])),
+              ),
+            ),
+          ),
           const Divider(
             color: Colors.blue,
           ),
+          const Expanded(child: SizedBox()),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
