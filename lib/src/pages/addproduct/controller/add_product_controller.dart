@@ -47,11 +47,9 @@ class AddProductController extends GetxController {
             addAllTags.add(right[j].tag);
           }
         }
-        print(addAllTags);
         for (var a in addAllTags) {
           for (var b in a) {
             allTags.add(b);
-            print(b);
           }
         }
       },

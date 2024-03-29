@@ -22,7 +22,25 @@ class SellerController extends GetxController {
 
   // RxList<MyProductBox> productBoxList = <MyProductBox>[].obs;
   RxBool isOnAddMode = RxBool(false);
+
   RxList<ProductViewModel> productsList = <ProductViewModel>[].obs;
+
+  RxList<double> productsPriceList = <double>[].obs;
+
+  Rx<double> sliderMinValue = Rx(0);
+  Rx<double> sliderMaxValue = Rx(100);
+
+  // void sortPriceList() {
+  //   productsPriceList.clear();
+  //   for (var a in productsList) {
+  //     productsPriceList.add(double.tryParse(a.price)!);
+  //   }
+  //   productsPriceList.sort();
+  //   productsPriceList.first = sliderMinValue.value;
+  //   productsPriceList.last = sliderMaxValue.value;
+  // }
+
+  Rx<RangeValues> selectedRange = Rx(const RangeValues(0, 100));
 
   RxList<ProductViewModel> displayProductList = <ProductViewModel>[].obs;
 
@@ -33,6 +51,7 @@ class SellerController extends GetxController {
   final args = Get.arguments;
   final SellerRepository _sellerRepository = SellerRepository();
 //
+
   onSearchTextChanged(String text) {
     if (text.isEmpty) {
       productsList.clear();
@@ -130,11 +149,20 @@ class SellerController extends GetxController {
   Future<void> getProducts() async {
     final resultOrExeption = await _sellerRepository.getProducts();
     resultOrExeption.fold(
-        (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
-            messageText: left, backgroundColor: Colors.redAccent)),
-        (right) => {
-              productsList.addAll(right),
-            });
+      (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+          messageText: left, backgroundColor: Colors.redAccent)),
+      (right) => {
+        productsList.addAll(right),
+        for (var a in productsList)
+          {productsPriceList.add(double.tryParse(a.price) ?? 0)},
+        productsPriceList..sort(),
+        sliderMinValue.value = productsPriceList.first,
+        sliderMaxValue.value = productsPriceList.last,
+        print(productsPriceList),
+        print(sliderMinValue.value),
+        print(sliderMaxValue.value)
+      },
+    );
   }
 
   Future<void> saveArgs() async {

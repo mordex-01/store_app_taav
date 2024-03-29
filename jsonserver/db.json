@@ -24,7 +24,7 @@
       "id": "ca93",
       "title": "asd",
       "description": "asd",
-      "price": "123",
+      "price": "3",
       "isActive": true,
       "image": "",
       "colors": [
@@ -43,7 +43,7 @@
       "id": "8d09",
       "title": "gggg",
       "description": "gggg",
-      "price": "123",
+      "price": "2",
       "isActive": true,
       "image": "",
       "colors": [
@@ -62,7 +62,7 @@
       "id": "ccf6",
       "title": "555",
       "description": "555",
-      "price": "5555",
+      "price": "1",
       "isActive": true,
       "image": "",
       "colors": [
@@ -80,6 +80,22 @@
         "bbbb",
         "bbbbccc"
       ]
+    },
+    {
+      "id": "e19d",
+      "title": "d",
+      "description": "d",
+      "price": "0",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
     }
   ]
 }

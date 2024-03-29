@@ -50,17 +50,61 @@ class SellerPage extends GetView<SellerController> {
                     ],
                   ),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: "item2",
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(Icons.filter_list_rounded),
                       Text("  Filter"),
                     ],
                   ),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Filter Products"),
+                        content: Column(
+                          children: [
+                            const Divider(),
+                            SizedBox(
+                              width: MediaQuery.sizeOf(context).width,
+                            ),
+                            const Text("Set Price Range"),
+                            Obx(
+                              () => RangeSlider(
+                                values: controller.selectedRange.value,
+                                onChanged: (value) {
+                                  controller.selectedRange.value = value;
+                                },
+                                min: controller.sliderMinValue.value,
+                                max: controller.sliderMaxValue.value,
+                                divisions: 100,
+                                // labels: RangeLabels(
+                                //     "${controller.selectedRange.value.start}",
+                                //     "${controller.selectedRange.value.end}"),
+                              ),
+                            ),
+                            Obx(
+                              () => Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                      "Min ${controller.selectedRange.value.start}"),
+                                  Text(
+                                      "Max ${controller.selectedRange.value.end}")
+                                ],
+                              ),
+                            ),
+                            const Divider(),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 PopupMenuItem(
-                  value: "item2",
+                  value: "item3",
                   child: const Row(
                     children: [
                       Icon(Icons.logout),
