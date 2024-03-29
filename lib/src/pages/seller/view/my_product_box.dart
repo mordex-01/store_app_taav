@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';

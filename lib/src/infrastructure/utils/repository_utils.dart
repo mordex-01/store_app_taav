@@ -13,4 +13,5 @@ class RepositoryUtils {
   static String getProductById({required String id}) => "/product/$id";
   static const String getProducts = "/product";
   static const String addProduct = "/product";
+  static const String getProductsTags = "/product";
 }

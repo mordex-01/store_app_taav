@@ -29,8 +29,34 @@ class AddProductController extends GetxController {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController tagTextFieldController = TextEditingController();
   final AddProductRepository _addProductRepository = AddProductRepository();
+  final ScrollController tagsScrollController = ScrollController();
   final formKey = GlobalKey<FormState>();
   var bytes = Uint8List(0).obs;
+  RxList addAllTags = [].obs;
+  RxList<String> allTags = <String>[].obs;
+  RxBool tagTextFielldisTapped = false.obs;
+
+  Future<void> getProductsTag() async {
+    final resoltOrExeption = await _addProductRepository.getProducts();
+    resoltOrExeption.fold(
+      (left) => null,
+      (right) {
+        addAllTags.clear();
+        for (int j = 0; j < right.length; j++) {
+          if (right[j].tag.isNotEmpty) {
+            addAllTags.add(right[j].tag);
+          }
+        }
+        print(addAllTags);
+        for (var a in addAllTags) {
+          for (var b in a) {
+            allTags.add(b);
+            print(b);
+          }
+        }
+      },
+    );
+  }
 
   void pickColor(
           {required BuildContext context,

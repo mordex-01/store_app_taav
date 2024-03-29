@@ -13,7 +13,7 @@ class AddProductPage extends GetView<AddProductController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Get.back();
+            Get.back(closeOverlays: true, canPop: true);
             controller.tags.clear();
             controller.tagTextFieldController.clear();
           },
@@ -106,10 +106,15 @@ class AddProductPage extends GetView<AddProductController> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: _textFormField(
-                      maxLength: 10,
-                      hintText: "count",
-                      isOutline: false,
-                      maxLines: 1),
+                    maxLength: 10,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    hintText: "count",
+                    isOutline: false,
+                    maxLines: 1,
+                  ),
                 ),
                 const Divider(),
                 const Text("Add Your Colors To Your Product"),
@@ -240,12 +245,29 @@ class AddProductPage extends GetView<AddProductController> {
                       child: SizedBox(
                         width: MediaQuery.sizeOf(context).width / 1.2,
                         child: TextField(
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              controller.allTags.clear();
+                              controller.getProductsTag();
+                            }
+                            controller.allTags.removeWhere(
+                                (element) => !element.contains(value));
+                          },
+                          onTap: () {
+                            if (!controller.tagTextFielldisTapped.value) {
+                              controller.getProductsTag();
+                              controller.tagTextFielldisTapped.value = true;
+                            }
+                          },
                           controller: controller.tagTextFieldController,
                         ),
                       ),
                     ),
                     IconButton(
                       onPressed: () {
+                        controller.tagTextFielldisTapped.value = false;
+                        controller.getProductsTag();
+
                         for (var a in controller.tags) {
                           if (controller.tagTextFieldController.text == a) {
                             return;
@@ -253,6 +275,7 @@ class AddProductPage extends GetView<AddProductController> {
                         }
                         controller.tags
                             .add(controller.tagTextFieldController.text);
+                        controller.tagTextFieldController.clear();
                       },
                       icon: const Icon(
                         Icons.add_box_outlined,
@@ -263,13 +286,56 @@ class AddProductPage extends GetView<AddProductController> {
                 ),
                 SizedBox(
                   width: MediaQuery.sizeOf(context).width,
-                  height: 80,
                   child: Obx(
                     () => ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: controller.tags.length,
-                      itemBuilder: (context, index) => tagChip(
-                        text: controller.tags[index],
+                      itemCount: controller.allTags.toSet().toList().length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) => Container(
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(
+                                width: 2,
+                                color: const Color.fromARGB(255, 0, 67, 121))),
+                        child: InkWell(
+                          onTap: () {
+                            for (var a in controller.tags) {
+                              if (controller.allTags.toSet().toList()[index] ==
+                                  a) {
+                                return;
+                              }
+                            }
+                            controller.tags.add(
+                                controller.allTags.toSet().toList()[index]);
+                          },
+                          child: ListTile(
+                            leading: Text(
+                              controller.allTags.toSet().toList()[index],
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: 80,
+                  child: Obx(
+                    () => RawScrollbar(
+                      controller: controller.tagsScrollController,
+                      thumbColor: Colors.redAccent,
+                      radius: const Radius.circular(20),
+                      thickness: 5,
+                      child: ListView.builder(
+                        controller: controller.tagsScrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.tags.length,
+                        itemBuilder: (context, index) => tagChip(
+                          text: controller.tags[index],
+                        ),
                       ),
                     ),
                   ),
