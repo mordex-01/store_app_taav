@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/addproduct/model/add_product_dto.dart';
 import 'package:store_app_taav/src/pages/addproduct/repository/add_product_repository.dart';
@@ -123,7 +122,7 @@ class AddProductController extends GetxController {
       (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
           messageText: left, backgroundColor: Colors.redAccent)),
       (right) => {
-        Get.offAndToNamed(RouteNames.sellerPageRoute, result: right),
+        Get.back(result: right, closeOverlays: true, canPop: true),
         Get.showSnackbar(
           WidgetUtils.myCustomSnackBar(
               messageText: "${right.title} added",

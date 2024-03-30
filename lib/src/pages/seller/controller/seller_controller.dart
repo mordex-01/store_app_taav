@@ -7,6 +7,7 @@ import 'package:store_app_taav/src/pages/login/model/remember_me_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/pages/seller/repository/seller_repository.dart';
+import 'package:store_app_taav/src/pages/seller/view/selected_color_view_model.dart';
 import 'package:store_app_taav/src/shared/remember_me_repository.dart';
 
 class SellerController extends GetxController {
@@ -21,12 +22,18 @@ class SellerController extends GetxController {
 
   RxBool isOnAddMode = RxBool(false);
 
+  RxList<SelectedColorViewModel> dialogSelectedColorList =
+      <SelectedColorViewModel>[].obs;
+
+  Rx<Color> dialogLastColorSelected = Rx(Colors.white);
+
+  RxBool isAnyColorSelected = RxBool(true);
+
   RxList<ProductViewModel> productsList = <ProductViewModel>[].obs;
 
   RxList<double> productsPriceList = <double>[].obs;
 
   RxList<ProductViewModel> displayProductList = <ProductViewModel>[].obs;
-
   RxBool isSearchLoading = RxBool(false);
   RxDouble minValuePrice = RxDouble(0);
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
@@ -34,6 +41,30 @@ class SellerController extends GetxController {
   final args = Get.arguments;
   final SellerRepository _sellerRepository = SellerRepository();
 //
+
+  void pickColor(
+          {required BuildContext context,
+          required Widget buildColorPicker,
+          required void Function()? onSelectPressed}) =>
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Pick Your Color"),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              buildColorPicker,
+              TextButton(
+                onPressed: onSelectPressed,
+                child: const Text(
+                  "Select",
+                  style: TextStyle(fontSize: 24),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
 
   onSearchTextChanged(String text) {
     if (text.isEmpty) {
@@ -64,7 +95,9 @@ class SellerController extends GetxController {
         RouteNames.sellerPageRoute + RouteNames.addProductRoute);
     if (result != null) {
       //fill it
-      productsList.add(result);
+      // productsList.add(result);
+      productsList.clear();
+      getProducts();
     }
   }
 

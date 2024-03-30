@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dart';
 import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
+import 'package:store_app_taav/src/pages/seller/view/selected_color_view_model.dart';
 
 class SellerPage extends GetView<SellerController> {
   const SellerPage({super.key});
@@ -73,7 +75,10 @@ class SellerPage extends GetView<SellerController> {
                             SizedBox(
                               width: MediaQuery.sizeOf(context).width,
                             ),
-                            const Text("Set Price Range"),
+                            const Text(
+                              "Set Price Range",
+                              style: TextStyle(fontSize: 18),
+                            ),
                             Obx(
                               () => RangeSlider(
                                 values: rangeValue.value,
@@ -98,6 +103,84 @@ class SellerPage extends GetView<SellerController> {
                               ),
                             ),
                             const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Set Colors to filter",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    if (controller
+                                            .dialogSelectedColorList.length ==
+                                        5) {
+                                      return;
+                                    }
+                                    controller.pickColor(
+                                      context: context,
+                                      buildColorPicker: _buildColorPicker(
+                                        onColorChangeStart: (p0) {
+                                          controller.isAnyColorSelected.value =
+                                              false;
+                                        },
+                                        onColorChangeEnd: (value) {
+                                          controller.dialogLastColorSelected
+                                              .value = value;
+                                        },
+                                      ),
+                                      onSelectPressed: () {
+                                        if (!controller
+                                            .isAnyColorSelected.value) {
+                                          controller.dialogSelectedColorList
+                                              .add(
+                                            SelectedColorViewModel(
+                                              color: controller
+                                                  .dialogLastColorSelected
+                                                  .value,
+                                              isEnabled: true,
+                                            ),
+                                          );
+                                          controller.isAnyColorSelected.value =
+                                              true;
+                                          Navigator.of(context).pop();
+                                        } else {
+                                          Navigator.of(context).pop();
+                                        }
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.add,
+                                    size: 30,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              width: MediaQuery.sizeOf(context).width,
+                              height: 100,
+                              child: Obx(
+                                () => ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      controller.dialogSelectedColorList.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) =>
+                                      dialogSelectedColors(
+                                    color: controller
+                                        .dialogSelectedColorList[index].color,
+                                    isEnabled: controller
+                                        .dialogSelectedColorList[index]
+                                        .isEnabled!,
+                                    onRemovePressed: () {
+                                      controller.dialogSelectedColorList
+                                          .removeAt(index);
+                                    },
+                                  ),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -143,6 +226,35 @@ class SellerPage extends GetView<SellerController> {
     );
   }
 
+  Widget dialogSelectedColors({
+    required Color? color,
+    required bool isEnabled,
+    required void Function()? onRemovePressed,
+  }) =>
+      Stack(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 20.0, right: 20),
+            decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+            width: 30,
+            height: 30,
+          ),
+          isEnabled
+              ? Positioned(
+                  top: 0,
+                  right: 0.5,
+                  child: IconButton(
+                    onPressed: onRemovePressed,
+                    icon: const Icon(
+                      Icons.remove_circle_outline,
+                      size: 15,
+                    ),
+                  ),
+                )
+              : Positioned(child: Container())
+        ],
+      );
+
   Widget _productBox({required int index}) => MyProductBox(
         tagItemCount: controller.productsList[index].tag.length,
         index: index,
@@ -157,6 +269,18 @@ class SellerPage extends GetView<SellerController> {
               )
             : Image.asset("assets/no-image-icon.png"),
         onEditTap: () {},
+      );
+  Widget _buildColorPicker(
+          {required void Function(Color)? onColorChangeEnd,
+          required void Function(Color)? onColorChangeStart}) =>
+      ColorPicker(
+        onColorChangeStart: onColorChangeStart,
+        enableOpacity: false,
+        enableShadesSelection: false,
+        enableTonalPalette: false,
+        enableTooltips: false,
+        onColorChanged: (value) {},
+        onColorChangeEnd: onColorChangeEnd,
       );
 
 //i commend what i dont use

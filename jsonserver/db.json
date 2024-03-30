@@ -6,7 +6,7 @@
       "lastName": "asd",
       "userName": "asd",
       "password": "asd",
-      "isRememberMe": true
+      "isRememberMe": false
     }
   ],
   "customer": [
@@ -96,6 +96,127 @@
         "4294967295"
       ],
       "tags": []
+    },
+    {
+      "id": "0245",
+      "title": "asd",
+      "description": "asd",
+      "price": "1000",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": [
+        "gggggggggg",
+        "bbbbccc",
+        "bbbb",
+        "gg"
+      ]
+    },
+    {
+      "id": "0cd4",
+      "title": "hhh",
+      "description": "hhh",
+      "price": "2000",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "4c55",
+      "title": "fff",
+      "description": "fff",
+      "price": "3000",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "5861",
+      "title": "ggg",
+      "description": "ggg",
+      "price": "4000",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "f442",
+      "title": "bbb",
+      "description": "bbb",
+      "price": "5000",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "a39e",
+      "title": "22",
+      "description": "22",
+      "price": "6000",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "fbd8",
+      "title": "fffffffffffffj",
+      "description": "ggggggggggggggggg",
+      "price": "9000",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4291681337",
+        "4278430196",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": [
+        "",
+        "asd",
+        "nnn"
+      ]
     }
   ]
 }
