@@ -59,6 +59,10 @@ class SellerPage extends GetView<SellerController> {
                     ],
                   ),
                   onTap: () {
+                    var rangeValue = Rx(RangeValues(
+                      controller.productsPriceList.first,
+                      controller.productsPriceList.last,
+                    ));
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -72,13 +76,12 @@ class SellerPage extends GetView<SellerController> {
                             const Text("Set Price Range"),
                             Obx(
                               () => RangeSlider(
-                                values: controller.selectedRange.value,
+                                values: rangeValue.value,
                                 onChanged: (value) {
-                                  controller.selectedRange.value = value;
+                                  rangeValue.value = value;
                                 },
-                                min: controller.sliderMinValue.value,
-                                max: controller.sliderMaxValue.value,
-                                divisions: 100,
+                                min: controller.productsPriceList.first,
+                                max: controller.productsPriceList.last,
                                 // labels: RangeLabels(
                                 //     "${controller.selectedRange.value.start}",
                                 //     "${controller.selectedRange.value.end}"),
@@ -89,10 +92,8 @@ class SellerPage extends GetView<SellerController> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                      "Min ${controller.selectedRange.value.start}"),
-                                  Text(
-                                      "Max ${controller.selectedRange.value.end}")
+                                  Text("Min ${rangeValue.value.start.toInt()}"),
+                                  Text("Max ${rangeValue.value.end.toInt()}")
                                 ],
                               ),
                             ),

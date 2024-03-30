@@ -7,7 +7,6 @@ import 'package:store_app_taav/src/pages/login/model/remember_me_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/pages/seller/repository/seller_repository.dart';
-// import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
 import 'package:store_app_taav/src/shared/remember_me_repository.dart';
 
 class SellerController extends GetxController {
@@ -20,32 +19,16 @@ class SellerController extends GetxController {
     super.onInit();
   }
 
-  // RxList<MyProductBox> productBoxList = <MyProductBox>[].obs;
   RxBool isOnAddMode = RxBool(false);
 
   RxList<ProductViewModel> productsList = <ProductViewModel>[].obs;
 
   RxList<double> productsPriceList = <double>[].obs;
 
-  Rx<double> sliderMinValue = Rx(0);
-  Rx<double> sliderMaxValue = Rx(100);
-
-  // void sortPriceList() {
-  //   productsPriceList.clear();
-  //   for (var a in productsList) {
-  //     productsPriceList.add(double.tryParse(a.price)!);
-  //   }
-  //   productsPriceList.sort();
-  //   productsPriceList.first = sliderMinValue.value;
-  //   productsPriceList.last = sliderMaxValue.value;
-  // }
-
-  Rx<RangeValues> selectedRange = Rx(const RangeValues(0, 100));
-
   RxList<ProductViewModel> displayProductList = <ProductViewModel>[].obs;
 
   RxBool isSearchLoading = RxBool(false);
-
+  RxDouble minValuePrice = RxDouble(0);
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final dto = RememberMeDto(false);
   final args = Get.arguments;
@@ -156,11 +139,6 @@ class SellerController extends GetxController {
         for (var a in productsList)
           {productsPriceList.add(double.tryParse(a.price) ?? 0)},
         productsPriceList..sort(),
-        sliderMinValue.value = productsPriceList.first,
-        sliderMaxValue.value = productsPriceList.last,
-        print(productsPriceList),
-        print(sliderMinValue.value),
-        print(sliderMaxValue.value)
       },
     );
   }
