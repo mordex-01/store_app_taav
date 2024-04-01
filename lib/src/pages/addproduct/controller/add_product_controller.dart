@@ -30,6 +30,7 @@ class AddProductController extends GetxController {
   final AddProductRepository _addProductRepository = AddProductRepository();
   final ScrollController tagsScrollController = ScrollController();
   final formKey = GlobalKey<FormState>();
+  final addTagsTextFieldFormKey = GlobalKey<FormState>();
   var bytes = Uint8List(0).obs;
   RxList addAllTags = [].obs;
   RxList<String> allTags = <String>[].obs;

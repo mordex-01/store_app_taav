@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flex_color_picker/flex_color_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dart';
 import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
@@ -180,7 +182,30 @@ class SellerPage extends GetView<SellerController> {
                                   ),
                                 ),
                               ),
-                            )
+                            ),
+                            const Divider(),
+                            const Text(
+                              "Set Tags to Filter",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Wrap(
+                              spacing: 5,
+                              children: List.generate(
+                                controller.productsTagsList.length,
+                                (index) => Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Chip(
+                                      label: Text(
+                                          controller.productsTagsList[index])),
+                                ),
+                              ),
+                            ),
+                            const Expanded(child: SizedBox()),
+                            _filterButton(text: "Filter"),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            _filterButton(text: "Close")
                           ],
                         ),
                       ),
@@ -253,6 +278,17 @@ class SellerPage extends GetView<SellerController> {
                 )
               : Positioned(child: Container())
         ],
+      );
+  Widget _filterButton({required String text}) => ElevatedButton(
+        style: const ButtonStyle(
+            fixedSize: MaterialStatePropertyAll(Size(200, 50)),
+            backgroundColor: MaterialStatePropertyAll(Colors.blue),
+            foregroundColor: MaterialStatePropertyAll(Colors.white)),
+        onPressed: () {},
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 18),
+        ),
       );
 
   Widget _productBox({required int index}) => MyProductBox(

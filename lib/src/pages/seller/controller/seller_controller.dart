@@ -33,6 +33,8 @@ class SellerController extends GetxController {
 
   RxList<double> productsPriceList = <double>[].obs;
 
+  RxList<String> productsTagsList = <String>[].obs;
+
   RxList<ProductViewModel> displayProductList = <ProductViewModel>[].obs;
   RxBool isSearchLoading = RxBool(false);
   RxDouble minValuePrice = RxDouble(0);
@@ -170,7 +172,14 @@ class SellerController extends GetxController {
       (right) => {
         productsList.addAll(right),
         for (var a in productsList)
-          {productsPriceList.add(double.tryParse(a.price) ?? 0)},
+          {
+            productsPriceList.add(double.tryParse(a.price) ?? 0),
+            for (var b in a.tag)
+              {
+                productsTagsList.add(b),
+              }
+          },
+        print(productsTagsList),
         productsPriceList..sort(),
       },
     );

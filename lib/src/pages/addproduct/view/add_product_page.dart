@@ -244,38 +244,50 @@ class AddProductPage extends GetView<AddProductController> {
                       padding: const EdgeInsets.only(left: 5, right: 5),
                       child: SizedBox(
                         width: MediaQuery.sizeOf(context).width / 1.2,
-                        child: TextField(
-                          onChanged: (value) {
-                            if (value.isEmpty) {
-                              controller.allTags.clear();
-                              controller.getProductsTag();
-                            }
-                            controller.allTags.removeWhere(
-                                (element) => !element.contains(value));
-                          },
-                          onTap: () {
-                            if (!controller.tagTextFielldisTapped.value) {
-                              controller.getProductsTag();
-                              controller.tagTextFielldisTapped.value = true;
-                            }
-                          },
-                          controller: controller.tagTextFieldController,
+                        child: Form(
+                          key: controller.addTagsTextFieldFormKey,
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "You Cant Add Nothing As Tag";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              if (value.isEmpty) {
+                                controller.allTags.clear();
+                                controller.getProductsTag();
+                              }
+                              controller.allTags.removeWhere(
+                                  (element) => !element.contains(value));
+                            },
+                            onTap: () {
+                              if (!controller.tagTextFielldisTapped.value) {
+                                controller.getProductsTag();
+                                controller.tagTextFielldisTapped.value = true;
+                              }
+                            },
+                            controller: controller.tagTextFieldController,
+                          ),
                         ),
                       ),
                     ),
                     IconButton(
                       onPressed: () {
-                        controller.tagTextFielldisTapped.value = false;
-                        controller.getProductsTag();
+                        if (controller.addTagsTextFieldFormKey.currentState!
+                            .validate()) {
+                          controller.tagTextFielldisTapped.value = false;
+                          controller.getProductsTag();
 
-                        for (var a in controller.tags) {
-                          if (controller.tagTextFieldController.text == a) {
-                            return;
+                          for (var a in controller.tags) {
+                            if (controller.tagTextFieldController.text == a) {
+                              return;
+                            }
                           }
+                          controller.tags
+                              .add(controller.tagTextFieldController.text);
+                          controller.tagTextFieldController.clear();
                         }
-                        controller.tags
-                            .add(controller.tagTextFieldController.text);
-                        controller.tagTextFieldController.clear();
                       },
                       icon: const Icon(
                         Icons.add_box_outlined,
