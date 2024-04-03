@@ -8,6 +8,7 @@ import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/pages/seller/repository/seller_repository.dart';
 import 'package:store_app_taav/src/pages/seller/view/selected_color_view_model.dart';
+import 'package:store_app_taav/src/pages/seller/view/view_model/filter_product_tag_model_view.dart';
 import 'package:store_app_taav/src/shared/remember_me_repository.dart';
 
 class SellerController extends GetxController {
@@ -20,10 +21,14 @@ class SellerController extends GetxController {
     super.onInit();
   }
 
-  RxBool isOnAddMode = RxBool(false);
+//filtering final Values
+  Rx<double> filteringPriceStartValue = Rx(0);
+  Rx<double> filteringPriceEndValue = Rx(0);
 
-  RxList<SelectedColorViewModel> dialogSelectedColorList =
+  RxList<SelectedColorViewModel> filteringDialogSelectedColorList =
       <SelectedColorViewModel>[].obs;
+
+  RxBool isOnAddMode = RxBool(false);
 
   Rx<Color> dialogLastColorSelected = Rx(Colors.white);
 
@@ -33,16 +38,80 @@ class SellerController extends GetxController {
 
   RxList<double> productsPriceList = <double>[].obs;
 
-  RxList<String> productsTagsList = <String>[].obs;
+  RxList<FilterProductTagModelView> productsTagsList =
+      <FilterProductTagModelView>[].obs;
 
-  RxList<ProductViewModel> displayProductList = <ProductViewModel>[].obs;
+  // RxList<ProductViewModel> displayProductList = <ProductViewModel>[].obs;
   RxBool isSearchLoading = RxBool(false);
-  RxDouble minValuePrice = RxDouble(0);
+  // RxDouble minValuePrice = RxDouble(0);
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final dto = RememberMeDto(false);
   final args = Get.arguments;
   final SellerRepository _sellerRepository = SellerRepository();
 //
+  Rx<bool> isSwiched = false.obs;
+  Rx<bool> isPageLoading = false.obs;
+
+  Rx<bool> isLoading = false.obs;
+
+  void onFilterButtonPressed(BuildContext context) {
+    // filter Price
+    productsList.removeWhere((element) =>
+        int.parse(element.price) < filteringPriceStartValue.value.toInt());
+    productsList.removeWhere((element) =>
+        int.parse(element.price) > filteringPriceEndValue.value.toInt());
+
+    //filter Colors
+    List<String> filteringColors = [];
+    for (var c in filteringDialogSelectedColorList) {
+      filteringColors.add(c.color!.value.toString());
+    }
+    // if (filteringColors.isNotEmpty) {
+    //   if (filteringColors.length < 5) {
+    //     for (int a = filteringColors.length; a < 5; a++) {
+    //       filteringColors.add("4294967295");
+    //     }
+    //   }
+    // }
+
+    if (filteringColors.isNotEmpty) {
+      List<ProductViewModel> removeList = [];
+
+      for (int a = 0; a < productsList.length; a++) {
+        for (int b = 0;
+            b < productsList[a].color.map((e) => e as String).toList().length;
+            b++) {
+          if (!filteringColors.every((element) => productsList[a]
+              .color
+              .map((e) => e as String)
+              .toList()
+              .contains(element))) {
+            removeList.add(productsList[a]);
+          }
+          // if (!listEquals(
+          //     productsList[a].color.map((e) => e as String).toList(),
+          //     filteringColors)) {
+          //   removeList.add(productsList[a]);
+          // }
+        }
+      }
+      for (int c = 0; c < removeList.length; c++) {
+        for (int d = 0; d < productsList.length; d++) {
+          if (removeList[c].id == productsList[d].id) {
+            productsList.removeAt(d);
+          }
+        }
+      }
+    }
+
+    //filter tags
+    Navigator.of(context).pop();
+  }
+
+  void onPopUpMenuRefreshTapped() {
+    productsList.clear();
+    getProducts();
+  }
 
   void pickColor(
           {required BuildContext context,
@@ -104,10 +173,6 @@ class SellerController extends GetxController {
   }
 
 //
-  Rx<bool> isSwiched = false.obs;
-  Rx<bool> isPageLoading = false.obs;
-
-  Rx<bool> isLoading = false.obs;
 
   Future<void> getIsActive({required String id}) async {
     final resultOrExeption = await _sellerRepository.getIsActive(id: id);
@@ -176,10 +241,10 @@ class SellerController extends GetxController {
             productsPriceList.add(double.tryParse(a.price) ?? 0),
             for (var b in a.tag)
               {
-                productsTagsList.add(b),
+                productsTagsList.add(
+                    FilterProductTagModelView(tagLable: b, isTagCheck: false)),
               }
           },
-        print(productsTagsList),
         productsPriceList..sort(),
       },
     );

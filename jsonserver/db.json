@@ -6,7 +6,7 @@
       "lastName": "asd",
       "userName": "asd",
       "password": "asd",
-      "isRememberMe": false
+      "isRememberMe": true
     }
   ],
   "customer": [
@@ -21,75 +21,14 @@
   ],
   "product": [
     {
-      "id": "ca93",
+      "id": "c007",
       "title": "asd",
       "description": "asd",
-      "price": "3",
+      "price": "123",
       "isActive": true,
       "image": "",
       "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": [
-        "asd",
-        "dsa"
-      ]
-    },
-    {
-      "id": "8d09",
-      "title": "gggg",
-      "description": "gggg",
-      "price": "2",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": [
-        "asd",
-        "dsa"
-      ]
-    },
-    {
-      "id": "ccf6",
-      "title": "555",
-      "description": "555",
-      "price": "1",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": [
-        "asd",
-        "dsa",
-        "gggggggggg",
-        "gg",
-        "bbbb",
-        "bbbbccc"
-      ]
-    },
-    {
-      "id": "e19d",
-      "title": "d",
-      "description": "d",
-      "price": "2",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
+        "4294198070",
         "4294967295",
         "4294967295",
         "4294967295",
@@ -98,35 +37,14 @@
       "tags": []
     },
     {
-      "id": "0245",
-      "title": "asd",
-      "description": "asd",
-      "price": "1000",
+      "id": "d27e",
+      "title": "dsa",
+      "description": "dsa",
+      "price": "321",
       "isActive": true,
       "image": "",
       "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": [
-        "gggggggggg",
-        "bbbbccc",
-        "bbbb",
-        "gg"
-      ]
-    },
-    {
-      "id": "0cd4",
-      "title": "hhh",
-      "description": "hhh",
-      "price": "2000",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
+        "4293467747",
         "4294967295",
         "4294967295",
         "4294967295",
@@ -135,86 +53,70 @@
       "tags": []
     },
     {
-      "id": "4c55",
-      "title": "fff",
-      "description": "fff",
+      "id": "f5df",
+      "title": "sss",
+      "description": "sss",
+      "price": "500",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4288423856",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "12fc",
+      "title": "gg",
+      "description": "gg",
+      "price": "700",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4288585374",
+        "4284513675",
+        "4286141768",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "6080",
+      "title": "asdd",
+      "description": "asdd",
+      "price": "3211",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4278238420",
+        "4278228616",
+        "4283215696",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "7249",
+      "title": "jalal",
+      "description": "jalal",
       "price": "3000",
       "isActive": true,
       "image": "",
       "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": []
-    },
-    {
-      "id": "5861",
-      "title": "ggg",
-      "description": "ggg",
-      "price": "4000",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": []
-    },
-    {
-      "id": "f442",
-      "title": "bbb",
-      "description": "bbb",
-      "price": "5000",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": []
-    },
-    {
-      "id": "a39e",
-      "title": "22",
-      "description": "22",
-      "price": "6000",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": []
-    },
-    {
-      "id": "fbd8",
-      "title": "fffffffffffffj",
-      "description": "ggggggggggggggggg",
-      "price": "9000",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4291681337",
-        "4278430196",
+        "4294198070",
+        "4294198070",
         "4294967295",
         "4294967295",
         "4294967295"
       ],
       "tags": [
         "asd",
-        "nnn"
+        "dsa"
       ]
     }
   ]
