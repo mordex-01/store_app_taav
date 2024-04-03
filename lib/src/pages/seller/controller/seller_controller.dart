@@ -105,6 +105,29 @@ class SellerController extends GetxController {
     }
 
     //filter tags
+    List<String> filterTagsSelected = [];
+    List<ProductViewModel> tagsRemoveList = [];
+    for (var a in productsTagsList) {
+      if (a.isTagCheck == true) {
+        filterTagsSelected.add(a.tagLable);
+      }
+    }
+    for (int a = 0; a < productsList.length; a++) {
+      if (!filterTagsSelected.every((element) => productsList[a]
+          .tag
+          .map((e) => e as String)
+          .toList()
+          .contains(element))) {
+        tagsRemoveList.add(productsList[a]);
+      }
+    }
+    for (int c = 0; c < tagsRemoveList.length; c++) {
+      for (int d = 0; d < productsList.length; d++) {
+        if (tagsRemoveList[c].id == productsList[d].id) {
+          productsList.removeAt(d);
+        }
+      }
+    }
     Navigator.of(context).pop();
   }
 
@@ -236,9 +259,11 @@ class SellerController extends GetxController {
           messageText: left, backgroundColor: Colors.redAccent)),
       (right) => {
         productsList.addAll(right),
+        productsPriceList.clear(),
         for (var a in productsList)
           {
             productsPriceList.add(double.tryParse(a.price) ?? 0),
+            productsTagsList.clear(),
             for (var b in a.tag)
               {
                 productsTagsList.add(
