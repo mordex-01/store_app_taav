@@ -4,7 +4,7 @@ import 'package:store_app_taav/src/infrastructure/utils/repository_utils.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/signup/model/signup_model_dto.dart';
 import 'package:store_app_taav/src/pages/signup/repository/signup_repository.dart';
-import 'package:store_app_taav/src/shared/repository_getusers.dart';
+import 'package:store_app_taav/src/shared/repository_get_users.dart';
 
 class SignUpController extends GetxController {
   @override

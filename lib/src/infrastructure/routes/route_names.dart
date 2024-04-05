@@ -4,4 +4,5 @@ class RouteNames {
   static const customerPageRoute = '/customer';
   static const sellerPageRoute = '/seller';
   static const addProductRoute = '/addproduct';
+  static const detailsPageRoute = '/details';
 }

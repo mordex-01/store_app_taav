@@ -6,7 +6,7 @@ import 'package:store_app_taav/src/infrastructure/utils/repository_utils.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/login/model/remember_me_dto.dart';
 import 'package:store_app_taav/src/shared/remember_me_repository.dart';
-import 'package:store_app_taav/src/shared/repository_getusers.dart';
+import 'package:store_app_taav/src/shared/repository_get_users.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {

@@ -9,6 +9,7 @@ import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/pages/seller/repository/seller_repository.dart';
 import 'package:store_app_taav/src/pages/seller/view/selected_color_view_model.dart';
 import 'package:store_app_taav/src/pages/seller/view/view_model/filter_product_tag_model_view.dart';
+import 'package:store_app_taav/src/shared/get_products_repository.dart';
 import 'package:store_app_taav/src/shared/remember_me_repository.dart';
 
 class SellerController extends GetxController {
@@ -48,6 +49,7 @@ class SellerController extends GetxController {
   final dto = RememberMeDto(false);
   final args = Get.arguments;
   final SellerRepository _sellerRepository = SellerRepository();
+  final GetProductsRepository _getProductsRepository = GetProductsRepository();
 //
   Rx<bool> isSwiched = false.obs;
   Rx<bool> isPageLoading = false.obs;
@@ -253,7 +255,7 @@ class SellerController extends GetxController {
 //
 
   Future<void> getProducts() async {
-    final resultOrExeption = await _sellerRepository.getProducts();
+    final resultOrExeption = await _getProductsRepository.getProducts();
     resultOrExeption.fold(
       (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
           messageText: left, backgroundColor: Colors.redAccent)),

@@ -7,20 +7,20 @@ import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 
 class SellerRepository {
-  Future<Either<String, List<ProductViewModel>>> getProducts() async {
-    var url = Uri.http(RepositoryUtils.baseUrl, RepositoryUtils.getProducts);
-    final response = await http.get(url);
-    if (response.statusCode >= 200 && response.statusCode < 400) {
-      final List<dynamic> products = jsonDecode(response.body);
-      final List<ProductViewModel> myproducts = [];
-      for (var a in products) {
-        myproducts.add(ProductViewModel.fromJson(a));
-      }
-      return Right(myproducts);
-    } else {
-      return Left("${response.statusCode}");
-    }
-  }
+  // Future<Either<String, List<ProductViewModel>>> getProducts() async {
+  //   var url = Uri.http(RepositoryUtils.baseUrl, RepositoryUtils.getProducts);
+  //   final response = await http.get(url);
+  //   if (response.statusCode >= 200 && response.statusCode < 400) {
+  //     final List<dynamic> products = jsonDecode(response.body);
+  //     final List<ProductViewModel> myproducts = [];
+  //     for (var a in products) {
+  //       myproducts.add(ProductViewModel.fromJson(a));
+  //     }
+  //     return Right(myproducts);
+  //   } else {
+  //     return Left("${response.statusCode}");
+  //   }
+  // }
 
   Future<Either<String, ProductViewModel>> getIsActive(
       {required String id}) async {
