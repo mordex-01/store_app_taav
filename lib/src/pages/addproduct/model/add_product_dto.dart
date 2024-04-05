@@ -3,6 +3,7 @@ class AddProductDto {
       {required this.title,
       required this.description,
       required this.price,
+      required this.count,
       required this.isActive,
       required this.color,
       this.image,
@@ -10,6 +11,7 @@ class AddProductDto {
   final String title;
   final String description;
   final String price;
+  final String count;
   final bool isActive;
   final String? image;
   final List<String> color;
@@ -19,6 +21,7 @@ class AddProductDto {
         "title": title,
         "description": description,
         "price": price,
+        "count": count,
         "isActive": isActive,
         "image": image,
         "colors": color,

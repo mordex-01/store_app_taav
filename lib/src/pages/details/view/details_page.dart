@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/pages/details/controller/details_controller.dart';
@@ -17,90 +16,111 @@ class DetailsPage extends GetView<DetailsController> {
             },
             icon: const Icon(Icons.arrow_back_ios_new)),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Obx(() => controller.image.value),
-          const Divider(),
-          Row(
-            children: [
-              const Text(
-                "  Title : ",
-                style: TextStyle(fontSize: 24),
-              ),
-              Obx(
-                () => Text(
-                  controller.productTitle.value,
-                  style: const TextStyle(fontSize: 18),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Obx(() => controller.image.value),
+            const Divider(),
+            Row(
+              children: [
+                const Text(
+                  "  Title : ",
+                  style: TextStyle(fontSize: 24),
                 ),
-              ),
-            ],
-          ),
-          const Divider(),
-          Row(
-            children: [
-              const Text(
-                "  Description : ",
-                style: TextStyle(fontSize: 24),
-              ),
-              Obx(
-                () => Text(
-                  controller.productDescription.value,
-                  style: const TextStyle(fontSize: 18),
+                Obx(
+                  () => Text(
+                    controller.productTitle.value,
+                    style: const TextStyle(fontSize: 18),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Divider(),
-          Row(
-            children: [
-              const Text(
-                "  Price : ",
-                style: TextStyle(fontSize: 24),
-              ),
-              Obx(
-                () => Text(
-                  controller.productPrice.value,
-                  style: const TextStyle(fontSize: 18),
+              ],
+            ),
+            const Divider(),
+            Row(
+              children: [
+                const Text(
+                  "  Description : ",
+                  style: TextStyle(fontSize: 24),
                 ),
-              )
-            ],
-          ),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "  Colors : ",
+                Obx(
+                  () => Text(
+                    controller.productDescription.value,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(),
+            Row(
+              children: [
+                const Text(
+                  "  Price : ",
+                  style: TextStyle(fontSize: 24),
+                ),
+                Obx(
+                  () => Text(
+                    controller.productPrice.value,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                )
+              ],
+            ),
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "  Colors : ",
+                  style: TextStyle(fontSize: 24),
+                ),
+                SizedBox(
+                  width: 200,
+                  height: 50,
+                  child: Obx(
+                    () => ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        selectedColors(color: controller.color1.value),
+                        selectedColors(color: controller.color2.value),
+                        selectedColors(color: controller.color3.value),
+                        selectedColors(color: controller.color4.value),
+                        selectedColors(color: controller.color5.value)
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(),
+            const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "  Tags :",
                 style: TextStyle(fontSize: 24),
               ),
-              SizedBox(
-                width: 200,
-                height: 50,
-                child: Obx(
-                  () => ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      selectedColors(color: controller.color1.value),
-                      selectedColors(color: controller.color2.value),
-                      selectedColors(color: controller.color3.value),
-                      selectedColors(color: controller.color4.value),
-                      selectedColors(color: controller.color5.value)
-                    ],
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Obx(
+                () => Padding(
+                  padding: const EdgeInsets.only(left: 10, top: 10),
+                  child: Wrap(
+                    spacing: 5,
+                    children: List.generate(
+                      controller.productTags.length,
+                      (index) => Chip(
+                        label: Text(
+                          controller.productTags[index],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ],
-          ),
-          const Divider(),
-          const Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              "  Tags :",
-              style: TextStyle(fontSize: 24),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

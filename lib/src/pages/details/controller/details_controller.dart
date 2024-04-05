@@ -28,6 +28,7 @@ class DetailsController extends GetxController {
   Rx<Color> color3 = Rx(Colors.white);
   Rx<Color> color4 = Rx(Colors.white);
   Rx<Color> color5 = Rx(Colors.white);
+  RxList<String> productTags = <String>[].obs;
 
   Future<void> getProductById(String id) async {
     final resultOrExeption = await _getProductsRepository.getProductById(id);
@@ -46,6 +47,7 @@ class DetailsController extends GetxController {
       color3.value = Color(int.parse(right.color[2]));
       color4.value = Color(int.parse(right.color[3]));
       color5.value = Color(int.parse(right.color[4]));
+      productTags.addAll(right.tag.map((e) => e as String).toList());
     });
   }
 }

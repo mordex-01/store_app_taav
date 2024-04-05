@@ -7,6 +7,7 @@ class ProductViewModel {
     required this.title,
     required this.description,
     required this.price,
+    required this.count,
     required this.isActive,
     this.image,
     required this.color,
@@ -16,6 +17,7 @@ class ProductViewModel {
   final String title;
   final String description;
   final String price;
+  final String count;
   late bool isActive;
   final String? image;
   final List<dynamic> color;
@@ -27,6 +29,7 @@ class ProductViewModel {
         title: json['title'],
         description: json['description'],
         price: json['price'],
+        count: json['count'],
         isActive: json['isActive'],
         image: json['image'],
         color: json['colors'],

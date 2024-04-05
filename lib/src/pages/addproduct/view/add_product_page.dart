@@ -106,6 +106,13 @@ class AddProductPage extends GetView<AddProductController> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: _textFormField(
+                    controller: controller.countController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Price Cant Be Empty";
+                      }
+                      return null;
+                    },
                     maxLength: 10,
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
@@ -243,7 +250,7 @@ class AddProductPage extends GetView<AddProductController> {
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 5),
                       child: SizedBox(
-                        width: MediaQuery.sizeOf(context).width / 1.2,
+                        width: MediaQuery.sizeOf(context).width / 1.3,
                         child: Form(
                           key: controller.addTagsTextFieldFormKey,
                           child: TextFormField(

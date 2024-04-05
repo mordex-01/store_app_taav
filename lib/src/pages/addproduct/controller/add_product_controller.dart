@@ -26,6 +26,7 @@ class AddProductController extends GetxController {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  final TextEditingController countController = TextEditingController();
   final TextEditingController tagTextFieldController = TextEditingController();
   final AddProductRepository _addProductRepository = AddProductRepository();
   final ScrollController tagsScrollController = ScrollController();
@@ -115,6 +116,7 @@ class AddProductController extends GetxController {
       title: titleController.text,
       description: descriptionController.text,
       price: priceController.text,
+      count: countController.text,
       isActive: true,
       image: base64Encode(bytes.value),
     );
