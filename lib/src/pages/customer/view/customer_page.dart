@@ -14,6 +14,13 @@ class CustomerPage extends GetView<CustomerController> {
       appBar: AppBar(
         actions: [
           Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Badge(
+                label: const Text("10"),
+                child: IconButton(
+                    onPressed: () {}, icon: const Icon(Icons.shopping_cart))),
+          ),
+          Padding(
             padding: const EdgeInsets.only(right: 20),
             child: PopupMenuButton(
               itemBuilder: (context) => [
@@ -39,7 +46,7 @@ class CustomerPage extends GetView<CustomerController> {
                 )
               ],
             ),
-          )
+          ),
         ],
       ),
       body: Obx(

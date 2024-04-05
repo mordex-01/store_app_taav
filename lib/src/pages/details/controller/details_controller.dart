@@ -29,6 +29,20 @@ class DetailsController extends GetxController {
   Rx<Color> color4 = Rx(Colors.white);
   Rx<Color> color5 = Rx(Colors.white);
   RxList<String> productTags = <String>[].obs;
+  RxInt productItemCount = RxInt(1);
+  RxInt initialItemCount = RxInt(0);
+
+  void onNumberPickerLeftButtonTapped() {
+    if (productItemCount.value > 1) {
+      productItemCount.value--;
+    }
+  }
+
+  void onNumberPickerRightButtonTapped() {
+    if (productItemCount.value < initialItemCount.value) {
+      productItemCount.value++;
+    }
+  }
 
   Future<void> getProductById(String id) async {
     final resultOrExeption = await _getProductsRepository.getProductById(id);
@@ -48,6 +62,7 @@ class DetailsController extends GetxController {
       color4.value = Color(int.parse(right.color[3]));
       color5.value = Color(int.parse(right.color[4]));
       productTags.addAll(right.tag.map((e) => e as String).toList());
+      initialItemCount.value = int.parse(right.count);
     });
   }
 }

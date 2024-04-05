@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/pages/details/controller/details_controller.dart';
+import 'package:number_picker/number_picker.dart';
 
 class DetailsPage extends GetView<DetailsController> {
   const DetailsPage({super.key});
@@ -118,12 +121,51 @@ class DetailsPage extends GetView<DetailsController> {
                   ),
                 ),
               ),
+            ),
+            Row(
+              children: [
+                addToCardButton(context: context),
+                Obx(
+                  () => CustomNumberPicker(
+                      onLeftButtonPressed: () {
+                        controller.onNumberPickerLeftButtonTapped();
+                      },
+                      onRightButtonPressed: () {
+                        controller.onNumberPickerRightButtonTapped();
+                      },
+                      textData: controller.productItemCount.value),
+                ),
+              ],
             )
           ],
         ),
       ),
     );
   }
+
+  Widget addToCardButton({required BuildContext context}) => InkWell(
+        onTap: () {},
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          width: MediaQuery.sizeOf(context).width / 1.5,
+          height: 55,
+          decoration: BoxDecoration(
+              color: Colors.blue[900], borderRadius: BorderRadius.circular(20)),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Add To Card",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              Icon(
+                Icons.add_shopping_cart,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ),
+      );
 
   Widget selectedColors({
     required Color? color,
