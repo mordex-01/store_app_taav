@@ -34,7 +34,7 @@ class DetailsController extends GetxController {
     resultOrExeption.fold(
         (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
             messageText: left, backgroundColor: Colors.redAccent)), (right) {
-      if (right.image != null) {
+      if (right.image != "") {
         image.value =
             Image.memory(Uint8List.fromList(base64Decode(right.image!)));
       }

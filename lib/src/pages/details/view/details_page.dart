@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/pages/details/controller/details_controller.dart';
@@ -19,7 +20,7 @@ class DetailsPage extends GetView<DetailsController> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          controller.image.value,
+          Obx(() => controller.image.value),
           const Divider(),
           Row(
             children: [
@@ -91,7 +92,14 @@ class DetailsPage extends GetView<DetailsController> {
               ),
             ],
           ),
-          const Divider()
+          const Divider(),
+          const Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              "  Tags :",
+              style: TextStyle(fontSize: 24),
+            ),
+          )
         ],
       ),
     );
