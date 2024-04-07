@@ -14,4 +14,8 @@ class RepositoryUtils {
   static const String getProducts = "/product";
   static const String addProduct = "/product";
   static const String getProductsTags = "/product";
+  static const String addToCart = '/cart';
+  static const String getCarts = '/cart';
+  static String patchCart({required String id}) => "/cart/$id";
+  static String deleteCart({required String id}) => "/cart/$id";
 }

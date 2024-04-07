@@ -21,11 +21,11 @@
   ],
   "product": [
     {
-      "id": "a209",
-      "title": "asd",
-      "description": "asd",
-      "price": "5000",
-      "count": "6000",
+      "id": "b60f",
+      "title": "dsa",
+      "description": "dsa",
+      "price": "1000",
+      "count": "10",
       "isActive": true,
       "image": "",
       "colors": [
@@ -38,23 +38,31 @@
       "tags": []
     },
     {
-      "id": "4977",
-      "title": "mmd",
-      "description": "mmd",
-      "price": "6000",
-      "count": "50",
+      "id": "de40",
+      "title": "zero",
+      "description": "zero",
+      "price": "100",
+      "count": "0",
       "isActive": true,
       "image": "",
       "colors": [
-        "4280391411",
-        "4282339765",
-        "4284955319",
-        "4288423856",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
         "4294967295"
       ],
-      "tags": [
-        "mmdghensa"
-      ]
+      "tags": []
+    }
+  ],
+  "cart": [
+    {
+      "id": "8f54",
+      "productId": "b60f",
+      "storeCount": "0",
+      "productTitle": "dsa",
+      "price": "1000",
+      "count": "10"
     }
   ]
 }

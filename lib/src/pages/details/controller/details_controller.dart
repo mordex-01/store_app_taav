@@ -1,10 +1,15 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
+import 'package:store_app_taav/src/pages/cart/repository/cart_repository.dart';
+import 'package:store_app_taav/src/pages/details/model/add_to_cart_dto.dart';
+import 'package:store_app_taav/src/pages/details/repository/details_repository.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
+import 'package:store_app_taav/src/shared/cart_view_model.dart';
 import 'package:store_app_taav/src/shared/get_products_repository.dart';
 
 class DetailsController extends GetxController {
@@ -13,12 +18,15 @@ class DetailsController extends GetxController {
   @override
   void onInit() {
     getProductById(prams['product-id']!);
+    addAlreadyExestedCarts();
     super.onInit();
   }
 
   final GetProductsRepository _getProductsRepository = GetProductsRepository();
+  final DetailsRepository _detailsRepository = DetailsRepository();
+  final CartRepository _cartRepository = CartRepository();
   RxList<ProductViewModel> myProductsList = <ProductViewModel>[].obs;
-
+  RxList<CartViewModel> cartsList = <CartViewModel>[].obs;
   Rx<Widget> image = Rx(Image.asset("assets/no-image-icon.png"));
   RxString productTitle = RxString("initial");
   RxString productDescription = RxString("initial");
@@ -29,8 +37,106 @@ class DetailsController extends GetxController {
   Rx<Color> color4 = Rx(Colors.white);
   Rx<Color> color5 = Rx(Colors.white);
   RxList<String> productTags = <String>[].obs;
+  RxString productStoreCount = RxString("1");
+  Rx<bool> isStoreCountSend = false.obs;
   RxInt productItemCount = RxInt(1);
-  RxInt initialItemCount = RxInt(0);
+  RxInt initialItemCount = RxInt(1);
+  RxString productId = RxString("initial");
+  Rx<bool> isCartNew = false.obs;
+
+  Future<void> addAlreadyExestedCarts() async {
+    final resoltOrExeption = await _cartRepository.getCarts();
+    resoltOrExeption.fold(
+        (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+            messageText: left, backgroundColor: Colors.redAccent)),
+        (right) => {
+              cartsList.addAll(right),
+              for (var a in right)
+                {
+                  if (isStoreCountSend.value)
+                    {productStoreCount.value = a.storeCount!}
+                }
+            });
+  }
+
+  Future<void> onAddToCart() async {
+    final dto = AddToCartDto(
+        storeCount:
+            (int.parse(productStoreCount.value) - productItemCount.value)
+                .toString(),
+        productId: productId.value,
+        productTitle: productTitle.value,
+        price: productPrice.value,
+        count: productItemCount.value.toString());
+    if (cartsList.isEmpty) {
+      isStoreCountSend.value = true;
+      final resultOrExeption = await _detailsRepository.addToCart(dto: dto);
+      resultOrExeption.fold(
+        (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+            messageText: left, backgroundColor: Colors.redAccent)),
+        (right) => {
+          Get.back(
+              result: {"count": productItemCount.value, "id": productId.value}),
+          Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+              messageText: "${right.productTitle} added to Cart",
+              backgroundColor: Colors.greenAccent)),
+        },
+      );
+    }
+    if (cartsList.isNotEmpty) {
+      isStoreCountSend.value = true;
+      isCartNew.value = true;
+      for (var a in cartsList) {
+        if (a.productId == productId.value) {
+          final dto = AddToCartDto(
+              //
+              storeCount: productStoreCount.value,
+              productId: productId.value,
+              productTitle: productTitle.value,
+              price: productPrice.value,
+              count: (int.parse(a.count) + productItemCount.value).toString());
+          final resultOrExeption =
+              _detailsRepository.patchCart(dto: dto, id: a.id);
+          resultOrExeption.fold(
+              (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+                  messageText: left, backgroundColor: Colors.redAccent)),
+              (right) => {
+                    cartsList.clear(),
+                    addAlreadyExestedCarts(),
+                    Get.back(result: {
+                      "count": productItemCount.value,
+                      "id": productId.value
+                    }),
+                  });
+          isCartNew.value = false;
+        }
+      }
+    }
+    if (isCartNew.value) {
+      isStoreCountSend.value = true;
+      isCartNew.value = false;
+      final dto = AddToCartDto(
+          storeCount:
+              (int.parse(productStoreCount.value) - productItemCount.value)
+                  .toString(),
+          productId: productId.value,
+          productTitle: productTitle.value,
+          price: productPrice.value,
+          count: productItemCount.value.toString());
+      final resultOrExeption = await _detailsRepository.addToCart(dto: dto);
+      resultOrExeption.fold(
+        (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+            messageText: left, backgroundColor: Colors.redAccent)),
+        (right) => {
+          Get.back(
+              result: {"count": productItemCount.value, "id": productId.value}),
+          Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+              messageText: "${right.productTitle} added to Cart",
+              backgroundColor: Colors.greenAccent)),
+        },
+      );
+    }
+  }
 
   void onNumberPickerLeftButtonTapped() {
     if (productItemCount.value > 1) {
@@ -63,6 +169,10 @@ class DetailsController extends GetxController {
       color5.value = Color(int.parse(right.color[4]));
       productTags.addAll(right.tag.map((e) => e as String).toList());
       initialItemCount.value = int.parse(right.count);
+      productId.value = right.id;
+      if (isStoreCountSend.value == false) {
+        productStoreCount.value = right.count;
+      }
     });
   }
 }

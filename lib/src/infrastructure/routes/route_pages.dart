@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/pages/addproduct/common/add_product_binding.dart';
 import 'package:store_app_taav/src/pages/addproduct/view/add_product_page.dart';
+import 'package:store_app_taav/src/pages/cart/common/cart_binding.dart';
+import 'package:store_app_taav/src/pages/cart/view/cart_page.dart';
 import 'package:store_app_taav/src/pages/customer/common/customer_binding.dart';
 import 'package:store_app_taav/src/pages/customer/view/customer_page.dart';
 import 'package:store_app_taav/src/pages/details/common/details_binding.dart';
@@ -32,6 +34,11 @@ class RoutePages {
       page: () => const CustomerPage(),
       binding: CustomerBinding(),
       children: [
+        GetPage(
+          name: RouteNames.cartPageRoute,
+          page: () => const CartPage(),
+          binding: CartBinding(),
+        ),
         GetPage(
           name: RouteNames.detailsPageRoute,
           page: () => const DetailsPage(),

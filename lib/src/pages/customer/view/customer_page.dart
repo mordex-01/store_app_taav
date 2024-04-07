@@ -16,9 +16,16 @@ class CustomerPage extends GetView<CustomerController> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: Badge(
-                label: const Text("10"),
+                label: Obx(
+                  () => Text(controller.cartItemCount.value != 0
+                      ? controller.cartItemCount.value.toString()
+                      : "0"),
+                ),
                 child: IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.shopping_cart))),
+                    onPressed: () {
+                      controller.onCartIconTapped();
+                    },
+                    icon: const Icon(Icons.shopping_cart))),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 20),

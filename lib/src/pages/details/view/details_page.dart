@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/pages/details/controller/details_controller.dart';
@@ -122,29 +120,36 @@ class DetailsPage extends GetView<DetailsController> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                addToCardButton(context: context),
-                Obx(
-                  () => CustomNumberPicker(
-                      onLeftButtonPressed: () {
-                        controller.onNumberPickerLeftButtonTapped();
-                      },
-                      onRightButtonPressed: () {
-                        controller.onNumberPickerRightButtonTapped();
-                      },
-                      textData: controller.productItemCount.value),
-                ),
-              ],
-            )
+            Obx(() => controller.initialItemCount.value > 0
+                ? Row(
+                    children: [
+                      addToCardButton(
+                        context: context,
+                        onTap: () {
+                          controller.onAddToCart();
+                        },
+                      ),
+                      CustomNumberPicker(
+                          onLeftButtonPressed: () {
+                            controller.onNumberPickerLeftButtonTapped();
+                          },
+                          onRightButtonPressed: () {
+                            controller.onNumberPickerRightButtonTapped();
+                          },
+                          textData: controller.productItemCount.value),
+                    ],
+                  )
+                : const Text("This Item is Currently Does Not Exist In Store"))
           ],
         ),
       ),
     );
   }
 
-  Widget addToCardButton({required BuildContext context}) => InkWell(
-        onTap: () {},
+  Widget addToCardButton(
+          {required BuildContext context, required void Function()? onTap}) =>
+      InkWell(
+        onTap: onTap,
         child: Container(
           margin: const EdgeInsets.all(10),
           width: MediaQuery.sizeOf(context).width / 1.5,
@@ -155,7 +160,7 @@ class DetailsPage extends GetView<DetailsController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Add To Card",
+                "Add To Cart",
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
               Icon(
