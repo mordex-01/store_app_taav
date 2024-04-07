@@ -9,34 +9,51 @@ class CartPage extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(Icons.arrow_back_ios_new)),
-      ),
-      body: Obx(
-        () => ListView.builder(
-            itemCount: controller.cartList.length,
-            itemBuilder: (context, index) => _cartBox(
-                  onDeleteButtonPressed: () => controller.onDeleteTapped(
-                      id: controller.cartList[index].id),
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(Icons.arrow_back_ios_new)),
+        ),
+        body: Obx(() => controller.cartsList.isEmpty
+            ? const Center(child: Text("No Carts Exist"))
+            : ListView.builder(
+                itemCount: controller.cartsList.length,
+                itemBuilder: (context, index) => _cartBox(
                   context: context,
-                  productTitle: controller.cartList[index].productTitle,
-                  cartItemCount: int.parse(controller.cartList[index].count),
-                  price: int.parse(controller.cartList[index].price),
-                  onLeftButtonPressed: () {
-                    controller.onLeftNumberPickerTapped(
-                        index: index, id: controller.cartList[index].id);
-                  },
-                  onRightButtonPressed: () {
-                    controller.onRightNumberPickerTapped(
-                        index: index, id: controller.cartList[index].id);
-                  },
-                )),
-      ),
-    );
+                  productTitle: controller.cartsList[index].title,
+                  price: int.parse(controller.cartsList[index].price),
+                  cartItemCount:
+                      int.parse(controller.cartsList[index].cartCount!),
+                  onRightButtonPressed: () =>
+                      controller.onRightNumberPickerPressed(index: index),
+                  onLeftButtonPressed: () =>
+                      controller.onLeftNumberPickerPressed(index: index),
+                  onDeleteButtonPressed: () {},
+                ),
+              ))
+        // Obx(
+        //   () => ListView.builder(
+        //       itemCount: controller.cartList.length,
+        //       itemBuilder: (context, index) => _cartBox(
+        //             onDeleteButtonPressed: () => controller.onDeleteTapped(
+        //                 id: controller.cartList[index].id),
+        //             context: context,
+        //             productTitle: controller.cartList[index].productTitle,
+        //             cartItemCount: int.parse(controller.cartList[index].count),
+        //             price: int.parse(controller.cartList[index].price),
+        //             onLeftButtonPressed: () {
+        //               controller.onLeftNumberPickerTapped(
+        //                   index: index, id: controller.cartList[index].id);
+        //             },
+        //             onRightButtonPressed: () {
+        //               controller.onRightNumberPickerTapped(
+        //                   index: index, id: controller.cartList[index].id);
+        //             },
+        //           )),
+        // ),
+        );
   }
 
   Widget _cartBox({

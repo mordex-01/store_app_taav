@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
-import 'package:store_app_taav/src/pages/cart/repository/cart_repository.dart';
 import 'package:store_app_taav/src/pages/login/model/remember_me_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/shared/get_products_repository.dart';
@@ -16,11 +15,11 @@ class CustomerController extends GetxController {
       saveArgs();
     }
     getProducts();
-    getCarts();
+    // getCarts();
     super.onInit();
   }
 
-  final CartRepository _cartRepository = CartRepository();
+  // final CartRepository _cartRepository = CartRepository();
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final GetProductsRepository _getProductsRepository = GetProductsRepository();
   RxList<ProductViewModel> productsList = <ProductViewModel>[].obs;
@@ -33,31 +32,40 @@ class CustomerController extends GetxController {
     Get.toNamed(RouteNames.customerPageRoute + RouteNames.cartPageRoute);
   }
 
-  Future<void> getCarts() async {
-    int counts = 0;
-    final resultOrExeption = await _cartRepository.getCarts();
-    resultOrExeption.fold(
-        (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
-            messageText: "cant get carts on customer page",
-            backgroundColor: Colors.redAccent)), (right) {
-      for (var a in right) {
-        counts += (int.parse(a.count));
-      }
-      cartItemCount.value = counts;
-    });
-  }
+  // Future<void> getCarts() async {
+  //   int counts = 0;
+  //   final resultOrExeption = await _cartRepository.getCarts();
+  //   resultOrExeption.fold(
+  //       (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+  //           messageText: "cant get carts on customer page",
+  //           backgroundColor: Colors.redAccent)), (right) {
+  //     for (var a in right) {
+  //       counts += (int.parse(a.count));
+  //     }
+  //     cartItemCount.value = counts;
+  //   });
+  // }
 
   Future<void> getProducts() async {
+    int counts = 0;
     final resultOrExeption = await _getProductsRepository.getProducts();
     resultOrExeption.fold(
       (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
           messageText: left, backgroundColor: Colors.redAccent)),
       (right) {
+        productsList.clear();
         for (var product in right) {
+          //bool is CartMode
+          if (product.cartMode != null) {
+            if (product.cartMode!) {
+              counts += int.parse(product.cartCount!);
+            }
+          }
           if (product.isActive == true) {
             productsList.add(product);
           }
         }
+        cartItemCount.value = counts;
       },
     );
   }
@@ -95,9 +103,13 @@ class CustomerController extends GetxController {
   Future<void> goToDetailsPage({required int index}) async {
     final result = await Get.toNamed(
         RouteNames.customerPageRoute + RouteNames.detailsPageRoute,
-        parameters: {"product-id": productsList[index].id});
+        parameters: {
+          "product-id": productsList[index].id,
+          "count": productsList[index].count
+        });
     if (result != null) {
-      getCarts();
+      getProducts();
+      // getCarts();
     }
   }
 
