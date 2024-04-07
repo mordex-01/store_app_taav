@@ -12,27 +12,52 @@ class CartPage extends GetView<CartController> {
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
-                Get.back();
+                controller.onBackButtonPressed();
+                // Get.back();
               },
               icon: const Icon(Icons.arrow_back_ios_new)),
         ),
-        body: Obx(() => controller.cartsList.isEmpty
-            ? const Center(child: Text("No Carts Exist"))
-            : ListView.builder(
-                itemCount: controller.cartsList.length,
-                itemBuilder: (context, index) => _cartBox(
-                  context: context,
-                  productTitle: controller.cartsList[index].title,
-                  price: int.parse(controller.cartsList[index].price),
-                  cartItemCount:
-                      int.parse(controller.cartsList[index].cartCount!),
-                  onRightButtonPressed: () =>
-                      controller.onRightNumberPickerPressed(index: index),
-                  onLeftButtonPressed: () =>
-                      controller.onLeftNumberPickerPressed(index: index),
-                  onDeleteButtonPressed: () {},
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Obx(() => controller.cartsList.isEmpty
+                  ? const Center(child: Text("No Carts Exist"))
+                  : ListView.builder(
+                      itemCount: controller.cartsList.length,
+                      itemBuilder: (context, index) => _cartBox(
+                        context: context,
+                        productTitle: controller.cartsList[index].title,
+                        price: int.parse(controller.cartsList[index].price),
+                        cartItemCount:
+                            int.parse(controller.cartsList[index].cartCount!),
+                        onRightButtonPressed: () =>
+                            controller.onRightNumberPickerPressed(index: index),
+                        onLeftButtonPressed: () =>
+                            controller.onLeftNumberPickerPressed(index: index),
+                        onDeleteButtonPressed: () =>
+                            controller.onDeleteButtonPressed(index: index),
+                      ),
+                    )),
+            ),
+            const Divider(),
+            Row(
+              children: [
+                const Text(
+                  "  Total Price : ",
+                  style: TextStyle(fontSize: 24),
                 ),
-              ))
+                Obx(() => Text(controller.totalPrice.value.toString()))
+              ],
+            ),
+            const Expanded(child: SizedBox()),
+            Align(
+                alignment: Alignment.center,
+                child: InkWell(
+                    onTap: () => controller.onPaymentButtonPressed(),
+                    child: _paymentButton(context: context, lable: "Payment")))
+          ],
+        )
         // Obx(
         //   () => ListView.builder(
         //       itemCount: controller.cartList.length,
@@ -56,6 +81,21 @@ class CartPage extends GetView<CartController> {
         );
   }
 
+  Widget _paymentButton(
+          {required BuildContext context, required String lable}) =>
+      Container(
+        margin: const EdgeInsets.all(12),
+        width: MediaQuery.sizeOf(context).width / 1.5,
+        height: 55,
+        decoration: BoxDecoration(
+            color: Colors.blue[800], borderRadius: BorderRadius.circular(20)),
+        child: Center(
+          child: Text(
+            lable,
+            style: const TextStyle(color: Colors.white, fontSize: 24),
+          ),
+        ),
+      );
   Widget _cartBox({
     required BuildContext context,
     required String productTitle,

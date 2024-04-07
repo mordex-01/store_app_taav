@@ -61,9 +61,7 @@ class CustomerPage extends GetView<CustomerController> {
           scrollDirection: Axis.vertical,
           itemCount: controller.productsList.length,
           itemBuilder: (context, index) => productBox(
-            onTap: () {
-              controller.goToDetailsPage(index: index);
-            },
+            onTap: () => controller.goToDetailsPage(index: index),
             context: context,
             product: controller.productsList[index],
             image: controller.productsList[index].image != null &&

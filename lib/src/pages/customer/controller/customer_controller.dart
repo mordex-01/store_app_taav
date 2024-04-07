@@ -101,14 +101,15 @@ class CustomerController extends GetxController {
   }
 
   Future<void> goToDetailsPage({required int index}) async {
-    final result = await Get.toNamed(
+    var result = await Get.toNamed(
         RouteNames.customerPageRoute + RouteNames.detailsPageRoute,
         parameters: {
           "product-id": productsList[index].id,
           "count": productsList[index].count
         });
     if (result != null) {
-      getProducts();
+      cartItemCount.value = result;
+      // getProducts();
       // getCarts();
     }
   }

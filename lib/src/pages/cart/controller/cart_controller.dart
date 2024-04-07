@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
+import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/cart/repository/cart_repository.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
@@ -14,6 +17,16 @@ class CartController extends GetxController {
   RxList<ProductViewModel> cartsList = <ProductViewModel>[].obs;
   final GetProductsRepository _getProductsRepository = GetProductsRepository();
   final CartRepository _cartRepository = CartRepository();
+  RxInt totalPrice = RxInt(0);
+  void countTotalPrice() {
+    totalPrice.value = 0;
+    late int total = 0;
+    for (var a in cartsList) {
+      total = int.parse(a.cartCount!) * int.parse(a.price);
+    }
+    totalPrice.value += total;
+  }
+
   Future<void> getCarts() async {
     final resultOrExeption = await _getProductsRepository.getProducts();
     resultOrExeption.fold(
@@ -28,6 +41,23 @@ class CartController extends GetxController {
         }
       },
     );
+    for (var a in cartsList) {
+      int total = int.parse(a.cartCount!) * int.parse(a.price);
+      totalPrice.value += total;
+    }
+  }
+
+  Future<void> onDeleteButtonPressed({required int index}) async {
+    final dto = ProductDto(
+        isActive: cartsList[index].isActive,
+        cartMode: false,
+        cartCount: "0",
+        count: (int.parse(cartsList[index].cartCount!) +
+                int.parse(cartsList[index].count))
+            .toString());
+    final deleteCart =
+        await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
+    deleteCart.fold((left) => null, (right) => cartsList.removeAt(index));
   }
 
   Future<void> onRightNumberPickerPressed({required int index}) async {
@@ -44,6 +74,7 @@ class CartController extends GetxController {
         getCarts();
       });
     }
+    countTotalPrice();
   }
 
   Future<void> onLeftNumberPickerPressed({required int index}) async {
@@ -58,7 +89,7 @@ class CartController extends GetxController {
       final removeOnDecreeseUnderOne =
           await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
       removeOnDecreeseUnderOne.fold((left) => null, (right) {
-        cartsList.clear();
+        cartsList.removeAt(index);
         getCarts();
       });
     }
@@ -68,11 +99,35 @@ class CartController extends GetxController {
           isActive: cartsList[index].isActive,
           cartCount: (int.parse(cartsList[index].cartCount!) - 1).toString(),
           count: (int.parse(cartsList[index].count) + 1).toString());
-      final increeseCount =
+      final decreeseCount =
           await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
-      increeseCount.fold((left) => null, (right) {
+      await Future.delayed(const Duration(seconds: 1));
+      decreeseCount.fold((left) => null, (right) {
         cartsList.clear();
         getCarts();
+      });
+    }
+    countTotalPrice();
+  }
+
+  void onBackButtonPressed() {
+    int count = 0;
+    for (var a in cartsList) {
+      count += int.parse(a.cartCount!);
+    }
+    Get.back(result: count);
+  }
+
+  Future<void> onPaymentButtonPressed() async {
+    for (var a in cartsList) {
+      final dto = ProductDto(
+          isActive: true, cartCount: "0", cartMode: false, count: a.count);
+      final paymantPatch =
+          await _cartRepository.patchProduct(dto: dto, id: a.id);
+      paymantPatch.fold(
+          (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
+              messageText: left, backgroundColor: Colors.redAccent)), (right) {
+        Get.offAndToNamed(RouteNames.customerPageRoute);
       });
     }
   }
