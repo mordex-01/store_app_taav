@@ -8,6 +8,8 @@ import 'package:store_app_taav/src/pages/customer/common/customer_binding.dart';
 import 'package:store_app_taav/src/pages/customer/view/customer_page.dart';
 import 'package:store_app_taav/src/pages/details/common/details_binding.dart';
 import 'package:store_app_taav/src/pages/details/view/details_page.dart';
+import 'package:store_app_taav/src/pages/edit/common/edit_binding.dart';
+import 'package:store_app_taav/src/pages/edit/view/edit_page.dart';
 import 'package:store_app_taav/src/pages/login/common/login_binding.dart';
 import 'package:store_app_taav/src/pages/login/view/login_page.dart';
 import 'package:store_app_taav/src/pages/seller/common/seller_binding.dart';
@@ -51,6 +53,10 @@ class RoutePages {
       page: () => const SellerPage(),
       binding: SellerBinding(),
       children: [
+        GetPage(
+            name: RouteNames.editProductRoute,
+            page: () => const EditPage(),
+            binding: EditBinding()),
         GetPage(
           name: RouteNames.addProductRoute,
           page: () => const AddProductPage(),

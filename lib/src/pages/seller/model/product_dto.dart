@@ -9,6 +9,6 @@ class ProductDto {
         "isActive": isActive,
         "count": count,
         "cartCount": cartCount,
-        "cartMode": cartMode ?? false
+        "cartMode": cartMode
       };
 }

@@ -231,7 +231,12 @@ class SellerController extends GetxController {
       isSwiched.value = true;
     }
 
-    final isActiveDto = ProductDto(isActive: isSwiched.value);
+    final isActiveDto = ProductDto(
+      isActive: isSwiched.value,
+      count: productsList[index].count,
+      cartCount: productsList[index].cartCount ?? "0",
+      cartMode: productsList[index].cartMode ?? false,
+    );
 
     final resultOrExeption =
         await _sellerRepository.toggleIsActive(id: id, dto: isActiveDto);
@@ -310,5 +315,17 @@ class SellerController extends GetxController {
       }
     }
     Get.offAllNamed(RouteNames.loginPageRoute);
+  }
+
+  onEditButtonTapped({required int index}) async {
+    var result = await Get.toNamed(
+        RouteNames.sellerPageRoute + RouteNames.editProductRoute,
+        arguments: productsList[index].id);
+    if (result != null) {
+      //fill it
+      // productsList.add(result);
+      productsList.clear();
+      getProducts();
+    }
   }
 }

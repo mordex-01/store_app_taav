@@ -19,4 +19,5 @@ class RepositoryUtils {
   static String deleteCart({required String id}) => "/cart/$id";
   static String decreeseProductCount({required String id}) => "/product/$id";
   static String patchProduct({required String id}) => "/product/$id";
+  static String editProduct({required String id}) => "/product/$id";
 }

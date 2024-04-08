@@ -28,6 +28,7 @@ class AddProductController extends GetxController {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController countController = TextEditingController();
   final TextEditingController tagTextFieldController = TextEditingController();
+  //
   final AddProductRepository _addProductRepository = AddProductRepository();
   final ScrollController tagsScrollController = ScrollController();
   final formKey = GlobalKey<FormState>();

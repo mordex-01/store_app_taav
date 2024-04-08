@@ -93,7 +93,12 @@ class SellerPage extends GetView<SellerController> {
             itemCount: controller.productsList.length,
             itemBuilder: (context, index) => Obx(
               () {
-                return _productBox(index: index);
+                return _productBox(
+                  index: index,
+                  onEditTap: () {
+                    controller.onEditButtonTapped(index: index);
+                  },
+                );
               },
             ),
           ),
@@ -344,7 +349,9 @@ class SellerPage extends GetView<SellerController> {
         ),
       );
 
-  Widget _productBox({required int index}) => MyProductBox(
+  Widget _productBox(
+          {required int index, required void Function()? onEditTap}) =>
+      MyProductBox(
         tagItemCount: controller.productsList[index].tag.length,
         index: index,
         id: controller.productsList[index].id,
@@ -357,7 +364,7 @@ class SellerPage extends GetView<SellerController> {
                 fit: BoxFit.cover,
               )
             : Image.asset("assets/no-image-icon.png"),
-        onEditTap: () {},
+        onEditTap: onEditTap,
       );
   Widget _buildColorPicker(
           {required void Function(Color)? onColorChangeEnd,

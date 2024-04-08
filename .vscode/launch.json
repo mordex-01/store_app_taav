@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "store_app_taav",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "store_app_taav (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "store_app_taav (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "number_picker",
+            "cwd": "lib\\number_picker",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "number_picker (profile mode)",
+            "cwd": "lib\\number_picker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "number_picker (release mode)",
+            "cwd": "lib\\number_picker",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
