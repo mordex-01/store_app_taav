@@ -81,120 +81,14 @@ class SellerPage extends GetView<SellerController> {
                     ),
                   ),
                   const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Set Colors to filter",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          if (controller
-                                  .filteringDialogSelectedColorList.length ==
-                              5) {
-                            return;
-                          }
-                          controller.pickColor(
-                            context: context,
-                            buildColorPicker: _buildColorPicker(
-                              onColorChangeStart: (p0) {
-                                controller.isAnyColorSelected.value = false;
-                              },
-                              onColorChangeEnd: (value) {
-                                controller.dialogLastColorSelected.value =
-                                    value;
-                              },
-                            ),
-                            onSelectPressed: () {
-                              if (!controller.isAnyColorSelected.value) {
-                                controller.filteringDialogSelectedColorList.add(
-                                  SelectedColorViewModel(
-                                    color: controller
-                                        .dialogLastColorSelected.value,
-                                    isEnabled: true,
-                                  ),
-                                );
-                                controller.isAnyColorSelected.value = true;
-                                Navigator.of(context).pop();
-                              } else {
-                                Navigator.of(context).pop();
-                              }
-                            },
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.add,
-                          size: 30,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width,
-                    height: 100,
-                    child: Obx(
-                      () => ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount:
-                            controller.filteringDialogSelectedColorList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => dialogSelectedColors(
-                          color: controller
-                              .filteringDialogSelectedColorList[index].color,
-                          isEnabled: controller
-                              .filteringDialogSelectedColorList[index]
-                              .isEnabled!,
-                          onRemovePressed: () {
-                            controller.filteringDialogSelectedColorList
-                                .removeAt(index);
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
+                  _filterSectionColorTextAndAddButton(context: context),
+                  _filterSectionColorsListView(context: context),
                   const Divider(),
                   const Text(
                     "Set Tags to Filter",
                     style: TextStyle(fontSize: 18),
                   ),
-                  SizedBox(
-                    width: double.maxFinite,
-                    height: 250,
-                    child: ListView(
-                      children: [
-                        Wrap(
-                          spacing: 5,
-                          children: List.generate(
-                            controller.productsTagsList.length,
-                            (index) => Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: InkWell(
-                                onTap: () {
-                                  controller
-                                          .productsTagsList[index].isTagCheck =
-                                      !controller
-                                          .productsTagsList[index].isTagCheck;
-                                  //Using App Update ---------------------
-                                  Get.appUpdate();
-                                },
-                                child: Chip(
-                                  avatar: controller
-                                          .productsTagsList[index].isTagCheck
-                                      ? const Icon(Icons.check_box_outlined)
-                                      : const Icon(Icons
-                                          .check_box_outline_blank_rounded),
-                                  label: Text(
-                                    controller.productsTagsList[index].tagLable,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _filterSectionTagsListView(),
                   const Expanded(child: SizedBox()),
                   _filterButton(
                     text: "Filter",
@@ -207,6 +101,10 @@ class SellerPage extends GetView<SellerController> {
                     child: SizedBox(),
                   ),
                   _filterButton(
+                    text: "Clear All",
+                    onPressed: () {},
+                  ),
+                  _filterButton(
                     text: "Close",
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -217,6 +115,106 @@ class SellerPage extends GetView<SellerController> {
             ),
           );
         },
+      );
+  Widget _filterSectionTagsListView() => SizedBox(
+        width: double.maxFinite,
+        height: 250,
+        child: ListView(
+          children: [
+            Wrap(
+              spacing: 5,
+              children: List.generate(
+                controller.productsTagsList.length,
+                (index) => filterSectionTagChips(index: index),
+              ),
+            ),
+          ],
+        ),
+      );
+  Widget _filterSectionColorsListView({required BuildContext context}) =>
+      SizedBox(
+        width: MediaQuery.sizeOf(context).width,
+        height: 100,
+        child: Obx(
+          () => ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.filteringDialogSelectedColorList.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => dialogSelectedColors(
+              color: controller.filteringDialogSelectedColorList[index].color,
+              isEnabled:
+                  controller.filteringDialogSelectedColorList[index].isEnabled!,
+              onRemovePressed: () {
+                controller.filteringDialogSelectedColorList.removeAt(index);
+              },
+            ),
+          ),
+        ),
+      );
+  Widget _filterSectionColorTextAndAddButton({required BuildContext context}) =>
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "Set Colors to filter",
+            style: TextStyle(fontSize: 18),
+          ),
+          IconButton(
+            onPressed: () {
+              if (controller.filteringDialogSelectedColorList.length == 5) {
+                return;
+              }
+              controller.pickColor(
+                context: context,
+                buildColorPicker: _buildColorPicker(
+                  onColorChangeStart: (p0) {
+                    controller.isAnyColorSelected.value = false;
+                  },
+                  onColorChangeEnd: (value) {
+                    controller.dialogLastColorSelected.value = value;
+                  },
+                ),
+                onSelectPressed: () {
+                  if (!controller.isAnyColorSelected.value) {
+                    controller.filteringDialogSelectedColorList.add(
+                      SelectedColorViewModel(
+                        color: controller.dialogLastColorSelected.value,
+                        isEnabled: true,
+                      ),
+                    );
+                    controller.isAnyColorSelected.value = true;
+                    Navigator.of(context).pop();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.add,
+              size: 30,
+            ),
+          )
+        ],
+      );
+  Widget filterSectionTagChips({required int index}) => Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: InkWell(
+          onTap: () {
+            controller.productsTagsList[index].isTagCheck =
+                !controller.productsTagsList[index].isTagCheck;
+            //Using App Update ---------------------
+            Get.appUpdate();
+          },
+          child: Chip(
+            avatar: controller.productsTagsList[index].isTagCheck
+                ? const Icon(Icons.check_box_outlined)
+                : const Icon(Icons.check_box_outline_blank_rounded),
+            label: Text(
+              controller.productsTagsList[index].tagLable,
+            ),
+          ),
+        ),
       );
 
   Widget dialogSelectedColors({
