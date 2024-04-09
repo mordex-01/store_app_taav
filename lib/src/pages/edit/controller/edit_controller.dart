@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,9 +9,61 @@ import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/addproduct/model/add_product_dto.dart';
 import 'package:store_app_taav/src/pages/addproduct/repository/add_product_repository.dart';
 import 'package:store_app_taav/src/pages/edit/repository/edit_repository.dart';
+import 'package:store_app_taav/src/shared/get_products_repository.dart';
 
 class EditController extends GetxController {
+  @override
+  void onReady() {
+    if (args != null) {
+      declaringVariables();
+    }
+    super.onReady();
+  }
+
   var args = Get.arguments;
+  final GetProductsRepository _getProductsRepository = GetProductsRepository();
+
+  Future<void> declaringVariables() async {
+    final results = _getProductsRepository.getProductById(args);
+    results.fold(
+      (left) => Get.showSnackbar(
+        WidgetUtils.myCustomSnackBar(
+            messageText: left, backgroundColor: Colors.redAccent),
+      ),
+      (right) => {
+        tags.value = right.tag.map((e) => e as String).toList(),
+        color1.value = Color(int.parse(
+            right.color.map((e) => e as String).toList().elementAt(0))),
+        color2.value = Color(int.parse(
+            right.color.map((e) => e as String).toList().elementAt(1))),
+        color3.value = Color(int.parse(
+            right.color.map((e) => e as String).toList().elementAt(2))),
+        color4.value = Color(int.parse(
+            right.color.map((e) => e as String).toList().elementAt(3))),
+        color5.value = Color(int.parse(
+            right.color.map((e) => e as String).toList().elementAt(4))),
+        if (color1.value != const Color(0xffffffff))
+          {isColorSelected1.value = true},
+        if (color2.value != const Color(0xffffffff))
+          {isColorSelected2.value = true},
+        if (color3.value != const Color(0xffffffff))
+          {isColorSelected3.value = true},
+        if (color4.value != const Color(0xffffffff))
+          {isColorSelected4.value = true},
+        if (color5.value != const Color(0xffffffff))
+          {isColorSelected5.value = true},
+        titleController.text = right.title,
+        descriptionController.text = right.description,
+        priceController.text = right.price,
+        countController.text = right.count,
+        if (right.image != null)
+          {
+            bytes.value = base64Decode(right.image!),
+          }
+      },
+    );
+  }
+
   RxList<String> tags = <String>[].obs;
 
   Rx<Color> color1 = Rx(Colors.white);
@@ -139,6 +192,7 @@ class EditController extends GetxController {
   }
 
   final EditRepository _editRepository = EditRepository();
+
   Future<void> editProduct({required String id}) async {
     final dto = AddProductDto(
       tag: tags,
