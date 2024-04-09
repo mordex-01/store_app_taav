@@ -91,9 +91,13 @@ class DetailsPage extends GetView<DetailsController> {
             style: TextStyle(fontSize: 24),
           ),
           Obx(
-            () => Text(
-              controller.myProduct.value.description,
-              style: const TextStyle(fontSize: 18),
+            () => SizedBox(
+              height: 100,
+              width: 300,
+              child: Text(
+                controller.myProduct.value.description,
+                style: const TextStyle(fontSize: 18),
+              ),
             ),
           ),
         ],

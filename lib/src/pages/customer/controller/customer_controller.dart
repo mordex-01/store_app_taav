@@ -108,7 +108,8 @@ class CustomerController extends GetxController {
           "count": productsList[index].count
         });
     if (result != null) {
-      cartItemCount.value = result;
+      print(result);
+      cartItemCount.value += int.parse(result);
       // getProducts();
       // getCarts();
     }

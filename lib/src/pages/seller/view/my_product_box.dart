@@ -4,27 +4,28 @@ import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dar
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 
 class MyProductBox extends GetView<SellerController> {
-  const MyProductBox({
-    super.key,
-    this.image,
-    required this.product,
-    required this.onEditTap,
-    required this.id,
-    required this.index,
-    required this.tagItemCount,
-  });
+  const MyProductBox(
+      {super.key,
+      this.image,
+      required this.product,
+      required this.onEditTap,
+      required this.id,
+      required this.index,
+      required this.tagItemCount,
+      required this.itemCount});
   final void Function()? onEditTap;
   final ProductViewModel product;
   final String id;
   final Widget? image;
   final int index;
+  final int itemCount;
   final int tagItemCount;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(40),
-      height: 450,
+      height: 460,
       decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(width: 2, color: Colors.blue),
@@ -62,7 +63,12 @@ class MyProductBox extends GetView<SellerController> {
                 selectedColors(color: Color(int.parse(product.color[3]))),
                 selectedColors(color: Color(int.parse(product.color[4]))),
                 const Expanded(child: SizedBox()),
-                Text("Price ${product.price}"),
+                Column(
+                  children: [
+                    Text("Price ${product.price}"),
+                    Text("Count $itemCount")
+                  ],
+                ),
               ],
             ),
           ),

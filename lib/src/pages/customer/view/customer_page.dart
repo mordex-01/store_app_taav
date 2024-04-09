@@ -61,6 +61,7 @@ class CustomerPage extends GetView<CustomerController> {
           scrollDirection: Axis.vertical,
           itemCount: controller.productsList.length,
           itemBuilder: (context, index) => productBox(
+            itemCount: int.parse(controller.productsList[index].count),
             onTap: () => controller.goToDetailsPage(index: index),
             context: context,
             product: controller.productsList[index],
@@ -84,6 +85,7 @@ class CustomerPage extends GetView<CustomerController> {
     required Widget? image,
     required ProductViewModel product,
     required int tagItemCount,
+    required int itemCount,
     required void Function()? onTap,
   }) =>
       InkWell(
@@ -91,7 +93,7 @@ class CustomerPage extends GetView<CustomerController> {
         onTap: onTap,
         child: Container(
           margin: const EdgeInsets.all(40),
-          height: 360,
+          height: 370,
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(width: 2, color: Colors.blue),
@@ -129,7 +131,12 @@ class CustomerPage extends GetView<CustomerController> {
                     selectedColors(color: Color(int.parse(product.color[3]))),
                     selectedColors(color: Color(int.parse(product.color[4]))),
                     const Expanded(child: SizedBox()),
-                    Text("Price ${product.price}"),
+                    Column(
+                      children: [
+                        Text("Price ${product.price}"),
+                        Text("Count $itemCount")
+                      ],
+                    ),
                   ],
                 ),
               ),

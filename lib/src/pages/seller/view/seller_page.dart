@@ -267,6 +267,7 @@ class SellerPage extends GetView<SellerController> {
   Widget _productBox(
           {required int index, required void Function()? onEditTap}) =>
       MyProductBox(
+        itemCount: int.parse(controller.productsList[index].count),
         tagItemCount: controller.productsList[index].tag.length,
         index: index,
         id: controller.productsList[index].id,

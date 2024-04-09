@@ -64,7 +64,8 @@ class DetailsController extends GetxController {
             (int.parse(myProduct.value.count) - middleText.value).toString());
     final decreeseOrExeption =
         await _detailsRepository.decreeseCount(id: id, dto: dto);
-    decreeseOrExeption.fold((left) => null, (right) => Get.back(result: id));
+    decreeseOrExeption.fold((left) => null,
+        (right) => Get.back(result: middleText.value.toString()));
   }
   //show
 }
