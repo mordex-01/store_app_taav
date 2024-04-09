@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
@@ -23,6 +24,7 @@ class SellerController extends GetxController {
   }
 
 //filtering final Values
+  Rx<bool> isFilterButtonPressed = false.obs;
   Rx<double> filteringPriceStartValue = Rx(0);
   Rx<double> filteringPriceEndValue = Rx(0);
 
@@ -56,7 +58,18 @@ class SellerController extends GetxController {
 
   Rx<bool> isLoading = false.obs;
 
+  void onClearAllFilterButtonPressed({required BuildContext context}) {
+    isFilterButtonPressed.value = true;
+    filteringPriceStartValue.value = productsPriceList.first;
+    filteringPriceEndValue.value = productsPriceList.last;
+    filteringDialogSelectedColorList.value = [];
+    productsList.clear();
+    getProducts();
+    Navigator.of(context).pop();
+  }
+
   void onFilterButtonPressed(BuildContext context) {
+    isFilterButtonPressed.value = true;
     // filter Price
     productsList.removeWhere((element) =>
         int.parse(element.price) < filteringPriceStartValue.value.toInt());

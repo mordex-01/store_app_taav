@@ -29,15 +29,17 @@ class SellerPage extends GetView<SellerController> {
           ],
         ),
         onTap: () {
-          //set min max price on filter init
-          controller.filteringPriceStartValue.value =
-              controller.productsPriceList.first;
-          controller.filteringPriceEndValue.value =
-              controller.productsPriceList.last;
+          if (!controller.isFilterButtonPressed.value) {
+            //set min max price on filter init
+            controller.filteringPriceStartValue.value =
+                controller.productsPriceList.first;
+            controller.filteringPriceEndValue.value =
+                controller.productsPriceList.last;
+          }
           ////////////////////////////////////////
           var rangeValue = Rx(RangeValues(
-            controller.productsPriceList.first,
-            controller.productsPriceList.last,
+            controller.filteringPriceStartValue.value,
+            controller.filteringPriceEndValue.value,
           ));
           showDialog(
             context: context,
@@ -102,7 +104,10 @@ class SellerPage extends GetView<SellerController> {
                   ),
                   _filterButton(
                     text: "Clear All",
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.onClearAllFilterButtonPressed(
+                          context: context);
+                    },
                   ),
                   _filterButton(
                     text: "Close",
