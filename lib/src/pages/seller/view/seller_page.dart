@@ -13,97 +13,9 @@ class SellerPage extends GetView<SellerController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: InkWell(
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        onTap: () {
-          controller.onAddButtonTapped();
-        },
-        child: Container(
-          decoration:
-              const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
-          width: 65,
-          height: 65,
-          child: const Center(
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-              size: 50,
-            ),
-          ),
-        ),
-      ),
-      appBar: AppBar(
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: PopupMenuButton(
-              icon: const Icon(Icons.menu),
-              onSelected: (value) {
-                //fill that later
-              },
-              itemBuilder: (context) => [
-                const PopupMenuItem(
-                  value: "item1",
-                  child: Row(
-                    children: [
-                      Icon(Icons.language),
-                      Text("  Change Language"),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  child: const Row(
-                    children: [
-                      Icon(Icons.refresh),
-                      Text("  Refresh List"),
-                    ],
-                  ),
-                  onTap: () {
-                    controller.onPopUpMenuRefreshTapped();
-                  },
-                ),
-                _filterPopUpMenuItemButton(context),
-                PopupMenuItem(
-                  value: "item3",
-                  child: const Row(
-                    children: [
-                      Icon(Icons.logout),
-                      Text("  LogOut"),
-                    ],
-                  ),
-                  onTap: () {
-                    controller.onBackTapped();
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-        title: TextField(
-          onChanged: (value) {
-            controller.onSearchTextChanged(value);
-          },
-          decoration: const InputDecoration(prefixIcon: Icon(Icons.search)),
-        ),
-      ),
-      body: Obx(
-        () => RefreshIndicator(
-          onRefresh: () => controller.getProducts(),
-          child: ListView.builder(
-            itemCount: controller.productsList.length,
-            itemBuilder: (context, index) => Obx(
-              () {
-                return _productBox(
-                  index: index,
-                  onEditTap: () {
-                    controller.onEditButtonTapped(index: index);
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: _addActionButton(),
+      appBar: _appBar(),
+      body: _body(),
     );
   }
 
@@ -377,5 +289,96 @@ class SellerPage extends GetView<SellerController> {
         enableTooltips: false,
         onColorChanged: (value) {},
         onColorChangeEnd: onColorChangeEnd,
+      );
+  Widget _body() => Obx(
+        () => RefreshIndicator(
+          onRefresh: () => controller.getProducts(),
+          child: ListView.builder(
+            itemCount: controller.productsList.length,
+            itemBuilder: (context, index) => Obx(
+              () {
+                return _productBox(
+                  index: index,
+                  onEditTap: () {
+                    controller.onEditButtonTapped(index: index);
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      );
+  PreferredSizeWidget? _appBar() => AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: PopupMenuButton(
+              icon: const Icon(Icons.menu),
+              onSelected: (value) {
+                //fill that later
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: "item1",
+                  child: Row(
+                    children: [
+                      Icon(Icons.language),
+                      Text("  Change Language"),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  child: const Row(
+                    children: [
+                      Icon(Icons.refresh),
+                      Text("  Refresh List"),
+                    ],
+                  ),
+                  onTap: () {
+                    controller.onPopUpMenuRefreshTapped();
+                  },
+                ),
+                _filterPopUpMenuItemButton(context),
+                PopupMenuItem(
+                  value: "item3",
+                  child: const Row(
+                    children: [
+                      Icon(Icons.logout),
+                      Text("  LogOut"),
+                    ],
+                  ),
+                  onTap: () {
+                    controller.onBackTapped();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+        title: TextField(
+          onChanged: (value) {
+            controller.onSearchTextChanged(value);
+          },
+          decoration: const InputDecoration(prefixIcon: Icon(Icons.search)),
+        ),
+      );
+  Widget _addActionButton() => InkWell(
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        onTap: () {
+          controller.onAddButtonTapped();
+        },
+        child: Container(
+          decoration:
+              const BoxDecoration(shape: BoxShape.circle, color: Colors.blue),
+          width: 65,
+          height: 65,
+          child: const Center(
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 50,
+            ),
+          ),
+        ),
       );
 }
