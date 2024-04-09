@@ -59,7 +59,7 @@ class SellerController extends GetxController {
   Rx<bool> isLoading = false.obs;
 
   void onClearAllFilterButtonPressed({required BuildContext context}) {
-    isFilterButtonPressed.value = true;
+    isFilterButtonPressed.value = false;
     filteringPriceStartValue.value = productsPriceList.first;
     filteringPriceEndValue.value = productsPriceList.last;
     filteringDialogSelectedColorList.value = [];
