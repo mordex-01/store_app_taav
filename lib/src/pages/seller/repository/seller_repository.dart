@@ -21,7 +21,11 @@ class SellerRepository {
   //     return Left("${response.statusCode}");
   //   }
   // }
+  ///////////////////////////////////////////////////////////////
+  // Future<Either<String,String>> getSellersById(){
 
+  // }
+  /////////////////////////////////////////////////
   Future<Either<String, ProductViewModel>> getIsActive(
       {required String id}) async {
     var url = Uri.http(

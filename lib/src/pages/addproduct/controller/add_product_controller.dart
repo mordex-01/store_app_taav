@@ -9,6 +9,22 @@ import 'package:store_app_taav/src/pages/addproduct/model/add_product_dto.dart';
 import 'package:store_app_taav/src/pages/addproduct/repository/add_product_repository.dart';
 
 class AddProductController extends GetxController {
+  @override
+  void onInit() {
+    if (args != null) {
+      setSellerId();
+    }
+    super.onInit();
+  }
+
+  var args = Get.arguments;
+  //save Seller Id for add to Dto
+  RxString sellerId = RxString("initial");
+  void setSellerId() {
+    sellerId.value = args;
+    print(sellerId.value);
+  }
+
   RxList<String> tags = <String>[].obs;
 
   Rx<Color> color1 = Rx(Colors.white);
@@ -106,6 +122,7 @@ class AddProductController extends GetxController {
 
   Future<void> addProduct() async {
     final dto = AddProductDto(
+      sellerId: sellerId.value,
       tag: tags,
       color: [
         color1.value.value.toString(),

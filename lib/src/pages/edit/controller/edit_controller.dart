@@ -22,7 +22,7 @@ class EditController extends GetxController {
 
   var args = Get.arguments;
   final GetProductsRepository _getProductsRepository = GetProductsRepository();
-
+  RxString sellerId = RxString("initial");
   Future<void> declaringVariables() async {
     final results = _getProductsRepository.getProductById(args);
     results.fold(
@@ -31,6 +31,7 @@ class EditController extends GetxController {
             messageText: left, backgroundColor: Colors.redAccent),
       ),
       (right) => {
+        sellerId.value = right.sellerId!,
         tags.value = right.tag.map((e) => e as String).toList(),
         color1.value = Color(int.parse(
             right.color.map((e) => e as String).toList().elementAt(0))),
@@ -161,6 +162,7 @@ class EditController extends GetxController {
 
   Future<void> addProduct() async {
     final dto = AddProductDto(
+      // sellerId: sellerId.value,
       tag: tags,
       color: [
         color1.value.value.toString(),
@@ -195,6 +197,7 @@ class EditController extends GetxController {
 
   Future<void> editProduct({required String id}) async {
     final dto = AddProductDto(
+      sellerId: sellerId.value,
       tag: tags,
       color: [
         color1.value.value.toString(),

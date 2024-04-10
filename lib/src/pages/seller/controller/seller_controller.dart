@@ -17,9 +17,16 @@ class SellerController extends GetxController {
   void onInit() {
     if (args != null) {
       saveArgs();
+      saveSellerId();
     }
     getProducts();
     super.onInit();
+  }
+
+//save Seller id for add product
+  RxString sellerId = RxString("initial");
+  void saveSellerId() {
+    sellerId.value = args;
   }
 
 //filtering final Values
@@ -200,7 +207,9 @@ class SellerController extends GetxController {
 //on add button Tapped
   onAddButtonTapped() async {
     var result = await Get.toNamed(
-        RouteNames.sellerPageRoute + RouteNames.addProductRoute);
+      RouteNames.sellerPageRoute + RouteNames.addProductRoute,
+      arguments: sellerId.value,
+    );
     if (result != null) {
       //fill it
       // productsList.add(result);
@@ -277,7 +286,11 @@ class SellerController extends GetxController {
       (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
           messageText: left, backgroundColor: Colors.redAccent)),
       (right) => {
-        productsList.addAll(right),
+        for (var a in right)
+          {
+            if (a.sellerId! == sellerId.value) {productsList.add(a)}
+          },
+        // productsList.addAll(right),
         productsPriceList.clear(),
         for (var a in productsList)
           {
