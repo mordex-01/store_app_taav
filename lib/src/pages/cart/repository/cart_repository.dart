@@ -27,7 +27,8 @@ class CartRepository {
   }
 
   Future<Either<String, CartModel>> deleteCart({required String id}) async {
-    var url = Uri.http(RepositoryUtils.deleteCart(id: id));
+    var url =
+        Uri.http(RepositoryUtils.baseUrl, RepositoryUtils.deleteCart(id: id));
     final response = await http.delete(url);
     if (response.statusCode >= 200 && response.statusCode < 400) {
       return Right(CartModel.fromJson(jsonDecode(response.body)));

@@ -26,7 +26,7 @@ class ProductViewModel {
   final List<dynamic> color;
   final List<dynamic> tag;
   final bool? cartMode;
-  final String? cartCount;
+  late String? cartCount;
 
   factory ProductViewModel.fromJson(Map<String, dynamic> json) =>
       ProductViewModel(

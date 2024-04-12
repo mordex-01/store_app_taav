@@ -35,52 +35,6 @@
       "isRememberMe": false
     }
   ],
-  "product": [
-    {
-      "id": "8be4",
-      "sellerId": "d09d",
-      "title": "asd",
-      "description": "asd",
-      "price": "10",
-      "count": "9",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": [],
-      "cartCount": "1",
-      "cartMode": true
-    },
-    {
-      "id": "7dfc",
-      "sellerId": "d09d",
-      "title": "aaa",
-      "description": "aaa",
-      "price": "10",
-      "count": "10",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": []
-    }
-  ],
-  "cart": [
-    {
-      "id": "51b7",
-      "customerId": "4245",
-      "productId": "8be4",
-      "itemCount": "1"
-    }
-  ]
+  "product": [],
+  "cart": []
 }

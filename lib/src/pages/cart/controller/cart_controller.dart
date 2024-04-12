@@ -1,8 +1,10 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
+import 'package:store_app_taav/src/pages/cart/model/cart_dto.dart';
 import 'package:store_app_taav/src/pages/cart/repository/cart_repository.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
@@ -18,7 +20,7 @@ class CartController extends GetxController {
 
   RxList<ProductViewModel> cartsList = <ProductViewModel>[].obs;
   RxList<ProductViewModel> trueList = <ProductViewModel>[].obs;
-
+  RxString lastCartCount = RxString("initial");
   final GetProductsRepository _getProductsRepository = GetProductsRepository();
   final CartRepository _cartRepository = CartRepository();
 
@@ -41,6 +43,8 @@ class CartController extends GetxController {
   }
 
   Future<void> getCarts() async {
+    cartsList.clear();
+    trueList.clear();
     final resultOrExeption = await _getProductsRepository.getProducts();
     resultOrExeption.fold(
       (left) => null,
@@ -60,6 +64,9 @@ class CartController extends GetxController {
       for (var a in right) {
         if (a.customerId == customerId.value) {
           for (var b in cartsList) {
+            //to set new cart count for theyr own customer
+            lastCartCount.value = b.cartCount!;
+            b.cartCount = a.itemCount;
             trueList.add(b);
           }
         }
@@ -73,33 +80,72 @@ class CartController extends GetxController {
   }
 
   Future<void> onDeleteButtonPressed({required int index}) async {
-    final dto = ProductDto(
-        isActive: cartsList[index].isActive,
-        cartMode: false,
-        cartCount: "0",
-        count: (int.parse(cartsList[index].cartCount!) +
-                int.parse(cartsList[index].count))
-            .toString());
-    final deleteCart =
-        await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
-    deleteCart.fold((left) => null, (right) => cartsList.removeAt(index));
+    //delete on carts
+    final getCarts = await _cartRepository.getCart();
+    getCarts.fold((left) => print(left), (right) async {
+      for (var a in right) {
+        if (a.productId == trueList[index].id &&
+            a.customerId == customerId.value) {
+          final dto = ProductDto(
+              isActive: trueList[index].isActive,
+              cartCount:
+                  (int.parse(lastCartCount.value) - int.parse(a.itemCount))
+                      .toString(),
+              cartMode: true,
+              count: (int.parse(trueList[index].count) + int.parse(a.itemCount))
+                  .toString());
+          final patchProduct =
+              _cartRepository.patchProduct(dto: dto, id: a.productId);
+          patchProduct.fold((left) => null, (right) => null);
+          final deleteCart = await _cartRepository.deleteCart(id: a.id!);
+          deleteCart.fold((left) => null, (right) => null);
+        }
+      }
+    });
+    trueList.removeAt(index);
+
+//     final dto = ProductDto(isActive: trueList[index].isActive,cartCount: );
+// final decreeseProductCount = _cartRepository.patchProduct(dto: dto, id: id)
+    // final dto = ProductDto(
+    //     isActive: cartsList[index].isActive,
+    //     cartMode: false,
+    //     cartCount: "0",
+    //     count: (int.parse(cartsList[index].cartCount!) +
+    //             int.parse(cartsList[index].count))
+    //         .toString());
+    // final deleteCart =
+    //     await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
+    // deleteCart.fold((left) => null, (right) => cartsList.removeAt(index));
   }
 
   Future<void> onRightNumberPickerPressed({required int index}) async {
-    if (cartsList[index].count != "0") {
+    if (trueList[index].count != "0") {
       final dto = ProductDto(
-          cartMode: cartsList[index].cartMode,
-          isActive: cartsList[index].isActive,
-          cartCount: (int.parse(cartsList[index].cartCount!) + 1).toString(),
-          count: (int.parse(cartsList[index].count) - 1).toString());
+          isActive: trueList[index].isActive,
+          cartMode: true,
+          count: (int.parse(trueList[index].count) - 1).toString(),
+          cartCount: (int.parse(lastCartCount.value) + 1).toString());
       final increeseCount =
-          await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
-      increeseCount.fold((left) => null, (right) {
-        cartsList.clear();
-        getCarts();
+          await _cartRepository.patchProduct(dto: dto, id: trueList[index].id);
+      increeseCount.fold((left) => null, (right) => null);
+      final getCarts = await _cartRepository.getCart();
+      getCarts.fold((left) => null, (right) async {
+        for (var a in right) {
+          if (a.customerId == customerId.value &&
+              trueList[index].id == a.productId) {
+            final dto = CartDto(
+                customerId: customerId.value,
+                productId: a.productId,
+                itemCount: (int.parse(a.itemCount) + 1).toString());
+            final increeseCartCount =
+                await _cartRepository.editCart(id: a.id!, dto: dto);
+            increeseCartCount.fold((left) => null, (right) => null);
+          }
+        }
       });
     }
-    countTotalPrice();
+
+    getCarts();
   }
 
   Future<void> onLeftNumberPickerPressed({required int index}) async {

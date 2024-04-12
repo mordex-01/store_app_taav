@@ -23,6 +23,6 @@ class RepositoryUtils {
 
   static const String addCart = '/cart';
   static String editCart({required String id}) => '/cart/$id';
-  static String deleteCart({required String id}) => "/cart/$id";
+  static String deleteCart({required String id}) => '/cart/$id';
   static const String getCart = '/cart';
 }
