@@ -35,6 +35,27 @@
       "isRememberMe": false
     }
   ],
-  "product": [],
+  "product": [
+    {
+      "id": "4b84",
+      "sellerId": "d09d",
+      "title": "asd",
+      "description": "asd",
+      "price": "10",
+      "count": "10",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": [],
+      "cartCount": "0",
+      "cartMode": true
+    }
+  ],
   "cart": []
 }

@@ -149,36 +149,62 @@ class CartController extends GetxController {
   }
 
   Future<void> onLeftNumberPickerPressed({required int index}) async {
-    if (cartsList[index].cartCount == "1") {
+    if (trueList[index].cartCount != "1") {
       final dto = ProductDto(
-          isActive: cartsList[index].isActive,
-          cartMode: false,
-          cartCount: "0",
-          count: (int.parse(cartsList[index].cartCount!) +
-                  int.parse(cartsList[index].count))
-              .toString());
-      final removeOnDecreeseUnderOne =
-          await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
-      removeOnDecreeseUnderOne.fold((left) => null, (right) {
-        cartsList.removeAt(index);
-        getCarts();
-      });
-    }
-    if (cartsList[index].cartCount != "1" && cartsList.isNotEmpty) {
-      final dto = ProductDto(
-          cartMode: cartsList[index].cartMode,
-          isActive: cartsList[index].isActive,
-          cartCount: (int.parse(cartsList[index].cartCount!) - 1).toString(),
-          count: (int.parse(cartsList[index].count) + 1).toString());
+          isActive: trueList[index].isActive,
+          cartMode: true,
+          count: (int.parse(trueList[index].count) + 1).toString(),
+          cartCount: (int.parse(lastCartCount.value) - 1).toString());
       final decreeseCount =
-          await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
-      await Future.delayed(const Duration(seconds: 1));
-      decreeseCount.fold((left) => null, (right) {
-        cartsList.clear();
-        getCarts();
+          await _cartRepository.patchProduct(dto: dto, id: trueList[index].id);
+      decreeseCount.fold((left) => null, (right) => null);
+      final getCarts = await _cartRepository.getCart();
+      getCarts.fold((left) => null, (right) async {
+        for (var a in right) {
+          if (a.customerId == customerId.value &&
+              trueList[index].id == a.productId) {
+            final dto = CartDto(
+                customerId: customerId.value,
+                productId: a.productId,
+                itemCount: (int.parse(a.itemCount) - 1).toString());
+            final increeseCartCount =
+                await _cartRepository.editCart(id: a.id!, dto: dto);
+            increeseCartCount.fold((left) => null, (right) => null);
+          }
+        }
       });
     }
-    countTotalPrice();
+    getCarts();
+    // if (cartsList[index].cartCount == "1") {
+    //   final dto = ProductDto(
+    //       isActive: cartsList[index].isActive,
+    //       cartMode: false,
+    //       cartCount: "0",
+    //       count: (int.parse(cartsList[index].cartCount!) +
+    //               int.parse(cartsList[index].count))
+    //           .toString());
+    //   final removeOnDecreeseUnderOne =
+    //       await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
+    //   removeOnDecreeseUnderOne.fold((left) => null, (right) {
+    //     cartsList.removeAt(index);
+    //     getCarts();
+    //   });
+    // }
+    // if (cartsList[index].cartCount != "1" && cartsList.isNotEmpty) {
+    //   final dto = ProductDto(
+    //       cartMode: cartsList[index].cartMode,
+    //       isActive: cartsList[index].isActive,
+    //       cartCount: (int.parse(cartsList[index].cartCount!) - 1).toString(),
+    //       count: (int.parse(cartsList[index].count) + 1).toString());
+    //   final decreeseCount =
+    //       await _cartRepository.patchProduct(dto: dto, id: cartsList[index].id);
+    //   await Future.delayed(const Duration(seconds: 1));
+    //   decreeseCount.fold((left) => null, (right) {
+    //     cartsList.clear();
+    //     getCarts();
+    //   });
+    // }
+    // countTotalPrice();
   }
 
   void onBackButtonPressed() {
