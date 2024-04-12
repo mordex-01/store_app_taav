@@ -1,6 +1,11 @@
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
+import 'package:store_app_taav/src/pages/cart/model/cart_dto.dart';
+import 'package:store_app_taav/src/pages/cart/model/cart_model.dart';
+import 'package:store_app_taav/src/pages/cart/repository/cart_repository.dart';
 import 'package:store_app_taav/src/pages/details/repository/details_repository.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
@@ -10,8 +15,18 @@ class DetailsController extends GetxController {
   var prams = Get.parameters;
   @override
   void onReady() {
+    saveArgs();
     getProductById(id: prams['product-id']!);
+
     super.onReady();
+  }
+
+  RxString customerId = RxString("initial");
+
+  Future<void> saveArgs() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    customerId.value = pref.getString("myUserId")!;
+    print(customerId.value);
   }
 
 //gereftim
@@ -51,8 +66,41 @@ class DetailsController extends GetxController {
   }
 
   final DetailsRepository _detailsRepository = DetailsRepository();
-
+  final CartRepository _cartRepository = CartRepository();
   Future<void> onAddButtonPressed({required String id}) async {
+    //get carts for check is that existOrNot
+    final List<CartModel> carts = [];
+    final getCarts = _cartRepository.getCart();
+    getCarts.fold((left) => null, (right) async {
+      for (var a in right) {
+        carts.add(a);
+      }
+      if (carts.every((element) =>
+          !(element.customerId.contains(customerId.value) &&
+              element.productId.contains(myProduct.value.id)))) {
+//addCart
+        final addCartDto = CartDto(
+            customerId: customerId.value,
+            productId: myProduct.value.id,
+            itemCount: middleText.value.toString());
+        final addCart = await _cartRepository.addCart(dto: addCartDto);
+        addCart.fold((left) => print(left), (right) => print("cartAdded"));
+      } else {
+        for (var a in carts) {
+          if (a.productId == myProduct.value.id) {
+            //editCart
+            final dto = CartDto(
+                customerId: customerId.value,
+                productId: myProduct.value.id,
+                itemCount:
+                    (int.parse(a.itemCount) + middleText.value).toString());
+            final editCart = _cartRepository.editCart(id: a.id!, dto: dto);
+            editCart.fold((left) => print(left), (right) => print(right));
+          }
+        }
+      }
+    });
+
     final dto = ProductDto(
         isActive: myProduct.value.isActive,
         cartCount: myProduct.value.cartCount != null

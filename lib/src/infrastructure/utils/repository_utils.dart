@@ -16,8 +16,13 @@ class RepositoryUtils {
   static const String getProductsTags = "/product";
   static const String addToCart = '/cart';
   static const String getCarts = '/cart';
-  static String deleteCart({required String id}) => "/cart/$id";
+
   static String decreeseProductCount({required String id}) => "/product/$id";
   static String patchProduct({required String id}) => "/product/$id";
   static String editProduct({required String id}) => "/product/$id";
+
+  static const String addCart = '/cart';
+  static String editCart({required String id}) => '/cart/$id';
+  static String deleteCart({required String id}) => "/cart/$id";
+  static const String getCart = '/cart';
 }
