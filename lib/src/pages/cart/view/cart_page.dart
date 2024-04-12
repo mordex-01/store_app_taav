@@ -21,16 +21,16 @@ class CartPage extends GetView<CartController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Obx(() => controller.cartsList.isEmpty
+              child: Obx(() => controller.trueList.isEmpty
                   ? const Center(child: Text("No Carts Exist"))
                   : ListView.builder(
-                      itemCount: controller.cartsList.length,
+                      itemCount: controller.trueList.length,
                       itemBuilder: (context, index) => _cartBox(
                         context: context,
-                        productTitle: controller.cartsList[index].title,
-                        price: int.parse(controller.cartsList[index].price),
+                        productTitle: controller.trueList[index].title,
+                        price: int.parse(controller.trueList[index].price),
                         cartItemCount:
-                            int.parse(controller.cartsList[index].cartCount!),
+                            int.parse(controller.trueList[index].cartCount!),
                         onRightButtonPressed: () =>
                             controller.onRightNumberPickerPressed(index: index),
                         onLeftButtonPressed: () =>

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/cart/repository/cart_repository.dart';
@@ -10,14 +11,26 @@ import 'package:store_app_taav/src/shared/get_products_repository.dart';
 class CartController extends GetxController {
   @override
   void onInit() {
+    setCustomer();
     getCarts();
     super.onInit();
   }
 
   RxList<ProductViewModel> cartsList = <ProductViewModel>[].obs;
+  RxList<ProductViewModel> trueList = <ProductViewModel>[].obs;
+
   final GetProductsRepository _getProductsRepository = GetProductsRepository();
   final CartRepository _cartRepository = CartRepository();
+
   RxInt totalPrice = RxInt(0);
+//get Customer
+  RxString customerId = RxString("initial");
+  Future<void> setCustomer() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    customerId.value = pref.getString("myUserId")!;
+    print(customerId.value);
+  }
+
   void countTotalPrice() {
     totalPrice.value = 0;
     late int total = 0;
@@ -41,6 +54,18 @@ class CartController extends GetxController {
         }
       },
     );
+//get this Customer CartList
+    final getCart = await _cartRepository.getCart();
+    getCart.fold((left) => print(left), (right) {
+      for (var a in right) {
+        if (a.customerId == customerId.value) {
+          for (var b in cartsList) {
+            trueList.add(b);
+          }
+        }
+      }
+    });
+
     for (var a in cartsList) {
       int total = int.parse(a.cartCount!) * int.parse(a.price);
       totalPrice.value += total;
