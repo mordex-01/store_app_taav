@@ -435,6 +435,7 @@ class AddProductPage extends GetView<AddProductController> {
           String? Function(String?)? validator,
           TextEditingController? controller}) =>
       TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         maxLength: maxLength,
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,

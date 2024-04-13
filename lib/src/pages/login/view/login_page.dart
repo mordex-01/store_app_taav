@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/generated/locales.g.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/login/controller/login_controller.dart';
 
@@ -24,7 +25,19 @@ class LoginPage extends GetView<LoginController> {
                 flex: 1,
                 child: SizedBox(),
               ),
-              _signInText(),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                _signInText(),
+                TextButton(
+                    onPressed: () {
+                      Get.updateLocale(const Locale("en", "US"));
+                    },
+                    child: const Text("English")),
+                TextButton(
+                    onPressed: () {
+                      Get.updateLocale(const Locale("fa", "IR"));
+                    },
+                    child: const Text("فارسی"))
+              ]),
               const Expanded(
                 flex: 1,
                 child: SizedBox(),
@@ -89,7 +102,7 @@ class LoginPage extends GetView<LoginController> {
                 padding: const EdgeInsets.only(top: 30),
                 child: _button(
                   context: context,
-                  text: "Login",
+                  text: LocaleKeys.login.tr,
                   onTap: () {
                     controller.onLoginTapped();
                   },
@@ -129,9 +142,9 @@ class LoginPage extends GetView<LoginController> {
         size: 96,
         color: WidgetUtils.blueAcentColor,
       );
-  Widget _signInText() => const Text(
-        "Sign In to continue",
-        style: TextStyle(fontSize: 24),
+  Widget _signInText() => Text(
+        LocaleKeys.signInToContinue.tr,
+        style: const TextStyle(fontSize: 24),
       );
   Widget _textFormField({
     required String hintText,

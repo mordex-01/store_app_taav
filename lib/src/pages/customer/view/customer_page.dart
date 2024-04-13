@@ -17,8 +17,8 @@ class CustomerPage extends GetView<CustomerController> {
             padding: const EdgeInsets.only(right: 10),
             child: Badge(
                 label: Obx(
-                  () => Text(controller.cartItemCount.value != 0
-                      ? controller.cartItemCount.value.toString()
+                  () => Text(controller.cartCount.value != 0
+                      ? controller.cartCount.value.toString()
                       : "0"),
                 ),
                 child: IconButton(

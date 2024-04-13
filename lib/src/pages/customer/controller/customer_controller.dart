@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
+import 'package:store_app_taav/src/pages/cart/repository/cart_repository.dart';
 import 'package:store_app_taav/src/pages/login/model/remember_me_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/shared/get_products_repository.dart';
@@ -15,6 +16,7 @@ class CustomerController extends GetxController {
       saveArgs();
     }
     getProducts();
+    getCount();
     // getCarts();
     super.onInit();
   }
@@ -22,14 +24,36 @@ class CustomerController extends GetxController {
   // final CartRepository _cartRepository = CartRepository();
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final GetProductsRepository _getProductsRepository = GetProductsRepository();
+  final CartRepository _cartRepositor = CartRepository();
   RxList<ProductViewModel> productsList = <ProductViewModel>[].obs;
   RxInt cartItemCount = RxInt(0);
   RxString detailsResultProductId = RxString("initial");
+  //
+  RxString customeId = RxString("initial");
 
   final dto = RememberMeDto(false);
   final args = Get.arguments;
-  void onCartIconTapped() {
-    Get.toNamed(RouteNames.customerPageRoute + RouteNames.cartPageRoute);
+  RxInt cartCount = RxInt(0);
+
+  Future<void> onCartIconTapped() async {
+    //--//--
+    await Get.toNamed(RouteNames.customerPageRoute + RouteNames.cartPageRoute);
+    cartCount.value = 0;
+    getCount();
+    // getProducts();
+  }
+
+//
+//
+  Future<void> getCount() async {
+    final getCarts = await _cartRepositor.getCart();
+    getCarts.fold((left) => null, (right) {
+      for (var a in right) {
+        if (a.customerId == customeId.value) {
+          cartCount.value += int.parse(a.itemCount);
+        }
+      }
+    });
   }
 
   // Future<void> getCarts() async {
@@ -73,6 +97,8 @@ class CustomerController extends GetxController {
   Future<void> saveArgs() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString("myUserId", args);
+    //
+    customeId.value = pref.getString("myUserId")!;
   }
 
   Future<void> onBackTapped() async {
@@ -101,18 +127,25 @@ class CustomerController extends GetxController {
   }
 
   Future<void> goToDetailsPage({required int index}) async {
-    var result = await Get.toNamed(
-        RouteNames.customerPageRoute + RouteNames.detailsPageRoute,
-        parameters: {
-          "product-id": productsList[index].id,
-          "count": productsList[index].count
-        });
-    if (result != null) {
-      print(result);
-      cartItemCount.value += int.parse(result);
-      // getProducts();
-      // getCarts();
-    }
+    // var result =
+
+    await Get.toNamed(
+      RouteNames.customerPageRoute + RouteNames.detailsPageRoute,
+      parameters: {
+        "product-id": productsList[index].id,
+        "count": productsList[index].count
+      },
+    );
+    cartCount.value = 0;
+    getCount();
+    // if (result != null) {
+    //   print(result);
+    //   cartCount.value + int.parse(result);
+
+    //   // cartItemCount.value += int.parse(result);
+    //   // getProducts();
+    //   // getCarts();
+    // }
   }
 
   void goToCart() {
