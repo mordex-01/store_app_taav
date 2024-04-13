@@ -37,7 +37,7 @@
   ],
   "product": [
     {
-      "id": "9197",
+      "id": "11c6",
       "sellerId": "d09d",
       "title": "asd",
       "description": "asd",
@@ -57,12 +57,12 @@
       "cartMode": true
     },
     {
-      "id": "b502",
+      "id": "531d",
       "sellerId": "836a",
-      "title": "asdddd",
-      "description": "asdddd",
+      "title": "ddd",
+      "description": "ddd",
       "price": "10",
-      "count": "8",
+      "count": "10",
       "isActive": true,
       "image": "",
       "colors": [
@@ -73,22 +73,16 @@
         "4294967295"
       ],
       "tags": [],
-      "cartCount": "2",
+      "cartCount": "0",
       "cartMode": true
     }
   ],
   "cart": [
     {
-      "id": "3065",
+      "id": "5bd7",
       "customerId": "4245",
-      "productId": "9197",
+      "productId": "11c6",
       "itemCount": "3"
-    },
-    {
-      "id": "ef19",
-      "customerId": "2b07",
-      "productId": "b502",
-      "itemCount": "2"
     }
   ]
 }

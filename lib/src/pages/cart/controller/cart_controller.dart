@@ -68,6 +68,7 @@ class CartController extends GetxController {
           resultOrExeption.fold((left) => null, (right) {
             for (var b in right) {
               if (b.id == productId) {
+                b.cartCount = a.itemCount;
                 trueList.add(b);
               }
             }
@@ -83,29 +84,57 @@ class CartController extends GetxController {
   }
 
   Future<void> onDeleteButtonPressed({required int index}) async {
-    //delete on carts
-    final getCarts = await _cartRepository.getCart();
-    getCarts.fold((left) => print(left), (right) async {
+    final getCart = await _cartRepository.getCart();
+    getCart.fold((left) => null, (right) async {
       for (var a in right) {
-        if (a.productId == trueList[index].id &&
-            a.customerId == customerId.value) {
-          final dto = ProductDto(
-              isActive: trueList[index].isActive,
-              cartCount:
-                  (int.parse(lastCartCount.value) - int.parse(a.itemCount))
-                      .toString(),
-              cartMode: true,
-              count: (int.parse(trueList[index].count) + int.parse(a.itemCount))
-                  .toString());
-          final patchProduct =
-              _cartRepository.patchProduct(dto: dto, id: a.productId);
-          patchProduct.fold((left) => null, (right) => null);
+        if (a.customerId == customerId.value &&
+            trueList[index].id == a.productId) {
           final deleteCart = await _cartRepository.deleteCart(id: a.id!);
-          deleteCart.fold((left) => null, (right) => null);
+          deleteCart.fold((left) => null, (right) async {
+            final getProduct =
+                await _getProductsRepository.getProductById(a.productId);
+            getProduct.fold((left) => null, (right) async {
+              final patchProduct = await _cartRepository.patchProduct(
+                  dto: ProductDto(
+                      isActive: true,
+                      cartMode: true,
+                      count: (int.parse(right.count) + int.parse(a.itemCount))
+                          .toString(),
+                      cartCount:
+                          (int.parse(right.cartCount!) - int.parse(a.itemCount))
+                              .toString()),
+                  id: a.productId);
+              patchProduct.fold(
+                  (left) => null, (right) => trueList.removeAt(index));
+            });
+          });
         }
       }
     });
-    trueList.removeAt(index);
+
+    // //delete on carts
+    // final getCarts = await _cartRepository.getCart();
+    // getCarts.fold((left) => print(left), (right) async {
+    //   for (var a in right) {
+    //     if (a.productId == trueList[index].id &&
+    //         a.customerId == customerId.value) {
+    //       final dto = ProductDto(
+    //           isActive: trueList[index].isActive,
+    //           cartCount:
+    //               (int.parse(lastCartCount.value) - int.parse(a.itemCount))
+    //                   .toString(),
+    //           cartMode: true,
+    //           count: (int.parse(trueList[index].count) + int.parse(a.itemCount))
+    //               .toString());
+    //       final patchProduct =
+    //           _cartRepository.patchProduct(dto: dto, id: a.productId);
+    //       patchProduct.fold((left) => null, (right) => null);
+    //       final deleteCart = await _cartRepository.deleteCart(id: a.id!);
+    //       deleteCart.fold((left) => null, (right) => null);
+    //     }
+    //   }
+    // });
+    // trueList.removeAt(index);
 
 //     final dto = ProductDto(isActive: trueList[index].isActive,cartCount: );
 // final decreeseProductCount = _cartRepository.patchProduct(dto: dto, id: id)
