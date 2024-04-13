@@ -15,6 +15,13 @@
       "userName": "asdd",
       "password": "asdd",
       "isRememberMe": false
+    },
+    {
+      "id": "d4c2",
+      "firstName": "dd",
+      "lastName": "dd",
+      "userName": "dd",
+      "password": "dd"
     }
   ],
   "customer": [
@@ -33,6 +40,13 @@
       "userName": "dsaa",
       "password": "dsaa",
       "isRememberMe": false
+    },
+    {
+      "id": "2e58",
+      "firstName": "dsaaa",
+      "lastName": "dsaaa",
+      "userName": "dsaaa",
+      "password": "dsaaa"
     }
   ],
   "product": [
@@ -42,7 +56,7 @@
       "title": "asd",
       "description": "asd",
       "price": "10",
-      "count": "5",
+      "count": "7",
       "isActive": true,
       "image": "",
       "colors": [
@@ -53,7 +67,7 @@
         "4294967295"
       ],
       "tags": [],
-      "cartCount": "5",
+      "cartCount": "1",
       "cartMode": true
     },
     {
@@ -95,10 +109,16 @@
   ],
   "cart": [
     {
-      "id": "71f6",
+      "id": "888c",
+      "customerId": "2b07",
+      "productId": "24e8",
+      "itemCount": "2"
+    },
+    {
+      "id": "ffa2",
       "customerId": "4245",
       "productId": "24e8",
-      "itemCount": "5"
+      "itemCount": "1"
     }
   ]
 }

@@ -17,6 +17,7 @@ class SignUpController extends GetxController {
     super.onClose();
   }
 
+  Rx<bool> isSignUpLoading = false.obs;
   final formKey = GlobalKey<FormState>();
   final RxList<String> radioOptions = <String>['Seller', 'Customer'].obs;
   RxString radioCurrentOption = RxString('Seller');
@@ -96,6 +97,8 @@ class SignUpController extends GetxController {
   }
 
   onSignUpTapped() async {
+    isSignUpLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2));
     await getUsers();
     if (isUserNameWrong == true) {
       Get.showSnackbar(
@@ -104,9 +107,11 @@ class SignUpController extends GetxController {
             backgroundColor: Colors.redAccent),
       );
       isUserNameWrong = false;
+      isSignUpLoading.value = false;
       return;
     }
     if (passwordController.text != confirmPasswordController.text) {
+      isSignUpLoading.value = false;
       Get.showSnackbar(
         WidgetUtils.myCustomSnackBar(
             messageText: "Password and Confirm Password Are Not Same",

@@ -130,14 +130,18 @@ class SignUpPage extends GetView<SignUpController> {
               ),
             ),
             const Expanded(child: SizedBox()),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
-              child: _button(
-                context: context,
-                text: LocaleKeys.signUp.tr,
-                onTap: () {
-                  controller.onSignUpTapped();
-                },
+            Obx(
+              () => Padding(
+                padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
+                child: controller.isSignUpLoading.value
+                    ? const CircularProgressIndicator()
+                    : _button(
+                        context: context,
+                        text: LocaleKeys.signUp.tr,
+                        onTap: () {
+                          controller.onSignUpTapped();
+                        },
+                      ),
               ),
             ),
             const Expanded(child: SizedBox()),

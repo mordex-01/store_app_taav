@@ -27,7 +27,10 @@ class LoginController extends GetxController {
     passwordController.dispose();
   }
 
+  Rx<bool> isLoginButtonLoading = false.obs;
+  Rx<bool> isSignUpLoading = false.obs;
   final formKey = GlobalKey<FormState>();
+
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -183,14 +186,21 @@ class LoginController extends GetxController {
     isRememberMeCheck.value = false;
   }
 
-  onLoginTapped() {
+  onLoginTapped() async {
+    isLoginButtonLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2));
     if (formKey.currentState!.validate()) {
       getUsers();
       storgeData();
+      isLoginButtonLoading.value = false;
     }
+    isLoginButtonLoading.value = false;
   }
 
-  onSignUpTapped() {
+  onSignUpTapped() async {
+    isSignUpLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2));
     Get.toNamed(RouteNames.loginPageRoute + RouteNames.signUpPageRoute);
+    isSignUpLoading.value = false;
   }
 }

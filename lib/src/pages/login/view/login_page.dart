@@ -98,14 +98,18 @@ class LoginPage extends GetView<LoginController> {
                   onPressed: () => controller.toggleIsRememberMe(),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: _button(
-                  context: context,
-                  text: LocaleKeys.login.tr,
-                  onTap: () {
-                    controller.onLoginTapped();
-                  },
+              Obx(
+                () => Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: controller.isLoginButtonLoading.value
+                      ? const CircularProgressIndicator()
+                      : _button(
+                          context: context,
+                          text: LocaleKeys.login.tr,
+                          onTap: () {
+                            controller.onLoginTapped();
+                          },
+                        ),
                 ),
               ),
               Padding(
@@ -116,14 +120,18 @@ class LoginPage extends GetView<LoginController> {
                 LocaleKeys.dontHaveAnyAccount.tr,
                 style: const TextStyle(fontSize: 20),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: _button(
-                  context: context,
-                  text: LocaleKeys.signUp.tr,
-                  onTap: () {
-                    controller.onSignUpTapped();
-                  },
+              Obx(
+                () => Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: controller.isSignUpLoading.value
+                      ? const CircularProgressIndicator()
+                      : _button(
+                          context: context,
+                          text: LocaleKeys.signUp.tr,
+                          onTap: () {
+                            controller.onSignUpTapped();
+                          },
+                        ),
                 ),
               ),
               const Expanded(
