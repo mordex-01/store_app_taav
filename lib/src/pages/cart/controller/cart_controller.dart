@@ -45,30 +45,33 @@ class CartController extends GetxController {
   Future<void> getCarts() async {
     cartsList.clear();
     trueList.clear();
-    final resultOrExeption = await _getProductsRepository.getProducts();
-    resultOrExeption.fold(
-      (left) => null,
-      (right) {
-        for (var a in right) {
-          if (a.cartMode != null) {
-            if (a.cartMode == true) {
-              cartsList.add(a);
-            }
-          }
-        }
-      },
-    );
+    // resultOrExeption.fold(
+    //   (left) => null,
+    //   (right) {
+    //     for (var a in right) {
+    //       if (a.cartMode != null) {
+    //         if (a.cartMode == true) {
+    //           cartsList.add(a);
+    //         }
+    //       }
+    //     }
+    //   },
+    // );
 //get this Customer CartList
     final getCart = await _cartRepository.getCart();
-    getCart.fold((left) => print(left), (right) {
+    getCart.fold((left) => print(left), (right) async {
       for (var a in right) {
         if (a.customerId == customerId.value) {
-          for (var b in cartsList) {
-            //to set new cart count for theyr own customer
-            lastCartCount.value = b.cartCount!;
-            b.cartCount = a.itemCount;
-            trueList.add(b);
-          }
+          late String productId;
+          productId = a.productId;
+          final resultOrExeption = await _getProductsRepository.getProducts();
+          resultOrExeption.fold((left) => null, (right) {
+            for (var b in right) {
+              if (b.id == productId) {
+                trueList.add(b);
+              }
+            }
+          });
         }
       }
     });
@@ -208,6 +211,8 @@ class CartController extends GetxController {
   }
 
   void onBackButtonPressed() {
+    cartsList.clear();
+    trueList.clear();
     int count = 0;
     for (var a in cartsList) {
       count += int.parse(a.cartCount!);
