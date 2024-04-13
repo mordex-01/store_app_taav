@@ -35,5 +35,13 @@
   "pleaseFillThisField": "Please Fill This Field",
   "enterYourFirstName": "Enter your first name",
   "enterYourLastName": "Enter your last name",
-  "confirmPassword": "Confirm Password"
+  "confirmPassword": "Confirm Password",
+  "filterProducts": "Filter Products",
+  "setPriceRange": "Set Price Range",
+  "setTagsToFilter": "Set Tags To Filter",
+  "setColorsToFilter": "Set Colors To Filte",
+  "max": "Max",
+  "min": "Min",
+  "clearAll": "Clear All",
+  "close": "Close"
 }

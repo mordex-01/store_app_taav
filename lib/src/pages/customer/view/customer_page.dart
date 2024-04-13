@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/generated/locales.g.dart';
 import 'package:store_app_taav/src/pages/customer/controller/customer_controller.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 
@@ -32,19 +33,29 @@ class CustomerPage extends GetView<CustomerController> {
             child: PopupMenuButton(
               itemBuilder: (context) => [
                 PopupMenuItem(
-                  child: const Row(
+                  onTap: () {
+                    if (!controller.isLanguage.value) {
+                      Get.updateLocale(const Locale("fa", "IR"));
+                      controller.isLanguage.value =
+                          !controller.isLanguage.value;
+                    } else {
+                      Get.updateLocale(const Locale("en", "US"));
+                      controller.isLanguage.value =
+                          !controller.isLanguage.value;
+                    }
+                  },
+                  child: Row(
                     children: [
-                      Icon(Icons.language),
-                      Text("  Change Language"),
+                      const Icon(Icons.language),
+                      Text(LocaleKeys.changeLanguage.tr),
                     ],
                   ),
-                  onTap: () {},
                 ),
                 PopupMenuItem(
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.logout),
-                      Text("  LogOut"),
+                      const Icon(Icons.logout),
+                      Text(LocaleKeys.logOut.tr),
                     ],
                   ),
                   onTap: () {

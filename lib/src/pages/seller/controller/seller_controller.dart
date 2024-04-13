@@ -23,6 +23,7 @@ class SellerController extends GetxController {
     super.onInit();
   }
 
+  Rx<bool> isLanguage = false.obs;
 //save Seller id for add product
   RxString sellerId = RxString("initial");
   void saveSellerId() {

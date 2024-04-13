@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/generated/locales.g.dart';
 import 'package:store_app_taav/src/pages/seller/controller/seller_controller.dart';
 import 'package:store_app_taav/src/pages/seller/view/my_product_box.dart';
 import 'package:store_app_taav/src/pages/seller/view/selected_color_view_model.dart';
@@ -22,10 +23,10 @@ class SellerPage extends GetView<SellerController> {
   PopupMenuEntry<dynamic> _filterPopUpMenuItemButton(BuildContext context) =>
       PopupMenuItem(
         value: "item2",
-        child: const Row(
+        child: Row(
           children: [
-            Icon(Icons.filter_list_rounded),
-            Text("  Filter"),
+            const Icon(Icons.filter_list_rounded),
+            Text(LocaleKeys.filter.tr),
           ],
         ),
         onTap: () {
@@ -44,16 +45,16 @@ class SellerPage extends GetView<SellerController> {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Text("Filter Products"),
+              title: Text(LocaleKeys.filterProducts.tr),
               content: Column(
                 children: [
                   const Divider(),
                   SizedBox(
-                    width: MediaQuery.sizeOf(context).width,
+                    width: MediaQuery.sizeOf(context).width + 50,
                   ),
-                  const Text(
-                    "Set Price Range",
-                    style: TextStyle(fontSize: 18),
+                  Text(
+                    LocaleKeys.setPriceRange.tr,
+                    style: const TextStyle(fontSize: 12),
                   ),
                   Obx(
                     () => RangeSlider(
@@ -77,8 +78,10 @@ class SellerPage extends GetView<SellerController> {
                     () => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Min ${rangeValue.value.start.toInt()}"),
-                        Text("Max ${rangeValue.value.end.toInt()}")
+                        Text(
+                            "${LocaleKeys.min.tr} ${rangeValue.value.start.toInt()}"),
+                        Text(
+                            "${LocaleKeys.max.tr} ${rangeValue.value.end.toInt()}")
                       ],
                     ),
                   ),
@@ -86,14 +89,14 @@ class SellerPage extends GetView<SellerController> {
                   _filterSectionColorTextAndAddButton(context: context),
                   _filterSectionColorsListView(context: context),
                   const Divider(),
-                  const Text(
-                    "Set Tags to Filter",
-                    style: TextStyle(fontSize: 18),
+                  Text(
+                    LocaleKeys.setTagsToFilter.tr,
+                    style: const TextStyle(fontSize: 12),
                   ),
                   _filterSectionTagsListView(),
                   const Expanded(child: SizedBox()),
                   _filterButton(
-                    text: "Filter",
+                    text: LocaleKeys.filter.tr,
                     onPressed: () {
                       controller.onFilterButtonPressed(context);
                     },
@@ -103,14 +106,18 @@ class SellerPage extends GetView<SellerController> {
                     child: SizedBox(),
                   ),
                   _filterButton(
-                    text: "Clear All",
+                    text: LocaleKeys.clearAll.tr,
                     onPressed: () {
                       controller.onClearAllFilterButtonPressed(
                           context: context);
                     },
                   ),
+                  const Expanded(
+                    flex: 1,
+                    child: SizedBox(),
+                  ),
                   _filterButton(
-                    text: "Close",
+                    text: LocaleKeys.close.tr,
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -123,7 +130,7 @@ class SellerPage extends GetView<SellerController> {
       );
   Widget _filterSectionTagsListView() => SizedBox(
         width: double.maxFinite,
-        height: 250,
+        height: 100,
         child: ListView(
           children: [
             Wrap(
@@ -160,9 +167,9 @@ class SellerPage extends GetView<SellerController> {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Set Colors to filter",
-            style: TextStyle(fontSize: 18),
+          Text(
+            LocaleKeys.setColorsToFilter.tr,
+            style: const TextStyle(fontSize: 12),
           ),
           IconButton(
             onPressed: () {
@@ -322,20 +329,31 @@ class SellerPage extends GetView<SellerController> {
                 //fill that later
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
+                  onTap: () {
+                    if (!controller.isLanguage.value) {
+                      Get.updateLocale(const Locale("fa", "IR"));
+                      controller.isLanguage.value =
+                          !controller.isLanguage.value;
+                    } else {
+                      Get.updateLocale(const Locale("en", "US"));
+                      controller.isLanguage.value =
+                          !controller.isLanguage.value;
+                    }
+                  },
                   value: "item1",
                   child: Row(
                     children: [
-                      Icon(Icons.language),
-                      Text("  Change Language"),
+                      const Icon(Icons.language),
+                      Text(LocaleKeys.changeLanguage.tr),
                     ],
                   ),
                 ),
                 PopupMenuItem(
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.refresh),
-                      Text("  Refresh List"),
+                      const Icon(Icons.refresh),
+                      Text(LocaleKeys.refreshList.tr),
                     ],
                   ),
                   onTap: () {
@@ -345,10 +363,10 @@ class SellerPage extends GetView<SellerController> {
                 _filterPopUpMenuItemButton(context),
                 PopupMenuItem(
                   value: "item3",
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.logout),
-                      Text("  LogOut"),
+                      const Icon(Icons.logout),
+                      Text(LocaleKeys.logOut.tr),
                     ],
                   ),
                   onTap: () {

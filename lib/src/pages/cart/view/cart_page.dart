@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:number_picker/number_picker.dart';
+import 'package:store_app_taav/generated/locales.g.dart';
 import 'package:store_app_taav/src/pages/cart/controller/cart_controller.dart';
 
 class CartPage extends GetView<CartController> {
@@ -22,7 +23,7 @@ class CartPage extends GetView<CartController> {
           children: [
             Expanded(
               child: Obx(() => controller.trueList.isEmpty
-                  ? const Center(child: Text("No Carts Exist"))
+                  ? Center(child: Text(LocaleKeys.noCartsExist.tr))
                   : ListView.builder(
                       itemCount: controller.trueList.length,
                       itemBuilder: (context, index) => _cartBox(
@@ -43,9 +44,12 @@ class CartPage extends GetView<CartController> {
             const Divider(),
             Row(
               children: [
-                const Text(
-                  "  Total Price : ",
-                  style: TextStyle(fontSize: 24),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: Text(
+                    LocaleKeys.totalPrice.tr,
+                    style: const TextStyle(fontSize: 24),
+                  ),
                 ),
                 Obx(() => Text(controller.totalPrice.value.toString()))
               ],

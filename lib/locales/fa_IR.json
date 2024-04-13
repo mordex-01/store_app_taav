@@ -35,5 +35,13 @@
   "pleaseFillThisField": "لطفا فیلد بالا را تکمیل کنید",
   "enterYourFirstName": "نام خود را وارد کنید",
   "enterYourLastName": "نام خانوادگی خود را وارد کنید",
-  "confirmPassword": "تکرار رمز عبور"
+  "confirmPassword": "تکرار رمز عبور",
+  "filterProducts": "فیلتر محصولات",
+  "setPriceRange": "محدوده قیمت را انتخواب کنید",
+  "setTagsToFilter": "میتوانید ب واسطه تگ ها محصولات را فیلتر کنید",
+  "setColorsToFilter": "برای فیلتر رنگ مورد نظر را انتخاب کنید",
+  "max": "بیشترین",
+  "min": "کمترین",
+  "clearAll": "حذف همه",
+  "close": "بستن"
 }

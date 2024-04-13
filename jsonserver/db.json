@@ -42,7 +42,45 @@
       "title": "asd",
       "description": "asd",
       "price": "10",
+      "count": "5",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": [],
+      "cartCount": "5",
+      "cartMode": true
+    },
+    {
+      "id": "956f",
+      "sellerId": "836a",
+      "title": "dd",
+      "description": "dd",
+      "price": "10",
       "count": "10",
+      "isActive": true,
+      "image": "",
+      "colors": [
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295",
+        "4294967295"
+      ],
+      "tags": []
+    },
+    {
+      "id": "3ae9",
+      "sellerId": "d09d",
+      "title": "dasd",
+      "description": "asdd",
+      "price": "20",
+      "count": "20",
       "isActive": true,
       "image": "",
       "colors": [
@@ -55,5 +93,12 @@
       "tags": []
     }
   ],
-  "cart": []
+  "cart": [
+    {
+      "id": "71f6",
+      "customerId": "4245",
+      "productId": "24e8",
+      "itemCount": "5"
+    }
+  ]
 }

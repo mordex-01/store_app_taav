@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/generated/locales.g.dart';
 import 'package:store_app_taav/src/infrastructure/routes/route_names.dart';
 import 'package:store_app_taav/src/pages/details/controller/details_controller.dart';
 import 'package:number_picker/number_picker.dart';
@@ -34,12 +35,9 @@ class DetailsPage extends GetView<DetailsController> {
             const Divider(),
             _productColors(),
             const Divider(),
-            const Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                "  Tags : ",
-                style: TextStyle(fontSize: 24),
-              ),
+            Text(
+              LocaleKeys.tags.tr,
+              style: const TextStyle(fontSize: 24),
             ),
             Align(
               alignment: Alignment.topLeft,
@@ -72,9 +70,9 @@ class DetailsPage extends GetView<DetailsController> {
       );
   Widget _productTitle() => Row(
         children: [
-          const Text(
-            "  Title : ",
-            style: TextStyle(fontSize: 24),
+          Text(
+            LocaleKeys.title.tr,
+            style: const TextStyle(fontSize: 24),
           ),
           Obx(
             () => Text(
@@ -86,9 +84,9 @@ class DetailsPage extends GetView<DetailsController> {
       );
   Widget _productDescription() => Row(
         children: [
-          const Text(
-            "  Description : ",
-            style: TextStyle(fontSize: 24),
+          Text(
+            LocaleKeys.description.tr,
+            style: const TextStyle(fontSize: 24),
           ),
           Obx(
             () => SizedBox(
@@ -104,9 +102,9 @@ class DetailsPage extends GetView<DetailsController> {
       );
   Widget _productPrice() => Row(
         children: [
-          const Text(
-            "  Price : ",
-            style: TextStyle(fontSize: 24),
+          Text(
+            LocaleKeys.price.tr,
+            style: const TextStyle(fontSize: 24),
           ),
           Obx(
             () => Text(
@@ -119,9 +117,9 @@ class DetailsPage extends GetView<DetailsController> {
   Widget _productColors() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "  Colors : ",
-            style: TextStyle(fontSize: 24),
+          Text(
+            LocaleKeys.colors.tr,
+            style: const TextStyle(fontSize: 24),
           ),
           SizedBox(
             width: 200,
@@ -184,14 +182,14 @@ class DetailsPage extends GetView<DetailsController> {
           height: 55,
           decoration: BoxDecoration(
               color: Colors.blue[900], borderRadius: BorderRadius.circular(20)),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Add To Cart",
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                LocaleKeys.addToCart.tr,
+                style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
-              Icon(
+              const Icon(
                 Icons.add_shopping_cart,
                 color: Colors.white,
               )

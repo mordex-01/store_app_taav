@@ -21,6 +21,7 @@ class CustomerController extends GetxController {
     super.onInit();
   }
 
+  RxBool isLanguage = false.obs;
   // final CartRepository _cartRepository = CartRepository();
   final RememberMeRepository _rememberMeRepository = RememberMeRepository();
   final GetProductsRepository _getProductsRepository = GetProductsRepository();

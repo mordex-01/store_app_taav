@@ -57,6 +57,14 @@ class LocaleKeys {
   static const enterYourFirstName = 'enterYourFirstName';
   static const enterYourLastName = 'enterYourLastName';
   static const confirmPassword = 'confirmPassword';
+  static const filterProducts = 'filterProducts';
+  static const setPriceRange = 'setPriceRange';
+  static const setTagsToFilter = 'setTagsToFilter';
+  static const setColorsToFilter = 'setColorsToFilter';
+  static const max = 'max';
+  static const min = 'min';
+  static const clearAll = 'clearAll';
+  static const close = 'close';
 }
 
 class Locales {
@@ -98,6 +106,14 @@ class Locales {
     'enterYourFirstName': 'Enter your first name',
     'enterYourLastName': 'Enter your last name',
     'confirmPassword': 'Confirm Password',
+    'filterProducts': 'Filter Products',
+    'setPriceRange': 'Set Price Range',
+    'setTagsToFilter': 'Set Tags To Filter',
+    'setColorsToFilter': 'Set Colors To Filte',
+    'max': 'Max',
+    'min': 'Min',
+    'clearAll': 'Clear All',
+    'close': 'Close',
   };
   static const fa_IR = {
     'login': 'ورود',
@@ -137,5 +153,13 @@ class Locales {
     'enterYourFirstName': 'نام خود را وارد کنید',
     'enterYourLastName': 'نام خانوادگی خود را وارد کنید',
     'confirmPassword': 'تکرار رمز عبور',
+    'filterProducts': 'فیلتر محصولات',
+    'setPriceRange': 'محدوده قیمت را انتخواب کنید',
+    'setTagsToFilter': 'میتوانید ب واسطه تگ ها محصولات را فیلتر کنید',
+    'setColorsToFilter': 'برای فیلتر رنگ مورد نظر را انتخاب کنید',
+    'max': 'بیشترین',
+    'min': 'کمترین',
+    'clearAll': 'حذف همه',
+    'close': 'بستن',
   };
 }

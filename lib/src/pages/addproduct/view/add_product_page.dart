@@ -2,6 +2,7 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/generated/locales.g.dart';
 import 'package:store_app_taav/src/pages/addproduct/controller/add_product_controller.dart';
 
 class AddProductPage extends GetView<AddProductController> {
@@ -32,10 +33,10 @@ class AddProductPage extends GetView<AddProductController> {
                 _priceTextField(),
                 _countTextField(),
                 const Divider(),
-                const Text("Add Your Colors To Your Product"),
+                Text(LocaleKeys.addColorToYourProduct.tr),
                 _colorsSection(context: context),
                 const Divider(),
-                const Text("Add Tags To Your Product"),
+                Text(LocaleKeys.addColorToYourProduct.tr),
                 _tagsSection(context: context),
                 SizedBox(
                   width: MediaQuery.sizeOf(context).width,
@@ -331,7 +332,7 @@ class AddProductPage extends GetView<AddProductController> {
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.digitsOnly
           ],
-          hintText: "count",
+          hintText: LocaleKeys.count.tr,
           isOutline: false,
           maxLines: 1,
         ),
@@ -351,7 +352,7 @@ class AddProductPage extends GetView<AddProductController> {
             return null;
           },
           controller: controller.priceController,
-          hintText: "Price",
+          hintText: LocaleKeys.price.tr,
           isOutline: false,
           maxLines: 1));
   Widget _descriptionTextField() => Padding(
@@ -365,7 +366,7 @@ class AddProductPage extends GetView<AddProductController> {
             return null;
           },
           controller: controller.descriptionController,
-          hintText: "Description",
+          hintText: LocaleKeys.description.tr,
           isOutline: true,
           maxLines: 3));
   Widget _titleTextField() => Padding(
@@ -379,7 +380,7 @@ class AddProductPage extends GetView<AddProductController> {
             return null;
           },
           controller: controller.titleController,
-          hintText: "Title",
+          hintText: LocaleKeys.title.tr,
           isOutline: false,
           maxLines: 1));
   Widget _buildImage({required BuildContext context}) => Obx(() {
@@ -397,7 +398,7 @@ class AddProductPage extends GetView<AddProductController> {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const Text("You Can Select Image For Your Product ==>"),
+                  Text(LocaleKeys.selectImage.tr),
                   IconButton(
                     onPressed: () {
                       controller.getImage();
