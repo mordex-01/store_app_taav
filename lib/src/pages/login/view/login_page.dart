@@ -52,7 +52,7 @@ class LoginPage extends GetView<LoginController> {
                 },
                 obscureText: false,
                 topText: LocaleKeys.loginUserName.tr,
-                hintText: "Enter Your User Name",
+                hintText: LocaleKeys.enterYourUserName.tr,
                 suffixIcon: const Padding(
                   padding: EdgeInsets.only(right: 20),
                   child: Icon(
@@ -71,8 +71,8 @@ class LoginPage extends GetView<LoginController> {
                     return null;
                   },
                   obscureText: !controller.isObscure.value,
-                  topText: "Password",
-                  hintText: "Enter Your Password",
+                  topText: LocaleKeys.password.tr,
+                  hintText: LocaleKeys.enterYourPassword.tr,
                   suffixIcon: Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: IconButton(
@@ -112,15 +112,15 @@ class LoginPage extends GetView<LoginController> {
                 padding: const EdgeInsets.all(8.0),
                 child: _mydivider(context: context),
               ),
-              const Text(
-                "Dont have any account?",
-                style: TextStyle(fontSize: 20),
+              Text(
+                LocaleKeys.dontHaveAnyAccount.tr,
+                style: const TextStyle(fontSize: 20),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: _button(
                   context: context,
-                  text: "Sign Up",
+                  text: LocaleKeys.signUp.tr,
                   onTap: () {
                     controller.onSignUpTapped();
                   },
@@ -211,9 +211,9 @@ class LoginPage extends GetView<LoginController> {
                 color: iconColor,
               ),
             ),
-            const Text(
-              "Remember Me",
-              style: TextStyle(fontSize: 16),
+            Text(
+              LocaleKeys.rememberMe.tr,
+              style: const TextStyle(fontSize: 16),
             )
           ],
         ),

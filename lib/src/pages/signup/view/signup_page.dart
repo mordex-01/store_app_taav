@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:store_app_taav/generated/locales.g.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/signup/controller/signup_controller.dart';
 
@@ -28,12 +29,12 @@ class SignUpPage extends GetView<SignUpController> {
                 Expanded(
                   child: _textFormField(
                     controller: controller.firstNameController,
-                    hintText: "Enter your first name",
-                    topText: "First Name",
+                    hintText: LocaleKeys.enterYourFirstName.tr,
+                    topText: LocaleKeys.firstName.tr,
                     obscureText: false,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Please fill this field";
+                        return LocaleKeys.pleaseFillThisField.tr;
                       }
                       return null;
                     },
@@ -42,12 +43,12 @@ class SignUpPage extends GetView<SignUpController> {
                 Expanded(
                   child: _textFormField(
                     controller: controller.lastNameController,
-                    hintText: "Enter your last name",
-                    topText: "Last Name",
+                    hintText: LocaleKeys.enterYourLastName.tr,
+                    topText: LocaleKeys.lastName.tr,
                     obscureText: false,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Please fill this field";
+                        return LocaleKeys.pleaseFillThisField.tr;
                       }
                       return null;
                     },
@@ -58,12 +59,12 @@ class SignUpPage extends GetView<SignUpController> {
             const Expanded(child: SizedBox()),
             _textFormField(
               controller: controller.userNameController,
-              hintText: "Enter your user name",
-              topText: "User Name",
+              hintText: LocaleKeys.enterYourUserName.tr,
+              topText: LocaleKeys.userName.tr,
               obscureText: false,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Please fill this field";
+                  return LocaleKeys.pleaseFillThisField.tr;
                 }
                 return null;
               },
@@ -74,12 +75,12 @@ class SignUpPage extends GetView<SignUpController> {
                 Expanded(
                   child: _textFormField(
                     controller: controller.passwordController,
-                    hintText: "Enter your password",
-                    topText: "Password",
+                    hintText: LocaleKeys.enterYourPassword.tr,
+                    topText: LocaleKeys.password.tr,
                     obscureText: false,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Please fill this field";
+                        return LocaleKeys.pleaseFillThisField.tr;
                       }
                       return null;
                     },
@@ -88,12 +89,12 @@ class SignUpPage extends GetView<SignUpController> {
                 Expanded(
                   child: _textFormField(
                     controller: controller.confirmPasswordController,
-                    hintText: "Confirm password",
-                    topText: "Confirm Password",
+                    hintText: LocaleKeys.confirmPassword.tr,
+                    topText: LocaleKeys.password.tr,
                     obscureText: false,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Please fill this field";
+                        return LocaleKeys.pleaseFillThisField.tr;
                       }
                       return null;
                     },
@@ -107,7 +108,7 @@ class SignUpPage extends GetView<SignUpController> {
                 children: [
                   Expanded(
                     child: _radioListTile(
-                      title: controller.radioOptions[0],
+                      title: LocaleKeys.seller.tr,
                       value: controller.radioOptions[0],
                       currentValue: controller.radioCurrentOption.value,
                       onChanged: (value) {
@@ -117,7 +118,7 @@ class SignUpPage extends GetView<SignUpController> {
                   ),
                   Expanded(
                     child: _radioListTile(
-                      title: controller.radioOptions[1],
+                      title: LocaleKeys.customer.tr,
                       value: controller.radioOptions[1],
                       currentValue: controller.radioCurrentOption.value,
                       onChanged: (value) {
@@ -133,7 +134,7 @@ class SignUpPage extends GetView<SignUpController> {
               padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
               child: _button(
                 context: context,
-                text: "Sign Up",
+                text: LocaleKeys.signUp.tr,
                 onTap: () {
                   controller.onSignUpTapped();
                 },
@@ -164,16 +165,16 @@ class SignUpPage extends GetView<SignUpController> {
           onChanged: onChanged,
         ),
       );
-  Widget _appBarTitle() => const Row(
+  Widget _appBarTitle() => Row(
         children: [
           Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Text(
-              "Create  New Account",
-              style: TextStyle(fontSize: 24),
+              LocaleKeys.createNewAccount.tr,
+              style: const TextStyle(fontSize: 24),
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: Icon(
               Icons.person_add,
