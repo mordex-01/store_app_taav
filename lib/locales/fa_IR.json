@@ -1,5 +1,6 @@
 {
   "login": "ورود",
   "signUp": "ثبت نام",
-  "signInToContinue": "برای ادامه وارد شوید"
+  "signInToContinue": "برای ادامه وارد شوید",
+  "loginUserName": "نام کاربری"
 }

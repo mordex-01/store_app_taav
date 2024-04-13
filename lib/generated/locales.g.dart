@@ -23,6 +23,7 @@ class LocaleKeys {
   static const login = 'login';
   static const signUp = 'signUp';
   static const signInToContinue = 'signInToContinue';
+  static const loginUserName = 'loginUserName';
 }
 
 class Locales {
@@ -30,10 +31,12 @@ class Locales {
     'login': 'Login',
     'signUp': 'signUp',
     'signInToContinue': 'Sign In to continue',
+    'loginUserName': 'User Name',
   };
   static const fa_IR = {
     'login': 'ورود',
     'signUp': 'ثبت نام',
     'signInToContinue': 'برای ادامه وارد شوید',
+    'loginUserName': 'نام کاربری',
   };
 }

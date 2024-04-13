@@ -1,5 +1,6 @@
 {
   "login": "Login",
   "signUp": "signUp",
-  "signInToContinue": "Sign In to continue"
+  "signInToContinue": "Sign In to continue",
+  "loginUserName": "User Name"
 }

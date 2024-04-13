@@ -51,7 +51,7 @@ class LoginPage extends GetView<LoginController> {
                   return null;
                 },
                 obscureText: false,
-                topText: "User Name",
+                topText: LocaleKeys.loginUserName.tr,
                 hintText: "Enter Your User Name",
                 suffixIcon: const Padding(
                   padding: EdgeInsets.only(right: 20),
