@@ -1,12 +1,9 @@
-import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store_app_taav/src/infrastructure/utils/widget_utils.dart';
 import 'package:store_app_taav/src/pages/cart/model/cart_dto.dart';
-import 'package:store_app_taav/src/pages/cart/model/cart_model.dart';
 import 'package:store_app_taav/src/pages/cart/repository/cart_repository.dart';
-import 'package:store_app_taav/src/pages/details/repository/details_repository.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_dto.dart';
 import 'package:store_app_taav/src/pages/seller/model/product_view_model.dart';
 import 'package:store_app_taav/src/shared/get_products_repository.dart';
@@ -65,55 +62,182 @@ class DetailsController extends GetxController {
     }
   }
 
-  final DetailsRepository _detailsRepository = DetailsRepository();
+  // final DetailsRepository _detailsRepository = DetailsRepository();
   final CartRepository _cartRepository = CartRepository();
   Future<void> onAddButtonPressed({required String id}) async {
-    //get carts for check is that existOrNot
-    final List<CartModel> carts = [];
-    final getCarts = _cartRepository.getCart();
+    //test
+    final getCarts = await _cartRepository.getCart();
     getCarts.fold((left) => null, (right) async {
-      for (var a in right) {
-        carts.add(a);
-      }
-      if (carts.every((element) =>
-          !(element.customerId.contains(customerId.value) &&
-              element.productId.contains(myProduct.value.id)))) {
-//addCart
-        final addCartDto = CartDto(
-            customerId: customerId.value,
-            productId: myProduct.value.id,
-            itemCount: middleText.value.toString());
-        final addCart = await _cartRepository.addCart(dto: addCartDto);
-        addCart.fold((left) => print(left), (right) => print("cartAdded"));
-      } else {
-        for (var a in carts) {
-          if (a.productId == myProduct.value.id) {
-            //editCart
-            final dto = CartDto(
+      if (right.isEmpty) {
+        final addCart = await _cartRepository.addCart(
+            dto: CartDto(
                 customerId: customerId.value,
                 productId: myProduct.value.id,
-                itemCount:
-                    (int.parse(a.itemCount) + middleText.value).toString());
-            final editCart = _cartRepository.editCart(id: a.id!, dto: dto);
-            editCart.fold((left) => print(left), (right) => print(right));
+                itemCount: middleText.value.toString()));
+        addCart.fold((left) => null, (right) async {
+          final getProductById =
+              await _getProductsRepository.getProductById(id);
+          getProductById.fold((left) => null, (right) async {
+            final editProduct = await _cartRepository.patchProduct(
+                dto: ProductDto(
+                    isActive: true,
+                    cartCount: middleText.value.toString(),
+                    cartMode: true,
+                    count:
+                        (int.parse(right.count) - middleText.value).toString()),
+                id: id);
+            editProduct.fold((left) => null, (right) {
+              Get.back(result: middleText.value.toString());
+            });
+          });
+        });
+      } else {
+        for (var a in right) {
+          if (a.customerId == customerId.value &&
+              a.productId == myProduct.value.id) {
+            //exist
+            final editCart = await _cartRepository.editCart(
+                id: a.id!,
+                dto: CartDto(
+                    customerId: a.customerId,
+                    productId: a.productId,
+                    itemCount: (int.parse(a.itemCount) + middleText.value)
+                        .toString()));
+            editCart.fold((left) => null, (right) async {
+              final getProduct =
+                  await _getProductsRepository.getProductById(id);
+              getProduct.fold((left) => null, (right) async {
+                final editProduct = await _cartRepository.patchProduct(
+                    dto: ProductDto(
+                        isActive: true,
+                        cartMode: true,
+                        cartCount:
+                            (int.parse(right.cartCount!) + middleText.value)
+                                .toString(),
+                        count: (int.parse(right.count) - middleText.value)
+                            .toString()),
+                    id: id);
+                editProduct.fold((left) => null,
+                    (right) => Get.back(result: middleText.value.toString()));
+              });
+            });
           }
         }
       }
     });
 
-    final dto = ProductDto(
-        isActive: myProduct.value.isActive,
-        cartCount: myProduct.value.cartCount != null
-            ? (int.parse(myProduct.value.cartCount!) + middleText.value)
-                .toString()
-            : middleText.value.toString(),
-        cartMode: true,
-        count:
-            (int.parse(myProduct.value.count) - middleText.value).toString());
-    final decreeseOrExeption =
-        await _detailsRepository.decreeseCount(id: id, dto: dto);
-    decreeseOrExeption.fold((left) => null,
-        (right) => Get.back(result: middleText.value.toString()));
+    //test
+    List<String> ids = [];
+
+    final getCartss = await _cartRepository.getCart();
+    getCartss.fold((left) => null, (right) async {
+      for (var a in right) {
+        ids.add(a.productId);
+      }
+      if (!ids.contains(myProduct.value.id)) {
+        final addCart = await _cartRepository.addCart(
+            dto: CartDto(
+                customerId: customerId.value,
+                productId: myProduct.value.id,
+                itemCount: middleText.value.toString()));
+        addCart.fold((left) => null, (right) async {
+          final getProductById =
+              await _getProductsRepository.getProductById(id);
+          getProductById.fold((left) => null, (right) async {
+            final editProduct = await _cartRepository.patchProduct(
+                dto: ProductDto(
+                    isActive: true,
+                    cartCount: middleText.value.toString(),
+                    cartMode: true,
+                    count:
+                        (int.parse(right.count) - middleText.value).toString()),
+                id: id);
+            editProduct.fold((left) => null, (right) {
+              Get.back(result: middleText.value.toString());
+            });
+          });
+        });
+      }
+    });
+    List<String> customerIds = [];
+    final getCartsss = await _cartRepository.getCart();
+    getCartsss.fold((left) => null, (right) async {
+      for (var a in right) {
+        customerIds.add(a.customerId);
+      }
+    });
+    //test2
+    if (!customerIds.contains(customerId.value)) {
+      final addCart = await _cartRepository.addCart(
+          dto: CartDto(
+              customerId: customerId.value,
+              productId: myProduct.value.id,
+              itemCount: middleText.value.toString()));
+      addCart.fold((left) => null, (right) async {
+        final getProductById = await _getProductsRepository.getProductById(id);
+        getProductById.fold((left) => null, (right) async {
+          final editProduct = await _cartRepository.patchProduct(
+              dto: ProductDto(
+                  isActive: true,
+                  cartCount: middleText.value.toString(),
+                  cartMode: true,
+                  count:
+                      (int.parse(right.count) - middleText.value).toString()),
+              id: id);
+          editProduct.fold((left) => null, (right) {
+            Get.back(result: middleText.value.toString());
+          });
+        });
+      });
+    }
+    //test2
+
+//     //get carts for check is that existOrNot
+//     final List<CartModel> carts = [];
+//     final getCarts = _cartRepository.getCart();
+//     getCarts.fold((left) => null, (right) async {
+//       for (var a in right) {
+//         carts.add(a);
+//       }
+//       if (carts.every((element) =>
+//           !(element.customerId.contains(customerId.value) &&
+//               element.productId.contains(myProduct.value.id)))) {
+// //addCart
+//         final addCartDto = CartDto(
+//             customerId: customerId.value,
+//             productId: myProduct.value.id,
+//             itemCount: middleText.value.toString());
+//         final addCart = await _cartRepository.addCart(dto: addCartDto);
+//         addCart.fold((left) => print(left), (right) => print("cartAdded"));
+//       } else {
+//         for (var a in carts) {
+//           if (a.productId == myProduct.value.id) {
+//             //editCart
+//             final dto = CartDto(
+//                 customerId: customerId.value,
+//                 productId: myProduct.value.id,
+//                 itemCount:
+//                     (int.parse(a.itemCount) + middleText.value).toString());
+//             final editCart = _cartRepository.editCart(id: a.id!, dto: dto);
+//             editCart.fold((left) => print(left), (right) => print(right));
+//           }
+//         }
+//       }
+//     });
+
+//     final dto = ProductDto(
+//         isActive: myProduct.value.isActive,
+//         cartCount: myProduct.value.cartCount != null
+//             ? (int.parse(myProduct.value.cartCount!) + middleText.value)
+//                 .toString()
+//             : middleText.value.toString(),
+//         cartMode: true,
+//         count:
+//             (int.parse(myProduct.value.count) - middleText.value).toString());
+//     final decreeseOrExeption =
+//         await _detailsRepository.decreeseCount(id: id, dto: dto);
+//     decreeseOrExeption.fold((left) => null,
+//         (right) => Get.back(result: middleText.value.toString()));
   }
   //show
 }
