@@ -283,7 +283,16 @@ class CartController extends GetxController {
   }
 
   Future<void> onPaymentButtonPressed() async {
-    for (var a in cartsList) {
+    for (var a in trueList) {
+      final getCarts = await _cartRepository.getCart();
+      getCarts.fold((left) => null, (right) async {
+        for (var b in right) {
+          if (b.productId == a.id && b.customerId == customerId.value) {
+            final deleteCart = await _cartRepository.deleteCart(id: b.id!);
+            deleteCart.fold((left) => null, (right) => null);
+          }
+        }
+      });
       final dto = ProductDto(
           isActive: true, cartCount: "0", cartMode: false, count: a.count);
       final paymantPatch =
@@ -291,7 +300,7 @@ class CartController extends GetxController {
       paymantPatch.fold(
           (left) => Get.showSnackbar(WidgetUtils.myCustomSnackBar(
               messageText: left, backgroundColor: Colors.redAccent)), (right) {
-        Get.offAndToNamed(RouteNames.customerPageRoute);
+        Get.back();
       });
     }
   }
