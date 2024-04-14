@@ -15,13 +15,6 @@
       "userName": "asdd",
       "password": "asdd",
       "isRememberMe": false
-    },
-    {
-      "id": "d4c2",
-      "firstName": "dd",
-      "lastName": "dd",
-      "userName": "dd",
-      "password": "dd"
     }
   ],
   "customer": [
@@ -40,13 +33,6 @@
       "userName": "dsaa",
       "password": "dsaa",
       "isRememberMe": false
-    },
-    {
-      "id": "2e58",
-      "firstName": "dsaaa",
-      "lastName": "dsaaa",
-      "userName": "dsaaa",
-      "password": "dsaaa"
     }
   ],
   "product": [
@@ -67,58 +53,22 @@
         "4294967295"
       ],
       "tags": [],
-      "cartCount": "2",
+      "cartCount": "1",
       "cartMode": true
-    },
-    {
-      "id": "956f",
-      "sellerId": "836a",
-      "title": "dd",
-      "description": "dd",
-      "price": "10",
-      "count": "10",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": []
-    },
-    {
-      "id": "3ae9",
-      "sellerId": "d09d",
-      "title": "dasd",
-      "description": "asdd",
-      "price": "20",
-      "count": "20",
-      "isActive": true,
-      "image": "",
-      "colors": [
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295",
-        "4294967295"
-      ],
-      "tags": []
     }
   ],
   "cart": [
     {
-      "id": "888c",
-      "customerId": "2b07",
-      "productId": "24e8",
-      "itemCount": "2"
-    },
-    {
-      "id": "ffa2",
+      "id": "7532",
       "customerId": "4245",
       "productId": "24e8",
-      "itemCount": "2"
+      "itemCount": "3"
+    },
+    {
+      "id": "0889",
+      "customerId": "2b07",
+      "productId": "24e8",
+      "itemCount": "1"
     }
   ]
 }

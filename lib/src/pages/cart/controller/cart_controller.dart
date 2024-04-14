@@ -32,16 +32,17 @@ class CartController extends GetxController {
     print(customerId.value);
   }
 
-  void countTotalPrice() {
-    totalPrice.value = 0;
-    late int total = 0;
-    for (var a in trueList) {
-      total = int.parse(a.cartCount!) * int.parse(a.price);
-    }
-    totalPrice.value += total;
-  }
+  // void countTotalPrice() async {
+  //   totalPrice.value = 0;
+  //   late int total = 0;
+  //   for (var a in trueList) {
+  //     total = int.parse(a.cartCount!) * int.parse(a.price);
+  //   }
+  //   totalPrice.value += total;
+  // }
 
   Future<void> getCarts() async {
+    totalPrice.value = 0;
     cartsList.clear();
     trueList.clear();
 
@@ -57,17 +58,14 @@ class CartController extends GetxController {
               if (b.id == productId) {
                 b.cartCount = a.itemCount;
                 trueList.add(b);
+                totalPrice.value +=
+                    int.parse(b.cartCount!) * int.parse(b.price);
               }
             }
           });
         }
       }
     });
-
-    for (var a in trueList) {
-      int total = int.parse(a.cartCount!) * int.parse(a.price);
-      totalPrice.value += total;
-    }
   }
 
   Future<void> onDeleteButtonPressed({required int index}) async {
@@ -158,6 +156,35 @@ class CartController extends GetxController {
   }
 
   Future<void> onLeftNumberPickerPressed({required int index}) async {
+    if (trueList[index].cartCount == "1") {
+      final getCart = await _cartRepository.getCart();
+      getCart.fold((left) => null, (right) async {
+        for (var a in right) {
+          if (a.customerId == customerId.value &&
+              trueList[index].id == a.productId) {
+            final deleteCart = await _cartRepository.deleteCart(id: a.id!);
+            deleteCart.fold((left) => null, (right) async {
+              final getProduct =
+                  await _getProductsRepository.getProductById(a.productId);
+              getProduct.fold((left) => null, (right) async {
+                final patchProduct = await _cartRepository.patchProduct(
+                    dto: ProductDto(
+                        isActive: true,
+                        cartMode: true,
+                        count: (int.parse(right.count) + int.parse(a.itemCount))
+                            .toString(),
+                        cartCount: (int.parse(right.cartCount!) -
+                                int.parse(a.itemCount))
+                            .toString()),
+                    id: a.productId);
+                patchProduct.fold(
+                    (left) => null, (right) => trueList.removeAt(index));
+              });
+            });
+          }
+        }
+      });
+    }
     final getCartss = await _cartRepository.getCart();
     getCartss.fold((left) => null, (right) async {
       for (var a in right) {
