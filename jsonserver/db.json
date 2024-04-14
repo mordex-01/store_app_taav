@@ -56,7 +56,7 @@
       "title": "asd",
       "description": "asd",
       "price": "10",
-      "count": "7",
+      "count": "6",
       "isActive": true,
       "image": "",
       "colors": [
@@ -67,7 +67,7 @@
         "4294967295"
       ],
       "tags": [],
-      "cartCount": "1",
+      "cartCount": "2",
       "cartMode": true
     },
     {
@@ -118,7 +118,7 @@
       "id": "ffa2",
       "customerId": "4245",
       "productId": "24e8",
-      "itemCount": "1"
+      "itemCount": "2"
     }
   ]
 }

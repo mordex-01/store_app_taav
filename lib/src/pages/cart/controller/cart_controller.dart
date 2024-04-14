@@ -35,7 +35,7 @@ class CartController extends GetxController {
   void countTotalPrice() {
     totalPrice.value = 0;
     late int total = 0;
-    for (var a in cartsList) {
+    for (var a in trueList) {
       total = int.parse(a.cartCount!) * int.parse(a.price);
     }
     totalPrice.value += total;
@@ -64,7 +64,7 @@ class CartController extends GetxController {
       }
     });
 
-    for (var a in cartsList) {
+    for (var a in trueList) {
       int total = int.parse(a.cartCount!) * int.parse(a.price);
       totalPrice.value += total;
     }
@@ -187,7 +187,6 @@ class CartController extends GetxController {
         }
       }
     });
-
     // if (trueList[index].cartCount != "1") {
     //   final dto = ProductDto(
     //       isActive: trueList[index].isActive,

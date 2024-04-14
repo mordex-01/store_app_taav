@@ -23,6 +23,7 @@ class SellerController extends GetxController {
     super.onInit();
   }
 
+  Rx<bool> isFloatingActionButtonLoading = false.obs;
   Rx<bool> isLanguage = false.obs;
 //save Seller id for add product
   RxString sellerId = RxString("initial");
@@ -207,16 +208,20 @@ class SellerController extends GetxController {
 
 //on add button Tapped
   onAddButtonTapped() async {
+    isFloatingActionButtonLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2));
     var result = await Get.toNamed(
       RouteNames.sellerPageRoute + RouteNames.addProductRoute,
       arguments: sellerId.value,
     );
     if (result != null) {
+      isFloatingActionButtonLoading.value = false;
       //fill it
       // productsList.add(result);
       productsList.clear();
       getProducts();
     }
+    isFloatingActionButtonLoading.value = false;
   }
 
 //

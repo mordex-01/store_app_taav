@@ -14,7 +14,10 @@ class SellerPage extends GetView<SellerController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: _addActionButton(),
+      floatingActionButton: Obx(() =>
+          controller.isFloatingActionButtonLoading.value
+              ? const CircularProgressIndicator()
+              : _addActionButton()),
       appBar: _appBar(),
       body: _body(),
     );
